@@ -4,6 +4,11 @@
 package plugins.UPnP;
 
 import java.util.LinkedList;
+
+import plugins.UPnP.org.cybergarage.upnp.Action;
+import plugins.UPnP.org.cybergarage.upnp.ActionList;
+import plugins.UPnP.org.cybergarage.upnp.Argument;
+import plugins.UPnP.org.cybergarage.upnp.ArgumentList;
 import plugins.UPnP.org.cybergarage.upnp.ControlPoint;
 import plugins.UPnP.org.cybergarage.upnp.Device;
 import plugins.UPnP.org.cybergarage.upnp.DeviceList;
@@ -26,7 +31,6 @@ import freenet.support.api.HTTPRequest;
  *
  * @see http://www.upnp.org/
  * @see http://en.wikipedia.org/wiki/Universal_Plug_and_Play
- * @see http://azureus.sourceforge.net/
  */ 
 public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, DeviceChangeListener {
 	private ControlPoint upnpControlPoint;
@@ -62,6 +66,26 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 			sb.append(current.getName() + " : " + current.getValue() + "<br>");
 		}
 		sb.append("</small></div>");
+	}
+
+	private void listActionsArguments(Action action, StringBuffer sb) {
+		ArgumentList ar = action.getArgumentList();
+		for(int i=0; i<ar.size(); i++) {
+			Argument argument = ar.getArgument(i);
+			if(argument == null ) continue;
+			sb.append("<div><small>argument ("+i+") :" + argument.getName()+"</small></div>");
+		}
+	}
+	
+	private void listActions(Service service, StringBuffer sb) {
+		ActionList al = service.getActionList();
+		for(int i=0; i<al.size(); i++) {
+			Action action = al.getAction(i);
+			if(action == null ) continue;
+			sb.append("<div>action ("+i+") :" + action.getName());
+			listActionsArguments(action, sb);
+			sb.append("</div>");
+		}
 	}
 	
 	private void listSubServices(Device dev, StringBuffer sb) {
@@ -116,6 +140,7 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 						" dnsServers:" + dnsServers + "<br>");
 			}else
 				sb.append("~~~~~~~ "+serv.getServiceType());
+			listActions(serv, sb);
 			listStateTable(serv, sb);
 			sb.append("</div>");
 		}
@@ -147,22 +172,6 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 			Device dev = rootDevList.getDevice(i);
 			if(!"urn:schemas-upnp-org:device:InternetGatewayDevice:1".equals(dev.getDeviceType())) continue;
 			listSubDev("WANDevice", dev, sb);
-			
-			
-			//Service wanCommonInterfaceConfig = wan.getService("WANCommonInterfaceConfig");
-			//sb.append("status:" + wanCommonInterfaceConfig.getStateVariable("PhysicalLinkStatus") + " type:" + wanCommonInterfaceConfig.getStateVariable("WANAccessType") + " upstream:" + wanCommonInterfaceConfig.getStateVariable("Layer1UpstreamMaxBitRate") + " downstream:" + wanCommonInterfaceConfig.getStateVariable("Layer1DownstreamMaxBitRate"));
-			Device wan = dev.getDevice("WANDevice");
-			Device wanConnectionDevice = wan.getDevice("WANConnectionDevice");
-			if(wanConnectionDevice == null) break;
-			System.out.println(wanConnectionDevice.getDeviceList().getDevice(0).getDeviceType());
-			Device wanIPConnectionDevice = dev.getDevice("WANIPConnectionDevice");
-			if(wanIPConnectionDevice == null) break;
-			System.out.println(wanIPConnectionDevice.getDeviceList().getDevice(0).getDeviceType());
-			
-			StateVariable type = wanIPConnectionDevice.getStateVariable("ConnectionType");
-			StateVariable ip = wanIPConnectionDevice.getStateVariable("ExternalIPAddress");
-			
-			sb.append("[" + i + "] : " + dev.getFriendlyName() + " : "+ type.getValue() + ip.getValue() + "<br>");
 		}
 
 		sb.append("</body></html>");
