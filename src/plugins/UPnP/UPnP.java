@@ -25,7 +25,7 @@ import freenet.pluginmanager.PluginRespirator;
 import freenet.support.api.HTTPRequest;
 
 /**
- * This plugin implements UP&P support on a freenet node.
+ * This plugin implements UP&P support on a Freenet node.
  * 
  * @author Florent Daigni&egrave;re &lt;nextgens@freenetproject.org&gt;
  *
