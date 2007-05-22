@@ -16,7 +16,9 @@ import plugins.UPnP.org.cybergarage.upnp.Service;
 import plugins.UPnP.org.cybergarage.upnp.ServiceList;
 import plugins.UPnP.org.cybergarage.upnp.ServiceStateTable;
 import plugins.UPnP.org.cybergarage.upnp.StateVariable;
+import plugins.UPnP.org.cybergarage.upnp.control.QueryRequest;
 import plugins.UPnP.org.cybergarage.upnp.device.DeviceChangeListener;
+import plugins.UPnP.org.cybergarage.upnp.xml.StateVariableData;
 import freenet.pluginmanager.FredPlugin;
 import freenet.pluginmanager.FredPluginHTTP;
 import freenet.pluginmanager.FredPluginThreadless;
@@ -88,6 +90,10 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 		}
 	}
 	
+	private String toString(StateVariableData data) {
+		return (data == null ? "null" : data.getValue());
+	}
+	
 	private void listSubServices(Device dev, StringBuffer sb) {
 		ServiceList sl = dev.getServiceList();
 		for(int i=0; i<sl.size(); i++) {
@@ -100,44 +106,58 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 				StateVariable upstreamBW = serv.getStateVariable("Layer1UpstreamMaxBitRate");
 				StateVariable downstreamBW = serv.getStateVariable("Layer1DownstreamMaxBitRate");
 				
-				sb.append("WANCommonInterfaceConfig" +
-						" status:" + linkStatus.getStateVariableData() +
-						" type:" + wanAccessType.getStateVariableData() +
-						" upstream:" + upstreamBW.getStateVariableData() + 
-						" downstream:" + downstreamBW.getStateVariableData() + "<br>");
+				sb.append("WANCommonInterfaceConfig");
+				if(linkStatus != null)
+					sb.append(" status: " + toString(linkStatus.getStateVariableData()));
+				if(wanAccessType != null)
+					sb.append(" type: " + toString(wanAccessType.getStateVariableData()));
+				if(upstreamBW != null)
+					sb.append(" upstream: " + toString(upstreamBW.getStateVariableData()));
+				if(downstreamBW != null)
+					sb.append(" downstream: " + toString(downstreamBW.getStateVariableData()) + "<br>");
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				StateVariable linkStatus = serv.getStateVariable("ConnectionStatus");
 				StateVariable uptime = serv.getStateVariable("Uptime");
 				StateVariable upstreamBW = serv.getStateVariable("UpstreamMaxBitRate");
 				StateVariable downstreamBW = serv.getStateVariable("DownstreamMaxBitRate");
 
-				sb.append("WANPPPConnection" +
-						" status:" + linkStatus.getStateVariableData() +
-						" uptime:" + uptime.getStateVariableData() +
-						" upstream:" + upstreamBW.getStateVariableData() + 
-						" downstream:" + downstreamBW.getStateVariableData() + "<br>");
+				sb.append("WANPPPConnection");
+				if(linkStatus != null)
+					sb.append(" status: " + toString(linkStatus.getStateVariableData()));
+				if(uptime != null)
+					sb.append(" uptime: " + toString(uptime.getStateVariableData()));
+				if(upstreamBW != null)
+					sb.append(" upstream: " + toString(upstreamBW.getStateVariableData()));
+				if(downstreamBW != null)
+					sb.append(" downstream: " + toString(downstreamBW.getStateVariableData()) + "<br>");
 			}else if("urn:schemas-upnp-org:service:Layer3Forwarding:1".equals(serv.getServiceType())){
 				StateVariable defaultConnectionService = serv.getStateVariable("DefaultConnectionService");
-				sb.append("DefaultConnectionService: " +defaultConnectionService.getStateVariableData());
+				if(defaultConnectionService != null)
+					sb.append("DefaultConnectionService: " + toString(defaultConnectionService.getStateVariableData()));
 			}else if("urn:schemas-upnp-org:service:WANIPConnection:1".equals(serv.getServiceType())){
 				StateVariable linkStatus = serv.getStateVariable("ConnectionStatus");
 				StateVariable externalIPAddress = serv.getStateVariable("ExternalIPAddress");
 				
-				sb.append("WANIPConnection" +
-						" status:" + linkStatus.getStateVariableData() +
-						" external IP:" + externalIPAddress.getStateVariableData() + "<br>");
+				sb.append("WANIPConnection");
+				if(linkStatus != null)
+					sb.append(" status: " + toString(linkStatus.getStateVariableData()));
+				if(externalIPAddress != null)
+					sb.append(" external IP: " + toString(externalIPAddress.getStateVariableData()) + "<br>");
 			}else if("urn:schemas-upnp-org:service:WANEthernetLinkConfig:1".equals(serv.getServiceType())){
 				StateVariable linkStatus = serv.getStateVariable("EthernetLinkStatus");
 				
-				sb.append("WANEthernetLinkConfig" +
-						" status:" + linkStatus.getStateVariableData() + "<br>");
+				sb.append("WANEthernetLinkConfig");
+				if(linkStatus != null)
+					sb.append(" status: " + toString(linkStatus.getStateVariableData()) + "<br>");
 			}else if("urn:schemas-upnp-org:service:LANHostConfigManagement:1".equals(serv.getServiceType())){
 				StateVariable netmask = serv.getStateVariable("SubnetMask");
 				StateVariable dnsServers = serv.getStateVariable("DNSServers");
 
-				sb.append("LANHostConfigManagement" +
-						" subnetMask:" + netmask +
-						" dnsServers:" + dnsServers + "<br>");
+				sb.append("LANHostConfigManagement");
+				if(netmask != null)
+					sb.append(" subnetMask: " + toString(netmask.getStateVariableData()));
+				if(dnsServers != null)
+					sb.append(" dnsServers: " + toString(dnsServers.getStateVariableData()) + "<br>");
 			}else
 				sb.append("~~~~~~~ "+serv.getServiceType());
 			listActions(serv, sb);
