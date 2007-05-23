@@ -19,7 +19,6 @@ import plugins.UPnP.org.cybergarage.upnp.ServiceList;
 import plugins.UPnP.org.cybergarage.upnp.ServiceStateTable;
 import plugins.UPnP.org.cybergarage.upnp.StateVariable;
 import plugins.UPnP.org.cybergarage.upnp.device.DeviceChangeListener;
-import plugins.UPnP.org.cybergarage.upnp.xml.StateVariableData;
 import freenet.pluginmanager.DetectedIP;
 import freenet.pluginmanager.FredPlugin;
 import freenet.pluginmanager.FredPluginHTTP;
@@ -27,6 +26,8 @@ import freenet.pluginmanager.FredPluginIPDetector;
 import freenet.pluginmanager.FredPluginThreadless;
 import freenet.pluginmanager.PluginHTTPException;
 import freenet.pluginmanager.PluginRespirator;
+import freenet.support.HTMLNode;
+import freenet.support.Logger;
 import freenet.support.api.HTTPRequest;
 
 /**
@@ -40,9 +41,12 @@ import freenet.support.api.HTTPRequest;
  * @see http://www.upnp.org/
  * @see http://en.wikipedia.org/wiki/Universal_Plug_and_Play
  * 
- * TODO: add logging!
+ * TODO: Support multiple IGDs ?
+ * TODO: Advertise the node like the MDNS plugin does
+ * TODO: Implement EvenListener and react on ip-change
  */ 
 public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, DeviceChangeListener {
+	private PluginRespirator pr;
 	
 	/** some schemas */
 	private static final String ROUTER_DEVICE = "urn:schemas-upnp-org:device:InternetGatewayDevice:1";
@@ -50,9 +54,12 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	private static final String WANCON_DEVICE = "urn:schemas-upnp-org:device:WANConnectionDevice:1";
 	private static final String WAN_IP_CONNECTION = "urn:schemas-upnp-org:service:WANIPConnection:1";
 
-	private volatile Device _router;
-	private volatile Service _service;
+	private Device _router;
+	private Service _service;
+	private boolean isPortForwarded = false;
+	private boolean isDisabled = false; // We disable the plugin if more than one IGD is found
 	private final Object lock = new Object();
+	private int fnpPortNumber;
 	
 	public UPnP() {
 		super();
@@ -60,31 +67,75 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 	
 	public void runPlugin(PluginRespirator pr) {
-		start();
+		this.pr = pr;
+		this.fnpPortNumber = pr.getNode().getFNPPort();
+		super.start();
 	}
 
 	public void terminate() {
-		stop();
+		unregisterPortMapping();
+		super.stop();
 	}
 	
-	// FIXME: we use the first IGD we detect, so we have got only 1 ip to report
 	public DetectedIP[] getAddress() {
+		Logger.minor(this, "UP&P.getAddress() is called \\o/");
+		if(isDisabled) {
+			Logger.normal(this, "Plugin has been disabled previously, ignoring request.");
+			return null;
+		} else if(!isNATPresent()) {
+			Logger.normal(this, "No UP&P device found, detection of the external ip address using the plugin has failed");
+			return null;
+		}
+		
+		DetectedIP result = null;
+		final String natAddress = getNATAddress();
 		try {
-			return new DetectedIP[] { new DetectedIP(InetAddress.getByName(getNATAddress()), DetectedIP.NOT_SUPPORTED) };
+			// TODO: report a different connection type if port forwarding has succeeded?
+			result = new DetectedIP(InetAddress.getByName(natAddress), DetectedIP.NOT_SUPPORTED);
+			
+			Logger.normal(this, "Successful UP&P discovery :" + result);
+			System.out.println("Successful UP&P discovery :" + result);
+			
+			return new DetectedIP[] { result };
 		} catch (UnknownHostException e) {
+			Logger.error(this, "Caught an UnknownHostException resolving " + natAddress, e);
+			System.err.println("UP&P discovery has failed: unable to resolve " + result);
 			return null;
 		}
 	}
 	
-	public void deviceAdded(Device dev ) {
+	public void deviceAdded(Device dev) {
 		synchronized (lock) {
-			if(isNATPresent())
-				return; // We don't handle more than one IGD.
-			
-			if(!ROUTER_DEVICE.equals(dev.getDeviceType()) || !dev.isRootDevice())
+			if(isDisabled) {
+				Logger.normal(this, "Plugin has been disabled previously, ignoring new device.");
 				return;
+			} else if(!ROUTER_DEVICE.equals(dev.getDeviceType()) || !dev.isRootDevice())
+				return; // Silently ignore non-IGD devices
+			else if(isNATPresent()) {
+				Logger.error(this, "We got a second IGD on the network! the plugin doesn't handle that: let's disable it.");
+				System.err.println("The UP&P plugin has found more than one IGD on the network, as a result it will be disabled");
+				isDisabled = true;
+				
+				_router = null;
+				_service = null;
+				
+				stop();
+				return;
+			}
+			Logger.normal(this, "UP&P IGD found : " + dev.getFriendlyName());
+			System.out.println("UP&P IGD found : " + dev.getFriendlyName());
 			_router = dev;
+			
 			discoverService();
+			if(_service == null) {
+				Logger.error(this, "The IGD device we got isn't suiting our needs, let's disable the plugin");
+				System.err.println("The IGD device we got isn't suiting our needs, let's disable the plugin");
+				isDisabled = true;
+				_router = null;
+			} else
+				registerPortMapping();
+			// We have found the device we need: stop the listener thread
+			stop();
 		}
 	}
 	
@@ -104,12 +155,33 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
 					if (!current2.getDeviceType().equals(WANCON_DEVICE))
 						continue;
-
+					
 					_service = current2.getService(WAN_IP_CONNECTION);
 					return;
 				}
 			}
 		}
+	}
+	
+	public void registerPortMapping() {
+		if(isPortForwarded) {
+			Logger.error(this, "Port mapping already registered! shouldn't happen!");
+			return;
+		}
+		
+		Logger.normal(this, "Registering a port mapping for " + fnpPortNumber + "/udp");
+		isPortForwarded = addMapping("UDP", fnpPortNumber, "Freenet 0.7 FNP - " + _router.getInterfaceAddress());
+		Logger.normal(this, isPortForwarded ? "Mapping is successful!" : "Mapping has failed!");
+	}
+	
+	public void unregisterPortMapping() {
+		if(!isPortForwarded)
+			return;
+		
+		Logger.normal(this, "Unregistering the port mapping for FNP");
+		isPortForwarded = false;
+		boolean result = removeMapping("udp", fnpPortNumber);
+		Logger.normal(this, result ? "Mapping removal is successful" : "Mapping removal has failed!");
 	}
 	
 	public void deviceRemoved(Device dev ){
@@ -173,10 +245,6 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		}
 	}
 	
-	private String toString(StateVariableData data) {
-		return (data == null ? "null" : data.getValue());
-	}
-	
 	private String toString(String action, String Argument, Service serv) {
 		Action getIP = serv.getAction(action);
 		if(getIP == null || !getIP.postControlAction())
@@ -186,6 +254,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		return ret.getValue();
 	}
 	
+	// TODO: extend it! RTFM
 	private void listSubServices(Device dev, StringBuffer sb) {
 		ServiceList sl = dev.getServiceList();
 		for(int i=0; i<sl.size(); i++) {
@@ -193,59 +262,29 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			if(serv == null) continue;
 			sb.append("<div>service ("+i+") : "+serv.getServiceType()+"<br>");
 			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
-				StateVariable linkStatus = serv.getStateVariable("PhysicalLinkStatus");
-				StateVariable wanAccessType = serv.getStateVariable("WANAccessType");
-				StateVariable upstreamBW = serv.getStateVariable("Layer1UpstreamMaxBitRate");
-				StateVariable downstreamBW = serv.getStateVariable("Layer1DownstreamMaxBitRate");
-				
 				sb.append("WANCommonInterfaceConfig");
-				if(linkStatus != null)
-					sb.append(" status: " + toString(linkStatus.getStateVariableData()));
-				if(wanAccessType != null)
-					sb.append(" type: " + toString(wanAccessType.getStateVariableData()));
-				if(upstreamBW != null)
-					sb.append(" upstream: " + toString(upstreamBW.getStateVariableData()));
-				if(downstreamBW != null)
-					sb.append(" downstream: " + toString(downstreamBW.getStateVariableData()) + "<br>");
+				sb.append(" status: " + toString("GetCommonLinkProperties", "NewPhysicalLinkStatus", serv));
+				sb.append(" type: " + toString("GetCommonLinkProperties", "NewWANAccessType", serv));
+				sb.append(" upstream: " + toString("GetCommonLinkProperties", "NewLayer1UpstreamMaxBitRate", serv));
+				sb.append(" downstream: " + toString("GetCommonLinkProperties", "NewLayer1DownstreamMaxBitRate", serv) + "<br>");
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
-				StateVariable linkStatus = serv.getStateVariable("ConnectionStatus");
-				StateVariable uptime = serv.getStateVariable("Uptime");
-				StateVariable upstreamBW = serv.getStateVariable("UpstreamMaxBitRate");
-				StateVariable downstreamBW = serv.getStateVariable("DownstreamMaxBitRate");
-
 				sb.append("WANPPPConnection");
-				if(linkStatus != null)
-					sb.append(" status: " + toString(linkStatus.getStateVariableData()));
-				if(uptime != null)
-					sb.append(" uptime: " + toString(uptime.getStateVariableData()));
-				if(upstreamBW != null)
-					sb.append(" upstream: " + toString(upstreamBW.getStateVariableData()));
-				if(downstreamBW != null)
-					sb.append(" downstream: " + toString(downstreamBW.getStateVariableData()) + "<br>");
+				sb.append(" status: " + toString("GetStatusInfo", "NewConnectionStatus", serv));
+				sb.append(" type: " + toString("GetConnectionTypeInfo", "NewConnectionType", serv));
+				sb.append(" upstream: " + toString("GetLinkLayerMaxBitRates", "NewUpstreamMaxBitRate", serv));
+				sb.append(" downstream: " + toString("GetLinkLayerMaxBitRates", "NewDownstreamMaxBitRate", serv) + "<br>");
+				sb.append(" external IP: " + toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>");
 			}else if("urn:schemas-upnp-org:service:Layer3Forwarding:1".equals(serv.getServiceType())){
-				StateVariable defaultConnectionService = serv.getStateVariable("DefaultConnectionService");
-				if(defaultConnectionService != null)
-					sb.append("DefaultConnectionService: " + toString(defaultConnectionService.getStateVariableData()));
+				sb.append("Layer3Forwarding");
+				sb.append("DefaultConnectionService: " + toString("GetDefaultConnectionService", "NewDefaultConnectionService", serv));
 			}else if(WAN_IP_CONNECTION.equals(serv.getServiceType())){
 				sb.append("WANIPConnection");
 				sb.append(" status: " + toString("GetStatusInfo", "NewConnectionStatus", serv));
 				sb.append(" type: " + toString("GetConnectionTypeInfo", "NewConnectionType", serv));
 				sb.append(" external IP: " + toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>");
 			}else if("urn:schemas-upnp-org:service:WANEthernetLinkConfig:1".equals(serv.getServiceType())){
-				StateVariable linkStatus = serv.getStateVariable("EthernetLinkStatus");
-				
 				sb.append("WANEthernetLinkConfig");
-				if(linkStatus != null)
-					sb.append(" status: " + toString(linkStatus.getStateVariableData()) + "<br>");
-			}else if("urn:schemas-upnp-org:service:LANHostConfigManagement:1".equals(serv.getServiceType())){
-				StateVariable netmask = serv.getStateVariable("SubnetMask");
-				StateVariable dnsServers = serv.getStateVariable("DNSServers");
-
-				sb.append("LANHostConfigManagement");
-				if(netmask != null)
-					sb.append(" subnetMask: " + toString(netmask.getStateVariableData()));
-				if(dnsServers != null)
-					sb.append(" dnsServers: " + toString(dnsServers.getStateVariableData()) + "<br>");
+				sb.append(" status: " + toString("GetEthernetLinkStatus", "NewEthernetLinkStatus", serv) + "<br>");
 			}else
 				sb.append("~~~~~~~ "+serv.getServiceType());
 			listActions(serv, sb);
@@ -271,28 +310,96 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 	
 	public String handleHTTPGet(HTTPRequest request) throws PluginHTTPException {
-		StringBuffer sb = new StringBuffer();
-		sb.append("<html><body>");
-		
-		sb.append("<h2>Our current ip address is : " + getNATAddress() + "</h2>");
-		
-		if(_router != null)
+		if(request.isParameterSet("getDeviceCapabilities")) {
+			final StringBuffer sb = new StringBuffer();
+			sb.append("<html><head><title>UPnP report</title></head><body>");
 			listSubDev("WANDevice", _router, sb);
-		else
-			sb.append("No UPnP aware device has been found!");
+			sb.append("</body></html>");
+			return sb.toString();
+		}
+		
+		HTMLNode pageNode = pr.getPageMaker().getPageNode("UP&P plugin configuration page", false, null);
+		HTMLNode contentNode = pr.getPageMaker().getContentNode(pageNode);
+		
+		if(isDisabled) {
+			HTMLNode disabledInfobox = contentNode.addChild("div", "class", "infobox infobox-error");
+			HTMLNode disabledInfoboxHeader = disabledInfobox.addChild("div", "class", "infobox-header");
+			HTMLNode disabledInfoboxContent = disabledInfobox.addChild("div", "class", "infobox-content");
 
-		sb.append("</body></html>");
-		return sb.toString();
+			disabledInfoboxHeader.addChild("#", "UP&P plugin report");
+			disabledInfoboxContent.addChild("#", "The plugin has been disabled; Do you have more than one UP&P IGD on your LAN ?");
+			return pageNode.generate();
+		} else if(!isNATPresent()) {
+			HTMLNode notFoundInfobox = contentNode.addChild("div", "class", "infobox infobox-warning");
+			HTMLNode notFoundInfoboxHeader = notFoundInfobox.addChild("div", "class", "infobox-header");
+			HTMLNode notFoundInfoboxContent = notFoundInfobox.addChild("div", "class", "infobox-content");
+
+			notFoundInfoboxHeader.addChild("#", "UP&P plugin report");
+			notFoundInfoboxContent.addChild("#", "The plugin hasn't found any UP&P aware, compatible device on your LAN.");
+			return pageNode.generate();			
+		}
+		
+		HTMLNode foundInfobox = contentNode.addChild("div", "class", "infobox infobox-normal");
+		HTMLNode foundInfoboxHeader = foundInfobox.addChild("div", "class", "infobox-header");
+		HTMLNode foundInfoboxContent = foundInfobox.addChild("div", "class", "infobox-content");
+		
+		foundInfoboxHeader.addChild("#", "UP&P plugin report");
+		foundInfoboxContent.addChild("p", "The following device has been found : ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
+		foundInfoboxContent.addChild("p", "Our current external ip address is : " + getNATAddress());
+		if(isPortForwarded)
+			foundInfoboxContent.addChild("p", "The plugin has managed to configure the port mapping correctly!");
+				
+		return pageNode.generate();
 	}
 
-	public String handleHTTPPost(HTTPRequest request)
-			throws PluginHTTPException {
-		// TODO Auto-generated method stub
+	public String handleHTTPPost(HTTPRequest request) throws PluginHTTPException {
 		return null;
 	}
 
 	public String handleHTTPPut(HTTPRequest request) throws PluginHTTPException {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private boolean addMapping(String protocol, int port, String description) {
+		if(isDisabled || !isNATPresent())
+			return false;
+		
+		// Just in case...
+		removeMapping(protocol, port);
+		
+		Action add = _service.getAction("AddPortMapping");
+		if(add == null) {
+		    Logger.error(this, "Couldn't find AddPortMapping action!");
+		    return false;
+		}
+		    
+		
+		add.setArgumentValue("NewRemoteHost", "");
+		add.setArgumentValue("NewExternalPort", port);
+		add.setArgumentValue("NewInternalClient", _router.getInterfaceAddress());
+		add.setArgumentValue("NewInternalPort", port);
+		add.setArgumentValue("NewProtocol", protocol);
+		add.setArgumentValue("NewPortMappingDescription", description);
+		add.setArgumentValue("NewEnabled","1");
+		add.setArgumentValue("NewLeaseDuration", 0);
+		
+		return add.postControlAction();
+	}
+	
+	private boolean removeMapping(String protocol, int port) {
+		if(isDisabled || !isNATPresent())
+			return false;
+		
+		Action remove = _service.getAction("DeletePortMapping");
+		if(remove == null) {
+			 Logger.error(this, "Couldn't find DeletePortMapping action!");
+		    return false;
+	    }
+		
+		// remove.setArgumentValue("NewRemoteHost", "");
+		remove.setArgumentValue("NewExternalPort", port);
+		remove.setArgumentValue("NewProtocol", protocol);
+		
+		return remove.postControlAction();
 	}
 }
