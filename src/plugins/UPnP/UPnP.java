@@ -3,7 +3,7 @@
  * http://www.gnu.org/ for further details of the GPL. */
 package plugins.UPnP;
 
-import java.util.LinkedList;
+import java.util.Iterator;
 
 import plugins.UPnP.org.cybergarage.upnp.Action;
 import plugins.UPnP.org.cybergarage.upnp.ActionList;
@@ -16,7 +16,6 @@ import plugins.UPnP.org.cybergarage.upnp.Service;
 import plugins.UPnP.org.cybergarage.upnp.ServiceList;
 import plugins.UPnP.org.cybergarage.upnp.ServiceStateTable;
 import plugins.UPnP.org.cybergarage.upnp.StateVariable;
-import plugins.UPnP.org.cybergarage.upnp.control.QueryRequest;
 import plugins.UPnP.org.cybergarage.upnp.device.DeviceChangeListener;
 import plugins.UPnP.org.cybergarage.upnp.xml.StateVariableData;
 import freenet.pluginmanager.FredPlugin;
@@ -31,33 +30,102 @@ import freenet.support.api.HTTPRequest;
  * 
  * @author Florent Daigni&egrave;re &lt;nextgens@freenetproject.org&gt;
  *
+ *
+ * some code has been borrowed from Limewire : @see com.limegroup.gnutella.UPnPManager
+ *
  * @see http://www.upnp.org/
  * @see http://en.wikipedia.org/wiki/Universal_Plug_and_Play
  */ 
-public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, DeviceChangeListener {
-	private ControlPoint upnpControlPoint;
-	private final LinkedList igdList = new LinkedList();
+public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, DeviceChangeListener {
+	
+	/** some schemas */
+	private static final String ROUTER_DEVICE = "urn:schemas-upnp-org:device:InternetGatewayDevice:1";
+	private static final String WAN_DEVICE = "urn:schemas-upnp-org:device:WANDevice:1";
+	private static final String WANCON_DEVICE = "urn:schemas-upnp-org:device:WANConnectionDevice:1";
+	private static final String WAN_IP_CONNECTION = "urn:schemas-upnp-org:service:WANIPConnection:1";
 
+	private volatile Device _router;
+	private volatile Service _service;
+	private final Object lock = new Object();
+	
+	public UPnP() {
+		super();
+		addDeviceChangeListener(this);
+	}
+	
 	public void runPlugin(PluginRespirator pr) {
-		upnpControlPoint = new ControlPoint();
-		upnpControlPoint.addDeviceChangeListener(this);
-		upnpControlPoint.start();
+		start();
 	}
 
 	public void terminate() {
-		upnpControlPoint.stop();
+		stop();
 	}
 	
-	public void deviceAdded(Device dev ){
-		if(!"InternetGatewayDevice".equals(dev.getDeviceType()))
-			return;
-		
-		System.out.println("##################Detected a new gateway ! "+dev.getFriendlyName());
-		igdList.add(dev);
+	public void deviceAdded(Device dev ) {
+		synchronized (lock) {
+			if(isNATPresent())
+				return; // We don't handle more than one IGD.
+			
+			if(!ROUTER_DEVICE.equals(dev.getDeviceType()) || !dev.isRootDevice())
+				return;
+			_router = dev;
+			discoverService();
+		}
+	}
+	
+	/**
+	 * Traverses the structure of the router device looking for the port mapping service.
+	 */
+	private void discoverService() {
+		synchronized (lock) {
+			for (Iterator iter = _router.getDeviceList().iterator();iter.hasNext();) {
+				Device current = (Device)iter.next();
+				if (!current.getDeviceType().equals(WAN_DEVICE))
+					continue;
+
+				DeviceList l = current.getDeviceList();
+				for (int i=0;i<current.getDeviceList().size();i++) {
+					Device current2 = l.getDevice(i);
+
+					if (!current2.getDeviceType().equals(WANCON_DEVICE))
+						continue;
+
+					_service = current2.getService(WAN_IP_CONNECTION);
+					return;
+				}
+			}
+		}
 	}
 	
 	public void deviceRemoved(Device dev ){
-		igdList.remove(dev);
+		synchronized (lock) {
+			if(_router.equals(dev)) {
+				_router = null;
+				_service = null;
+			}
+		}
+	}
+	
+	/**
+	 * @return whether we are behind an UPnP-enabled NAT/router
+	 */
+	public boolean isNATPresent() {
+	    return _router != null && _service != null;
+	}
+
+	/**
+	 * @return the external address the NAT thinks we have.  Blocking.
+	 * null if we can't find it.
+	 */
+	public String getNATAddress() {
+        if (!isNATPresent())
+            return null;
+        
+        Action getIP = _service.getAction("GetExternalIPAddress");
+		if(getIP == null || !getIP.postControlAction())
+			return null;
+		
+		return ((Argument)getIP.getOutputArgumentList().getArgument("NewExternalIPAddress")).getValue();
 	}
 	
 	private void listStateTable(Service serv, StringBuffer sb) {
@@ -92,6 +160,15 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 	
 	private String toString(StateVariableData data) {
 		return (data == null ? "null" : data.getValue());
+	}
+	
+	private String toString(String action, String Argument, Service serv) {
+		Action getIP = serv.getAction(action);
+		if(getIP == null || !getIP.postControlAction())
+			return null;
+		
+		Argument ret = getIP.getOutputArgumentList().getArgument(Argument);
+		return ret.getValue();
 	}
 	
 	private void listSubServices(Device dev, StringBuffer sb) {
@@ -134,15 +211,11 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 				StateVariable defaultConnectionService = serv.getStateVariable("DefaultConnectionService");
 				if(defaultConnectionService != null)
 					sb.append("DefaultConnectionService: " + toString(defaultConnectionService.getStateVariableData()));
-			}else if("urn:schemas-upnp-org:service:WANIPConnection:1".equals(serv.getServiceType())){
-				StateVariable linkStatus = serv.getStateVariable("ConnectionStatus");
-				StateVariable externalIPAddress = serv.getStateVariable("ExternalIPAddress");
-				
+			}else if(WAN_IP_CONNECTION.equals(serv.getServiceType())){
 				sb.append("WANIPConnection");
-				if(linkStatus != null)
-					sb.append(" status: " + toString(linkStatus.getStateVariableData()));
-				if(externalIPAddress != null)
-					sb.append(" external IP: " + toString(externalIPAddress.getStateVariableData()) + "<br>");
+				sb.append(" status: " + toString("GetStatusInfo", "NewConnectionStatus", serv));
+				sb.append(" type: " + toString("GetConnectionTypeInfo", "NewConnectionType", serv));
+				sb.append(" external IP: " + toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>");
 			}else if("urn:schemas-upnp-org:service:WANEthernetLinkConfig:1".equals(serv.getServiceType())){
 				StateVariable linkStatus = serv.getStateVariable("EthernetLinkStatus");
 				
@@ -185,14 +258,13 @@ public class UPnP implements FredPluginHTTP, FredPlugin, FredPluginThreadless, D
 	public String handleHTTPGet(HTTPRequest request) throws PluginHTTPException {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<html><body>");
-		sb.append(igdList.size() + "<br>");
-		DeviceList rootDevList = upnpControlPoint.getDeviceList();
 		
-		for(int i=0; i<rootDevList.size(); i++) {
-			Device dev = rootDevList.getDevice(i);
-			if(!"urn:schemas-upnp-org:device:InternetGatewayDevice:1".equals(dev.getDeviceType())) continue;
-			listSubDev("WANDevice", dev, sb);
-		}
+		sb.append("<h2>Our current ip address is : " + getNATAddress() + "</h2>");
+		
+		if(_router != null)
+			listSubDev("WANDevice", _router, sb);
+		else
+			sb.append("No UPnP aware device has been found!");
 
 		sb.append("</body></html>");
 		return sb.toString();
