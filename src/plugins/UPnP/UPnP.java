@@ -3,6 +3,8 @@
  * http://www.gnu.org/ for further details of the GPL. */
 package plugins.UPnP;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 
 import plugins.UPnP.org.cybergarage.upnp.Action;
@@ -18,8 +20,10 @@ import plugins.UPnP.org.cybergarage.upnp.ServiceStateTable;
 import plugins.UPnP.org.cybergarage.upnp.StateVariable;
 import plugins.UPnP.org.cybergarage.upnp.device.DeviceChangeListener;
 import plugins.UPnP.org.cybergarage.upnp.xml.StateVariableData;
+import freenet.pluginmanager.DetectedIP;
 import freenet.pluginmanager.FredPlugin;
 import freenet.pluginmanager.FredPluginHTTP;
+import freenet.pluginmanager.FredPluginIPDetector;
 import freenet.pluginmanager.FredPluginThreadless;
 import freenet.pluginmanager.PluginHTTPException;
 import freenet.pluginmanager.PluginRespirator;
@@ -35,8 +39,10 @@ import freenet.support.api.HTTPRequest;
  *
  * @see http://www.upnp.org/
  * @see http://en.wikipedia.org/wiki/Universal_Plug_and_Play
+ * 
+ * TODO: add logging!
  */ 
-public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, DeviceChangeListener {
+public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, DeviceChangeListener {
 	
 	/** some schemas */
 	private static final String ROUTER_DEVICE = "urn:schemas-upnp-org:device:InternetGatewayDevice:1";
@@ -59,6 +65,15 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
 	public void terminate() {
 		stop();
+	}
+	
+	// FIXME: we use the first IGD we detect, so we have got only 1 ip to report
+	public DetectedIP[] getAddress() {
+		try {
+			return new DetectedIP[] { new DetectedIP(InetAddress.getByName(getNATAddress()), DetectedIP.NOT_SUPPORTED) };
+		} catch (UnknownHostException e) {
+			return null;
+		}
 	}
 	
 	public void deviceAdded(Device dev ) {
