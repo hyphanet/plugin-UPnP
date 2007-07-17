@@ -194,6 +194,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	
 	public void deviceRemoved(Device dev ){
 		synchronized (lock) {
+			if(_router == null) return;
 			if(_router.equals(dev)) {
 				_router = null;
 				_service = null;
