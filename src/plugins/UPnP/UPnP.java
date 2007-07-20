@@ -43,7 +43,7 @@ import freenet.support.api.HTTPRequest;
  * 
  * TODO: Support multiple IGDs ?
  * TODO: Advertise the node like the MDNS plugin does
- * TODO: Implement EvenListener and react on ip-change
+ * TODO: Implement EventListener and react on ip-change
  */ 
 public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, DeviceChangeListener {
 	private PluginRespirator pr;
