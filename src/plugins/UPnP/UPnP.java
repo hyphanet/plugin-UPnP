@@ -63,7 +63,6 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
 	private Device _router;
 	private Service _service;
-	private boolean isPortForwarded = false;
 	private boolean isDisabled = false; // We disable the plugin if more than one IGD is found
 	private final Object lock = new Object();
 	
@@ -189,6 +188,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		Logger.normal(this, "Registering a port mapping for " + port + "/" + protocol);
 		System.err.println("UPnP: Registering a port mapping for " + port + "/" + protocol);
 		int nbOfTries = 0;
+		boolean isPortForwarded = false;
 		while(nbOfTries++ < 5) {
 			isPortForwarded = addMapping("UDP", port, "Freenet 0.7 FNP - " + _router.getInterfaceAddress(), fp);
 			if(isPortForwarded)
@@ -370,12 +370,21 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		HTMLNode foundInfoboxHeader = foundInfobox.addChild("div", "class", "infobox-header");
 		HTMLNode foundInfoboxContent = foundInfobox.addChild("div", "class", "infobox-content");
 		
+		// FIXME L10n!
 		foundInfoboxHeader.addChild("#", "UP&P plugin report");
 		foundInfoboxContent.addChild("p", "The following device has been found : ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
 		foundInfoboxContent.addChild("p", "Our current external ip address is : " + getNATAddress());
-		if(isPortForwarded)
-			foundInfoboxContent.addChild("p", "The plugin has managed to configure the port mapping correctly!");
-				
+		synchronized(lock) {
+			for(Iterator i=portsToForward.iterator();i.hasNext();) {
+				ForwardPort port = (ForwardPort) i.next();
+				if(portsForwarded.contains(port)) {
+					foundInfoboxContent.addChild("p", "The "+port.name+" port "+port.portNumber+" / "+port.protocol+" has been forwarded successfully.");
+				} else {
+					foundInfoboxContent.addChild("p", "The "+port.name+" port "+port.portNumber+" / "+port.protocol+" has not been forwarded.");
+				}
+			}
+		}
+		
 		return pageNode.generate();
 	}
 
