@@ -455,7 +455,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	public void onChangePublicPorts(Set ports, ForwardPortCallback cb) {
 		Set portsToDumpNow = null;
 		Set portsToForwardNow = null;
-		System.err.println("Forwarding "+ports.size()+" ports...");
+		System.err.println("UP&P Forwarding "+ports.size()+" ports...");
 		synchronized(lock) {
 			if(forwardCallback != null && forwardCallback != cb && cb != null) {
 				Logger.error(this, "ForwardPortCallback changed from "+forwardCallback+" to "+cb+" - using new value, but this is very strange!");
