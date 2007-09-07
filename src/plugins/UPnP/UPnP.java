@@ -185,6 +185,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	
 	public boolean tryAddMapping(String protocol, int port, String description, ForwardPort fp) {
 		Logger.normal(this, "Registering a port mapping for " + port + "/" + protocol);
+		System.err.println("UPnP: Registering a port mapping for " + port + "/" + protocol);
 		int nbOfTries = 0;
 		while(nbOfTries++ < 5) {
 			isPortForwarded = addMapping("UDP", port, "Freenet 0.7 FNP - " + _router.getInterfaceAddress(), fp);
@@ -195,6 +196,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			} catch (InterruptedException e) {}
 		}
 		Logger.normal(this, (isPortForwarded ? "Mapping is successful!" : "Mapping has failed!") + " ("+ nbOfTries + " tries)");
+		System.err.println("UPnP: "+(isPortForwarded ? "Mapping is successful!" : "Mapping has failed!") + " ("+ nbOfTries + " tries)");
 		return isPortForwarded;
 	}
 	
@@ -432,6 +434,8 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		synchronized(this) {
 			portsForwarded.remove(fp);
 		}
+		
+		System.err.println("UPnP: Removed mapping for "+port+" protocol "+protocol);
 		return retval;
 	}
 
