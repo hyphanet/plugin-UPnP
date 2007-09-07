@@ -76,6 +76,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	
 	public UPnP() {
 		super();
+		portsForwarded = new HashSet();
 		addDeviceChangeListener(this);
 	}
 	
@@ -156,6 +157,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		synchronized(this) {
 			ports = portsToForward;
 		}
+		if(ports == null) return;
 		registerPorts(ports);
 	}
 
