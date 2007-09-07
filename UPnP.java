@@ -5,7 +5,10 @@ package plugins.UPnP;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import plugins.UPnP.org.cybergarage.upnp.Action;
 import plugins.UPnP.org.cybergarage.upnp.ActionList;
@@ -20,9 +23,13 @@ import plugins.UPnP.org.cybergarage.upnp.ServiceStateTable;
 import plugins.UPnP.org.cybergarage.upnp.StateVariable;
 import plugins.UPnP.org.cybergarage.upnp.device.DeviceChangeListener;
 import freenet.pluginmanager.DetectedIP;
+import freenet.pluginmanager.ForwardPort;
+import freenet.pluginmanager.ForwardPortCallback;
+import freenet.pluginmanager.ForwardPortStatus;
 import freenet.pluginmanager.FredPlugin;
 import freenet.pluginmanager.FredPluginHTTP;
 import freenet.pluginmanager.FredPluginIPDetector;
+import freenet.pluginmanager.FredPluginPortForward;
 import freenet.pluginmanager.FredPluginThreadless;
 import freenet.pluginmanager.PluginHTTPException;
 import freenet.pluginmanager.PluginRespirator;
@@ -45,7 +52,7 @@ import freenet.support.api.HTTPRequest;
  * TODO: Advertise the node like the MDNS plugin does
  * TODO: Implement EventListener and react on ip-change
  */ 
-public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, DeviceChangeListener {
+public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, FredPluginPortForward, DeviceChangeListener {
 	private PluginRespirator pr;
 	
 	/** some schemas */
@@ -59,7 +66,13 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	private boolean isPortForwarded = false;
 	private boolean isDisabled = false; // We disable the plugin if more than one IGD is found
 	private final Object lock = new Object();
-	private int fnpPortNumber;
+	
+	/** List of ports we want to forward */
+	private Set/*<ForwardPort>*/ portsToForward;
+	/** List of ports we have actually forwarded */
+	private Set/*<ForwardPort>*/ portsForwarded;
+	/** Callback to call when a forward fails or succeeds */
+	private ForwardPortCallback forwardCallback;
 	
 	public UPnP() {
 		super();
@@ -68,12 +81,11 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	
 	public void runPlugin(PluginRespirator pr) {
 		this.pr = pr;
-		this.fnpPortNumber = pr.getNode().getFNPPort();
 		super.start();
 	}
 
 	public void terminate() {
-		unregisterPortMapping();
+		unregisterPortMappings();
 		super.stop();
 	}
 	
@@ -133,12 +145,20 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				isDisabled = true;
 				_router = null;
 			} else
-				registerPortMapping();
+				registerPortMappings();
 			// We have found the device we need: stop the listener thread
 			stop();
 		}
 	}
 	
+	private void registerPortMappings() {
+		Set ports;
+		synchronized(this) {
+			ports = portsToForward;
+		}
+		registerPorts(ports);
+	}
+
 	/**
 	 * Traverses the structure of the router device looking for the port mapping service.
 	 */
@@ -163,16 +183,11 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		}
 	}
 	
-	public void registerPortMapping() {
-		if(isPortForwarded) {
-			Logger.error(this, "Port mapping already registered! shouldn't happen!");
-			return;
-		}
-		
-		Logger.normal(this, "Registering a port mapping for " + fnpPortNumber + "/udp");
+	public boolean tryAddMapping(String protocol, int port, String description, ForwardPort fp) {
+		Logger.normal(this, "Registering a port mapping for " + port + "/" + protocol);
 		int nbOfTries = 0;
 		while(nbOfTries++ < 5) {
-			isPortForwarded = addMapping("UDP", fnpPortNumber, "Freenet 0.7 FNP - " + _router.getInterfaceAddress());
+			isPortForwarded = addMapping("UDP", port, "Freenet 0.7 FNP - " + _router.getInterfaceAddress(), fp);
 			if(isPortForwarded)
 				break;
 			try {
@@ -180,16 +195,15 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			} catch (InterruptedException e) {}
 		}
 		Logger.normal(this, (isPortForwarded ? "Mapping is successful!" : "Mapping has failed!") + " ("+ nbOfTries + " tries)");
+		return isPortForwarded;
 	}
 	
-	public void unregisterPortMapping() {
-		if(!isPortForwarded)
-			return;
-		
-		Logger.normal(this, "Unregistering the port mapping for FNP");
-		isPortForwarded = false;
-		boolean result = removeMapping("udp", fnpPortNumber);
-		Logger.normal(this, result ? "Mapping removal is successful" : "Mapping removal has failed!");
+	public void unregisterPortMappings() {
+		Set ports;
+		synchronized(this) {
+			ports = portsForwarded;
+		}
+		this.unregisterPorts(ports);
 	}
 	
 	public void deviceRemoved(Device dev ){
@@ -369,12 +383,12 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		return null;
 	}
 	
-	private boolean addMapping(String protocol, int port, String description) {
-		if(isDisabled || !isNATPresent())
+	private boolean addMapping(String protocol, int port, String description, ForwardPort fp) {
+		if(isDisabled || !isNATPresent() || _router == null)
 			return false;
 		
 		// Just in case...
-		removeMapping(protocol, port);
+		removeMapping(protocol, port, fp);
 		
 		Action add = _service.getAction("AddPortMapping");
 		if(add == null) {
@@ -392,10 +406,15 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		add.setArgumentValue("NewEnabled","1");
 		add.setArgumentValue("NewLeaseDuration", 0);
 		
-		return add.postControlAction();
+		if(add.postControlAction()) {
+			synchronized(this) {
+				portsForwarded.add(fp);
+			}
+			return true;
+		} else return false;
 	}
 	
-	private boolean removeMapping(String protocol, int port) {
+	private boolean removeMapping(String protocol, int port, ForwardPort fp) {
 		if(isDisabled || !isNATPresent())
 			return false;
 		
@@ -409,6 +428,104 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		remove.setArgumentValue("NewExternalPort", port);
 		remove.setArgumentValue("NewProtocol", protocol);
 		
-		return remove.postControlAction();
+		boolean retval = remove.postControlAction();
+		synchronized(this) {
+			portsForwarded.remove(fp);
+		}
+		return retval;
+	}
+
+	public void onChangePublicPorts(Set ports, ForwardPortCallback cb) {
+		Set portsToDumpNow = null;
+		Set portsToForwardNow = null;
+		synchronized(lock) {
+			if(forwardCallback != null && forwardCallback != cb && cb != null) {
+				Logger.error(this, "ForwardPortCallback changed from "+forwardCallback+" to "+cb+" - using new value, but this is very strange!");
+			}
+			forwardCallback = cb;
+			if(portsToForward == null || portsToForward.isEmpty()) {
+				portsToForward = ports;
+				portsToForwardNow = ports;
+				portsToDumpNow = null;
+			} else if(ports == null || ports.isEmpty()) {
+				portsToDumpNow = portsToForward;
+				portsToForward = ports;
+				portsToForwardNow = null;
+			} else {
+				// Some ports to keep, some ports to dump
+				// Ports in ports but not in portsToForwardNow we must forward
+				// Ports in portsToForwardNow but not in ports we must dump
+				for(Iterator i=ports.iterator();i.hasNext();) {
+					ForwardPort port = (ForwardPort) i.next();
+					if(portsToForward.contains(port)) {
+						// We have forwarded it, and it should be forwarded, cool.
+					} else {
+						// Needs forwarding
+						if(portsToForwardNow == null) portsToForwardNow = new HashSet();
+						portsToForwardNow.add(port);
+					}
+				}
+				for(Iterator i=portsToForward.iterator();i.hasNext();) {
+					ForwardPort port = (ForwardPort) i.next();
+					if(ports.contains(port)) {
+						// Should be forwarded, has been forwarded, cool.
+					} else {
+						// Needs dropping
+						if(portsToDumpNow == null) portsToDumpNow = new HashSet();
+						portsToDumpNow.add(port);
+					}
+				}
+				portsToForward = ports;
+			}
+			if(_router == null) return; // When one is found, we will do the forwards
+		}
+		if(portsToDumpNow != null)
+			unregisterPorts(portsToDumpNow);
+		if(portsToForwardNow != null)
+			registerPorts(portsToForwardNow);
+	}
+
+	private void registerPorts(Set portsToForwardNow) {
+		for(Iterator i=portsToForwardNow.iterator();i.hasNext();) {
+			ForwardPort port = (ForwardPort) i.next();
+			String proto;
+			if(port.protocol == ForwardPort.PROTOCOL_UDP_IPV4)
+				proto = "UDP";
+			else if(port.protocol == ForwardPort.PROTOCOL_TCP_IPV4)
+				proto = "TCP";
+			else {
+				HashMap map = new HashMap();
+				map.put(port, new ForwardPortStatus(ForwardPortStatus.DEFINITE_FAILURE, "Protocol not supported", port.portNumber));
+				forwardCallback.portForwardStatus(map);
+				continue;
+			}
+			if(tryAddMapping(proto, port.portNumber, port.name, port)) {
+				HashMap map = new HashMap();
+				map.put(port, new ForwardPortStatus(ForwardPortStatus.MAYBE_SUCCESS, "Port apparently forwarded by UPnP", port.portNumber));
+				forwardCallback.portForwardStatus(map);
+				continue;
+			} else {
+				HashMap map = new HashMap();
+				map.put(port, new ForwardPortStatus(ForwardPortStatus.PROBABLE_FAILURE, "UPnP port forwarding apparently failed", port.portNumber));
+				forwardCallback.portForwardStatus(map);
+				continue;
+			}
+		}
+	}
+
+	private void unregisterPorts(Set portsToForwardNow) {
+		for(Iterator i=portsToForwardNow.iterator();i.hasNext();) {
+			ForwardPort port = (ForwardPort) i.next();
+			String proto;
+			if(port.protocol == ForwardPort.PROTOCOL_UDP_IPV4)
+				proto = "UDP";
+			else if(port.protocol == ForwardPort.PROTOCOL_TCP_IPV4)
+				proto = "TCP";
+			else {
+				// Ignore, we've already complained about it
+				continue;
+			}
+			removeMapping(proto, port.portNumber, port);
+		}
 	}
 }
