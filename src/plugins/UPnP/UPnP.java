@@ -448,7 +448,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			portsForwarded.remove(fp);
 		}
 		
-		System.err.println("UPnP: Removed mapping for "+port+" protocol "+protocol);
+		System.err.println("UPnP: Removed mapping for "+fp.name+" "+port+" / "+protocol);
 		return retval;
 	}
 
