@@ -375,12 +375,14 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		foundInfoboxContent.addChild("p", "The following device has been found : ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
 		foundInfoboxContent.addChild("p", "Our current external ip address is : " + getNATAddress());
 		synchronized(lock) {
-			for(Iterator i=portsToForward.iterator();i.hasNext();) {
-				ForwardPort port = (ForwardPort) i.next();
-				if(portsForwarded.contains(port)) {
-					foundInfoboxContent.addChild("p", "The "+port.name+" port "+port.portNumber+" / "+port.protocol+" has been forwarded successfully.");
-				} else {
-					foundInfoboxContent.addChild("p", "The "+port.name+" port "+port.portNumber+" / "+port.protocol+" has not been forwarded.");
+			if(portsToForward != null) {
+				for(Iterator i=portsToForward.iterator();i.hasNext();) {
+					ForwardPort port = (ForwardPort) i.next();
+					if(portsForwarded.contains(port)) {
+						foundInfoboxContent.addChild("p", "The "+port.name+" port "+port.portNumber+" / "+port.protocol+" has been forwarded successfully.");
+					} else {
+						foundInfoboxContent.addChild("p", "The "+port.name+" port "+port.portNumber+" / "+port.protocol+" has not been forwarded.");
+					}
 				}
 			}
 		}
@@ -453,6 +455,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	public void onChangePublicPorts(Set ports, ForwardPortCallback cb) {
 		Set portsToDumpNow = null;
 		Set portsToForwardNow = null;
+		System.err.println("Forwarding "+ports.size()+" ports...");
 		synchronized(lock) {
 			if(forwardCallback != null && forwardCallback != cb && cb != null) {
 				Logger.error(this, "ForwardPortCallback changed from "+forwardCallback+" to "+cb+" - using new value, but this is very strange!");
