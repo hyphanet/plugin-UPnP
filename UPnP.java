@@ -121,34 +121,43 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			if(isDisabled) {
 				Logger.normal(this, "Plugin has been disabled previously, ignoring new device.");
 				return;
-			} else if(!ROUTER_DEVICE.equals(dev.getDeviceType()) || !dev.isRootDevice())
+			}
+		}
+		if(!ROUTER_DEVICE.equals(dev.getDeviceType()) || !dev.isRootDevice())
 				return; // Silently ignore non-IGD devices
-			else if(isNATPresent()) {
-				Logger.error(this, "We got a second IGD on the network! the plugin doesn't handle that: let's disable it.");
-				System.err.println("The UP&P plugin has found more than one IGD on the network, as a result it will be disabled");
-				isDisabled = true;
-				
+		else if(isNATPresent()) {
+			Logger.error(this, "We got a second IGD on the network! the plugin doesn't handle that: let's disable it.");
+			System.err.println("The UP&P plugin has found more than one IGD on the network, as a result it will be disabled");
+			isDisabled = true;
+			
+			synchronized(lock) {
 				_router = null;
 				_service = null;
-				
-				stop();
-				return;
 			}
-			Logger.normal(this, "UP&P IGD found : " + dev.getFriendlyName());
-			System.out.println("UP&P IGD found : " + dev.getFriendlyName());
-			_router = dev;
 			
-			discoverService();
+			stop();
+			return;
+		}
+		
+		Logger.normal(this, "UP&P IGD found : " + dev.getFriendlyName());
+		System.out.println("UP&P IGD found : " + dev.getFriendlyName());
+		synchronized(lock) {
+			_router = dev;
+		}
+		
+		discoverService();
+		// We have found the device we need: stop the listener thread
+		stop();
+		synchronized(lock) {
 			if(_service == null) {
 				Logger.error(this, "The IGD device we got isn't suiting our needs, let's disable the plugin");
 				System.err.println("The IGD device we got isn't suiting our needs, let's disable the plugin");
 				isDisabled = true;
 				_router = null;
-			} else
-				registerPortMappings();
-			// We have found the device we need: stop the listener thread
-			stop();
+				return;
+			}
 		}
+		registerPortMappings();
 	}
 	
 	private void registerPortMappings() {
