@@ -153,7 +153,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	
 	private void registerPortMappings() {
 		Set ports;
-		synchronized(this) {
+		synchronized(lock) {
 			ports = portsToForward;
 		}
 		if(ports == null) return;
@@ -204,7 +204,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	
 	public void unregisterPortMappings() {
 		Set ports;
-		synchronized(this) {
+		synchronized(lock) {
 			ports = portsForwarded;
 		}
 		this.unregisterPorts(ports);
@@ -422,7 +422,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		add.setArgumentValue("NewLeaseDuration", 0);
 		
 		if(add.postControlAction()) {
-			synchronized(this) {
+			synchronized(lock) {
 				portsForwarded.add(fp);
 			}
 			return true;
@@ -444,7 +444,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		remove.setArgumentValue("NewProtocol", protocol);
 		
 		boolean retval = remove.postControlAction();
-		synchronized(this) {
+		synchronized(lock) {
 			portsForwarded.remove(fp);
 		}
 		
