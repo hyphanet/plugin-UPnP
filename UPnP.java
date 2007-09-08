@@ -403,7 +403,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			return false;
 		
 		// Just in case...
-		removeMapping(protocol, port, fp);
+		removeMapping(protocol, port, fp, true);
 		
 		Action add = _service.getAction("AddPortMapping");
 		if(add == null) {
@@ -429,7 +429,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		} else return false;
 	}
 	
-	private boolean removeMapping(String protocol, int port, ForwardPort fp) {
+	private boolean removeMapping(String protocol, int port, ForwardPort fp, boolean noLog) {
 		if(isDisabled || !isNATPresent())
 			return false;
 		
@@ -448,7 +448,8 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			portsForwarded.remove(fp);
 		}
 		
-		System.err.println("UPnP: Removed mapping for "+fp.name+" "+port+" / "+protocol);
+		if(!noLog)
+			System.err.println("UPnP: Removed mapping for "+fp.name+" "+port+" / "+protocol);
 		return retval;
 	}
 
@@ -543,7 +544,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				// Ignore, we've already complained about it
 				continue;
 			}
-			removeMapping(proto, port.portNumber, port);
+			removeMapping(proto, port.portNumber, port, false);
 		}
 	}
 }
