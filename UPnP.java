@@ -190,7 +190,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		int nbOfTries = 0;
 		boolean isPortForwarded = false;
 		while(nbOfTries++ < 5) {
-			isPortForwarded = addMapping("UDP", port, "Freenet 0.7 FNP - " + _router.getInterfaceAddress(), fp);
+			isPortForwarded = addMapping(protocol, port, "Freenet 0.7 " + description, fp);
 			if(isPortForwarded)
 				break;
 			try {
