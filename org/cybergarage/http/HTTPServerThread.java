@@ -30,6 +30,7 @@ public class HTTPServerThread extends Thread
 	{
 		this.httpServer = httpServer;
 		this.sock = sock;
+		this.setDaemon(true);
 	}
 
 	////////////////////////////////////////////////

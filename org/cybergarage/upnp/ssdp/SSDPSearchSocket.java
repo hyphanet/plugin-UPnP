@@ -111,6 +111,7 @@ public class SSDPSearchSocket extends HTTPMUSocket implements Runnable
 	public void start()
 	{
 		deviceSearchThread = new Thread(this);
+		deviceSearchThread.setDaemon(true);
 		deviceSearchThread.start();
 	}
 	
