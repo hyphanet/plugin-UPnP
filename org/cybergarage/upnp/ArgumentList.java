@@ -23,6 +23,7 @@ public class ArgumentList extends Vector
 	//	Constants
 	////////////////////////////////////////////////
 	
+	private static final long serialVersionUID = -5412792105767389170L;
 	public final static String ELEM_NAME = "argumentList";
 
 	////////////////////////////////////////////////

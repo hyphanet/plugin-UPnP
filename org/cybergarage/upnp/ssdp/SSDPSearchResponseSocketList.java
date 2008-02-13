@@ -29,6 +29,8 @@ public class SSDPSearchResponseSocketList extends Vector
 	//	Constructor
 	////////////////////////////////////////////////
 	
+	private static final long serialVersionUID = 4509857798038125744L;
+
 	public SSDPSearchResponseSocketList() 
 	{
 	}

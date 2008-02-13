@@ -23,6 +23,7 @@ public class DeviceList extends Vector
 	//	Constants
 	////////////////////////////////////////////////
 	
+	private static final long serialVersionUID = 3773784061607435126L;
 	public final static String ELEM_NAME = "deviceList";
 
 	////////////////////////////////////////////////

@@ -27,6 +27,8 @@ public class SSDPNotifySocketList extends Vector
 	//	Constructor
 	////////////////////////////////////////////////
 	
+	private static final long serialVersionUID = -7066290881503106399L;
+
 	public SSDPNotifySocketList() 
 	{
 	}

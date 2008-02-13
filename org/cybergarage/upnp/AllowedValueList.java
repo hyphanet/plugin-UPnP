@@ -25,6 +25,7 @@ public class AllowedValueList extends Vector
 	//	Constants
 	////////////////////////////////////////////////
 	
+	private static final long serialVersionUID = 5740394642751180992L;
 	public final static String ELEM_NAME = "allowedValueList";
 
 
