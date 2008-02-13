@@ -154,19 +154,6 @@ public class NotifyRequest extends SOAPRequest
 		return propSetNode;
 	}
 	
-	private Node getVariableNode()
-	{
-		Node rootNode = getEnvelopeNode();
-		if (rootNode == null)
-			return null;
-		if (rootNode.hasNodes() == false)
-			return null;
-		Node propNode = rootNode.getNode(0);
-		if (propNode.hasNodes() == false)
-			return null;
-		return propNode.getNode(0);
-	}
-
 	// Thanks for Giordano Sassaroli <sassarol@cefriel.it> (09/08/03)
 	private Property getProperty(Node varNode) 
 	{

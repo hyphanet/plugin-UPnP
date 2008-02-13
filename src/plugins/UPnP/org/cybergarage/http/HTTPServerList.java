@@ -25,6 +25,8 @@ public class HTTPServerList extends Vector
 	//	Constructor
 	////////////////////////////////////////////////
 	
+	private static final long serialVersionUID = 2379889735659369065L;
+
 	public HTTPServerList() 
 	{
 	}

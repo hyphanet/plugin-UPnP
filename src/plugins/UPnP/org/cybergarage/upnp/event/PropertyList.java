@@ -23,6 +23,7 @@ public class PropertyList extends Vector
 	//	Constants
 	////////////////////////////////////////////////
 	
+	private static final long serialVersionUID = 8718064210738306226L;
 	public final static String ELEM_NAME = "PropertyList";
 
 	////////////////////////////////////////////////

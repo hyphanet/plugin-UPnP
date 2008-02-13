@@ -19,6 +19,8 @@ import java.util.*;
 
 public class ParameterList extends Vector 
 {
+	private static final long serialVersionUID = -6026765325018137641L;
+
 	public ParameterList() 
 	{
 	}
