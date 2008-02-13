@@ -239,7 +239,6 @@ public class StateVariable extends NodeData
 		Node valueListNode = getStateVariableNode().getNode(AllowedValueList.ELEM_NAME);
 		if (valueListNode == null)
 			return valueList;
-		Node serviceNode = getServiceNode();
 		int nNode = valueListNode.getNNodes();
 		for (int n=0; n<nNode; n++) {
 			Node node = valueListNode.getNode(n);

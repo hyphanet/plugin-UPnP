@@ -105,7 +105,7 @@ public class HTTP
 	public static final boolean isAbsoluteURL(String urlStr)
 	{
 		try {
-			URL url = new URL(urlStr);
+			new URL(urlStr);
 			return true;
 		}
 		catch (Exception e) {

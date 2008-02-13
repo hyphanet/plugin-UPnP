@@ -30,12 +30,6 @@ import plugins.UPnP.org.cybergarage.upnp.device.*;
 
 public class SSDPSearchSocket extends HTTPMUSocket implements Runnable
 {
-	private boolean useIPv6Address;
-	
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-
 	public SSDPSearchSocket()
 	{
 	}
@@ -52,10 +46,8 @@ public class SSDPSearchSocket extends HTTPMUSocket implements Runnable
 	public boolean open(String bindAddr)
 	{
 		String addr = SSDP.ADDRESS;
-		useIPv6Address = false;
 		if (HostInterface.isIPv6Address(bindAddr) == true) {
 			addr = SSDP.getIPv6Address();
-			useIPv6Address = true;
 		}
 		return open(addr, SSDP.PORT, bindAddr);
 	}

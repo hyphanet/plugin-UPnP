@@ -1533,7 +1533,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
 	{
 		String callback = subReq.getCallback();
 		try {
-			URL url = new URL(callback);
+			new URL(callback);
 		}
 		catch (Exception e) {
 			upnpBadSubscriptionRecieved(subReq, HTTPStatus.PRECONDITION_FAILED);
