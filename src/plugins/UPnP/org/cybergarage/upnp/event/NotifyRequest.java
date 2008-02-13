@@ -115,7 +115,6 @@ public class NotifyRequest extends SOAPRequest
 
 	public boolean setRequest(Subscriber sub, String varName, String value)
 	{
-		String callback = sub.getDeliveryURL();
 		String sid = sub.getSID();
 		long notifyCnt = sub.getNotifyCount();
 		String host = sub.getDeliveryHost();

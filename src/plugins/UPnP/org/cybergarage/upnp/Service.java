@@ -321,7 +321,6 @@ public class Service
 
 	private Node getSCPDNode()
 	{
-		Node serviceNode = getServiceNode();
 		ServiceData data = getServiceData();
 		Node scpdNode = data.getSCPDNode();
 		if (scpdNode != null)
@@ -632,7 +631,6 @@ public class Service
 		
 		String host = sub.getDeliveryHost();
 		int port = sub.getDeliveryPort();
-		String bindAddr = sub.getInterfaceAddress();
 		
 		NotifyRequest notifyReq = new NotifyRequest();
 		notifyReq.setRequest(sub, varName, value);

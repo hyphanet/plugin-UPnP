@@ -167,7 +167,6 @@ public class HTTPRequest extends HTTPPacket
 		String uri = getURI();
 		if (uri == null)
 			return paramList;
-		int uriLen = uri.length();
 		int paramIdx = uri.indexOf('?');
 		if (paramIdx < 0)
 			return paramList;
