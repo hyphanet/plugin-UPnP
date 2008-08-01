@@ -60,6 +60,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	private static final String WAN_DEVICE = "urn:schemas-upnp-org:device:WANDevice:1";
 	private static final String WANCON_DEVICE = "urn:schemas-upnp-org:device:WANConnectionDevice:1";
 	private static final String WAN_IP_CONNECTION = "urn:schemas-upnp-org:service:WANIPConnection:1";
+	private static final String WAN_PPP_CONNECTION = "urn:schemas-upnp-org:service:WANPPPConnection:1";
 
 	private Device _router;
 	private Service _service;
@@ -182,11 +183,17 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				DeviceList l = current.getDeviceList();
 				for (int i=0;i<current.getDeviceList().size();i++) {
 					Device current2 = l.getDevice(i);
-
 					if (!current2.getDeviceType().equals(WANCON_DEVICE))
 						continue;
 					
-					_service = current2.getService(WAN_IP_CONNECTION);
+					_service = current2.getService(WAN_PPP_CONNECTION);
+					if(_service == null) {
+						Logger.normal(this, _router.getFriendlyName()+ " doesn't seems to be using PPP; we won't be able to extract bandwidth-related informations out of it.");
+						_service = current2.getService(WAN_IP_CONNECTION);
+						if(_service == null)
+							Logger.error(this, _router.getFriendlyName()+ " doesn't export WAN_IP_CONNECTION either: we won't be able to use it!");
+					}
+					
 					return;
 				}
 			}
@@ -241,14 +248,42 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	 * null if we can't find it.
 	 */
 	public String getNATAddress() {
-        if (!isNATPresent())
-            return null;
-        
-        Action getIP = _service.getAction("GetExternalIPAddress");
+		if(!isNATPresent())
+			return null;
+
+		Action getIP = _service.getAction("GetExternalIPAddress");
 		if(getIP == null || !getIP.postControlAction())
 			return null;
-		
-		return ((Argument)getIP.getOutputArgumentList().getArgument("NewExternalIPAddress")).getValue();
+
+		return (getIP.getOutputArgumentList().getArgument("NewExternalIPAddress")).getValue();
+	}
+
+	/**
+	 * @return the reported upstream bit rate in bits per second. -1 if it's not available. Blocking.
+	 */
+	public int getUpstramMaxBitRate() {
+		if(!isNATPresent())
+			return -1;
+
+		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
+		if(getIP == null || !getIP.postControlAction())
+			return -1;
+
+		return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+	}
+	
+	/**
+	 * @return the reported downstream bit rate in bits per second. -1 if it's not available. Blocking.
+	 */
+	public int getDownstreamMaxBitRate() {
+		if(!isNATPresent())
+			return -1;
+
+		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
+		if(getIP == null || !getIP.postControlAction())
+			return -1;
+
+		return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
 	}
 	
 	private void listStateTable(Service serv, StringBuffer sb) {
@@ -383,6 +418,12 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		foundInfoboxHeader.addChild("#", "UP&P plugin report");
 		foundInfoboxContent.addChild("p", "The following device has been found : ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
 		foundInfoboxContent.addChild("p", "Our current external ip address is : " + getNATAddress());
+		int downstreamMaxBitRate = getDownstreamMaxBitRate();
+		int upstreamMaxBitRate = getUpstramMaxBitRate();
+		if(downstreamMaxBitRate > 0)
+			foundInfoboxContent.addChild("p", "Our reported max downstream bit rate is : " + getDownstreamMaxBitRate()+ " bits/sec");
+		if(upstreamMaxBitRate > 0)
+			foundInfoboxContent.addChild("p", "Our reported max upstream bit rate is : " + getUpstramMaxBitRate()+ " bits/sec");
 		synchronized(lock) {
 			if(portsToForward != null) {
 				for(Iterator i=portsToForward.iterator();i.hasNext();) {
