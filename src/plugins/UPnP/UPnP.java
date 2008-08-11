@@ -52,7 +52,7 @@ import freenet.support.api.HTTPRequest;
  * TODO: Advertise the node like the MDNS plugin does
  * TODO: Implement EventListener and react on ip-change
  */ 
-public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, FredPluginPortForward, DeviceChangeListener {
+public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, FredPluginPortForward, FredPluginBandwidthIndicator, DeviceChangeListener {
 	private PluginRespirator pr;
 	
 	/** some schemas */
