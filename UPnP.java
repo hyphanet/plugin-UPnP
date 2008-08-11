@@ -28,6 +28,7 @@ import freenet.pluginmanager.ForwardPortCallback;
 import freenet.pluginmanager.ForwardPortStatus;
 import freenet.pluginmanager.FredPlugin;
 import freenet.pluginmanager.FredPluginHTTP;
+import freenet.pluginmanager.FredPluginBandwidthIndicator;
 import freenet.pluginmanager.FredPluginIPDetector;
 import freenet.pluginmanager.FredPluginPortForward;
 import freenet.pluginmanager.FredPluginThreadless;
