@@ -601,6 +601,6 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 
 	public String getVersion() {
-		return Version.getVersion() + " " + Version.getSvnRevision()
+		return Version.getVersion() + " " + Version.getSvnRevision();
 	}
 }
