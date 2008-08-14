@@ -4,9 +4,15 @@
 package plugins.UPnP;
 
 public class Version {
-        private static final String svnRevision = "@custom@";
+        public static final String svnRevision = "@custom@";
+	public static final short MAJOR = 1;
+	public static final short MINOR = 0;
         
-        static String getSvnRevision() {
+	public static String getVersion() {
+		return (MAJOR + "." + MINOR);
+	}
+	
+        public static String getSvnRevision() {
                 return svnRevision;
         }
 }
