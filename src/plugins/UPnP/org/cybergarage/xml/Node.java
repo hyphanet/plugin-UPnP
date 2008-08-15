@@ -111,7 +111,7 @@ public class Node
 	//	value
 	////////////////////////////////////////////////
 
-	private String value = new String(); 
+	private String value = "";
 	
 	public void setValue(String value) 
 	{
@@ -120,7 +120,7 @@ public class Node
 
 	public void setValue(int value) 
 	{
-		setValue(Integer.toString(value));
+		setValue(value);
 	}
 
 	public String getValue() 
