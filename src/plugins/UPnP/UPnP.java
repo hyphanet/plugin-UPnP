@@ -598,4 +598,27 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	public String getVersion() {
 		return Version.getVersion() + " " + Version.getSvnRevision();
 	}
+	
+	public static void main(String[] args) throws Exception {
+		UPnP upnp = new UPnP();
+		ControlPoint cp = new ControlPoint();
+		System.out.println("Searching for up&p devices:");
+		cp.start();
+		cp.search();
+		while(true) {
+			DeviceList list = cp.getDeviceList();
+			System.out.println("Found " + list.size() + " devices!");
+			StringBuffer sb = new StringBuffer();
+			Iterator<Device> it = list.iterator();
+			while(it.hasNext()) {
+				Device device = it.next();
+				upnp.listSubDev(device.toString(), device, sb);
+				System.out.println("Here is the listing for " + device.toString() + " :");
+				System.out.println(sb.toString());
+				sb = new StringBuffer();
+			}
+			System.out.println("End");
+			Thread.sleep(2000);
+		}
+	}
 }
