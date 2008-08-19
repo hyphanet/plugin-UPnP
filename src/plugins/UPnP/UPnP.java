@@ -70,15 +70,15 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	private final Object lock = new Object();
 	
 	/** List of ports we want to forward */
-	private Set/*<ForwardPort>*/ portsToForward;
+	private Set<ForwardPort> portsToForward;
 	/** List of ports we have actually forwarded */
-	private Set/*<ForwardPort>*/ portsForwarded;
+	private Set<ForwardPort> portsForwarded;
 	/** Callback to call when a forward fails or succeeds */
 	private ForwardPortCallback forwardCallback;
 	
 	public UPnP() {
 		super();
-		portsForwarded = new HashSet();
+		portsForwarded = new HashSet<ForwardPort>();
 		addDeviceChangeListener(this);
 	}
 	
@@ -428,8 +428,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			foundInfoboxContent.addChild("p", "Our reported max upstream bit rate is : " + getUpstramMaxBitRate()+ " bits/sec");
 		synchronized(lock) {
 			if(portsToForward != null) {
-				for(Iterator i=portsToForward.iterator();i.hasNext();) {
-					ForwardPort port = (ForwardPort) i.next();
+				for(ForwardPort port : portsToForward) {
 					if(portsForwarded.contains(port)) {
 						foundInfoboxContent.addChild("p", "The "+port.name+" port "+port.portNumber+" / "+port.protocol+" has been forwarded successfully.");
 					} else {
@@ -505,9 +504,9 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		return retval;
 	}
 
-	public void onChangePublicPorts(Set ports, ForwardPortCallback cb) {
-		Set portsToDumpNow = null;
-		Set portsToForwardNow = null;
+	public void onChangePublicPorts(Set<ForwardPort> ports, ForwardPortCallback cb) {
+		Set<ForwardPort> portsToDumpNow = null;
+		Set<ForwardPort> portsToForwardNow = null;
 		System.err.println("UP&P Forwarding "+ports.size()+" ports...");
 		synchronized(lock) {
 			if(forwardCallback != null && forwardCallback != cb && cb != null) {
@@ -526,23 +525,21 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				// Some ports to keep, some ports to dump
 				// Ports in ports but not in portsToForwardNow we must forward
 				// Ports in portsToForwardNow but not in ports we must dump
-				for(Iterator i=ports.iterator();i.hasNext();) {
-					ForwardPort port = (ForwardPort) i.next();
+				for(ForwardPort port: ports) {
 					if(portsToForward.contains(port)) {
 						// We have forwarded it, and it should be forwarded, cool.
 					} else {
 						// Needs forwarding
-						if(portsToForwardNow == null) portsToForwardNow = new HashSet();
+						if(portsToForwardNow == null) portsToForwardNow = new HashSet<ForwardPort>();
 						portsToForwardNow.add(port);
 					}
 				}
-				for(Iterator i=portsToForward.iterator();i.hasNext();) {
-					ForwardPort port = (ForwardPort) i.next();
+				for(ForwardPort port : portsToForward) {
 					if(ports.contains(port)) {
 						// Should be forwarded, has been forwarded, cool.
 					} else {
 						// Needs dropping
-						if(portsToDumpNow == null) portsToDumpNow = new HashSet();
+						if(portsToDumpNow == null) portsToDumpNow = new HashSet<ForwardPort>();
 						portsToDumpNow.add(port);
 					}
 				}
@@ -556,27 +553,26 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			registerPorts(portsToForwardNow);
 	}
 
-	private void registerPorts(Set portsToForwardNow) {
-		for(Iterator i=portsToForwardNow.iterator();i.hasNext();) {
-			ForwardPort port = (ForwardPort) i.next();
+	private void registerPorts(Set<ForwardPort> portsToForwardNow) {
+		for(ForwardPort port : portsToForwardNow) {
 			String proto;
 			if(port.protocol == ForwardPort.PROTOCOL_UDP_IPV4)
 				proto = "UDP";
 			else if(port.protocol == ForwardPort.PROTOCOL_TCP_IPV4)
 				proto = "TCP";
 			else {
-				HashMap map = new HashMap();
+				HashMap<ForwardPort, ForwardPortStatus> map = new HashMap<ForwardPort, ForwardPortStatus>();
 				map.put(port, new ForwardPortStatus(ForwardPortStatus.DEFINITE_FAILURE, "Protocol not supported", port.portNumber));
 				forwardCallback.portForwardStatus(map);
 				continue;
 			}
 			if(tryAddMapping(proto, port.portNumber, port.name, port)) {
-				HashMap map = new HashMap();
+				HashMap<ForwardPort, ForwardPortStatus> map = new HashMap<ForwardPort, ForwardPortStatus>();
 				map.put(port, new ForwardPortStatus(ForwardPortStatus.MAYBE_SUCCESS, "Port apparently forwarded by UPnP", port.portNumber));
 				forwardCallback.portForwardStatus(map);
 				continue;
 			} else {
-				HashMap map = new HashMap();
+				HashMap<ForwardPort, ForwardPortStatus> map = new HashMap<ForwardPort, ForwardPortStatus>();
 				map.put(port, new ForwardPortStatus(ForwardPortStatus.PROBABLE_FAILURE, "UPnP port forwarding apparently failed", port.portNumber));
 				forwardCallback.portForwardStatus(map);
 				continue;
@@ -584,9 +580,8 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		}
 	}
 
-	private void unregisterPorts(Set portsToForwardNow) {
-		for(Iterator i=portsToForwardNow.iterator();i.hasNext();) {
-			ForwardPort port = (ForwardPort) i.next();
+	private void unregisterPorts(Set<ForwardPort> portsToForwardNow) {
+		for(ForwardPort port : portsToForwardNow) {
 			String proto;
 			if(port.protocol == ForwardPort.PROTOCOL_UDP_IPV4)
 				proto = "UDP";
