@@ -38,6 +38,7 @@ import freenet.pluginmanager.PluginRespirator;
 import freenet.support.HTMLNode;
 import freenet.support.Logger;
 import freenet.support.api.HTTPRequest;
+import freenet.support.transport.ip.IPUtil;
 
 /**
  * This plugin implements UP&P support on a Freenet node.
@@ -68,6 +69,8 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	private Service _service;
 	private boolean isDisabled = false; // We disable the plugin if more than one IGD is found
 	private final Object lock = new Object();
+	// FIXME: detect it for real and deal with it! @see #2524
+	private volatile boolean thinksWeAreDoubleNatted = false;
 	
 	/** List of ports we want to forward */
 	private Set<ForwardPort> portsToForward;
@@ -105,8 +108,14 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		DetectedIP result = null;
 		final String natAddress = getNATAddress();
 		try {
-			// TODO: report a different connection type if port forwarding has succeeded?
-			result = new DetectedIP(InetAddress.getByName(natAddress), DetectedIP.NOT_SUPPORTED);
+			InetAddress detectedIP = InetAddress.getByName(natAddress);
+			short status = DetectedIP.NOT_SUPPORTED;
+			thinksWeAreDoubleNatted = !IPUtil.isValidAddress(detectedIP, false);
+			// If we have forwarded a port AND we don't have a private address
+			if((portsForwarded.size() > 1) && (!thinksWeAreDoubleNatted))
+				status = DetectedIP.FULL_INTERNET;
+			
+			result = new DetectedIP(detectedIP, status);
 			
 			Logger.normal(this, "Successful UP&P discovery :" + result);
 			System.out.println("Successful UP&P discovery :" + result);
@@ -264,7 +273,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	 * @return the reported upstream bit rate in bits per second. -1 if it's not available. Blocking.
 	 */
 	public int getUpstramMaxBitRate() {
-		if(!isNATPresent())
+		if(!isNATPresent() || thinksWeAreDoubleNatted)
 			return -1;
 
 		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
@@ -278,7 +287,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	 * @return the reported downstream bit rate in bits per second. -1 if it's not available. Blocking.
 	 */
 	public int getDownstreamMaxBitRate() {
-		if(!isNATPresent())
+		if(!isNATPresent() || thinksWeAreDoubleNatted)
 			return -1;
 
 		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
