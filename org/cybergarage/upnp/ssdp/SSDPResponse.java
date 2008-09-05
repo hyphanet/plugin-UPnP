@@ -114,7 +114,7 @@ public class SSDPResponse extends HTTPResponse
 	
 	public String getHeader()
 	{
-		StringBuffer str = new StringBuffer();
+		StringBuilder str = new StringBuilder();
 	
 		str.append(getStatusLineString());
 		str.append(getHeaderString());

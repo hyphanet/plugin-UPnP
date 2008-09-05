@@ -296,7 +296,7 @@ public class HTTPRequest extends HTTPPacket
 	
 	public String getHeader()
 	{
-		StringBuffer str = new StringBuffer();
+		StringBuilder str = new StringBuilder();
 		
 		str.append(getFirstLineString());
 		
@@ -479,7 +479,7 @@ public class HTTPRequest extends HTTPPacket
 	
 	public String toString()
 	{
-		StringBuffer str = new StringBuffer();
+		StringBuilder str = new StringBuilder();
 
 		str.append(getHeader());
 		str.append(HTTP.CRLF);
