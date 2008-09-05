@@ -28,7 +28,7 @@ public class XML
 	
 	private final static String escapeXMLChars(String input, boolean quote) 
 	{
-		StringBuffer out = new StringBuffer();
+		StringBuilder out = new StringBuilder();
 		if (input == null)
 			return null;
 		int oldsize=input.length();

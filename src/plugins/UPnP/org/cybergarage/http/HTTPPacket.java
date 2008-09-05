@@ -191,7 +191,7 @@ public class HTTPPacket
 			else
 				contentLen = getContentLength();
 						
-			StringBuffer contentBuf = new StringBuffer();
+			StringBuilder contentBuf = new StringBuilder();
 			
 			while (0 < contentLen) {
 				int chunkSize = HTTP.getChunkSize();
@@ -464,7 +464,7 @@ public class HTTPPacket
 	
 	public String getHeaderString()
 	{
-		StringBuffer str = new StringBuffer();
+		StringBuilder str = new StringBuilder();
 	
 		int nHeaders = getNHeaders();
 		for (int n=0; n<nHeaders; n++) {

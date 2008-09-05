@@ -84,7 +84,7 @@ public class HTTPResponse extends HTTPPacket
 	
 	public String getHeader()
 	{
-		StringBuffer str = new StringBuffer();
+		StringBuilder str = new StringBuilder();
 	
 		str.append(getStatusLineString());
 		str.append(getHeaderString());
@@ -98,7 +98,7 @@ public class HTTPResponse extends HTTPPacket
 	
 	public String toString()
 	{
-		StringBuffer str = new StringBuffer();
+		StringBuilder str = new StringBuilder();
 
 		str.append(getStatusLineString());
 		str.append(getHeaderString());

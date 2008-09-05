@@ -297,7 +297,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
 	}
 	
-	private void listStateTable(Service serv, StringBuffer sb) {
+	private void listStateTable(Service serv, StringBuilder sb) {
 		ServiceStateTable table = serv.getServiceStateTable();
 		sb.append("<div><small>");
 		for(int i=0; i<table.size(); i++) {
@@ -307,7 +307,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		sb.append("</small></div>");
 	}
 
-	private void listActionsArguments(Action action, StringBuffer sb) {
+	private void listActionsArguments(Action action, StringBuilder sb) {
 		ArgumentList ar = action.getArgumentList();
 		for(int i=0; i<ar.size(); i++) {
 			Argument argument = ar.getArgument(i);
@@ -316,7 +316,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		}
 	}
 	
-	private void listActions(Service service, StringBuffer sb) {
+	private void listActions(Service service, StringBuilder sb) {
 		ActionList al = service.getActionList();
 		for(int i=0; i<al.size(); i++) {
 			Action action = al.getAction(i);
@@ -337,7 +337,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 	
 	// TODO: extend it! RTFM
-	private void listSubServices(Device dev, StringBuffer sb) {
+	private void listSubServices(Device dev, StringBuilder sb) {
 		ServiceList sl = dev.getServiceList();
 		for(int i=0; i<sl.size(); i++) {
 			Service serv = sl.getService(i);
@@ -375,7 +375,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		}
 	}
 	
-	private void listSubDev(String prefix, Device dev, StringBuffer sb){
+	private void listSubDev(String prefix, Device dev, StringBuilder sb){
 		sb.append("<div><p>Device : "+dev.getFriendlyName()+" - "+ dev.getDeviceType()+"<br>");
 		listSubServices(dev, sb);
 		
@@ -393,7 +393,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	
 	public String handleHTTPGet(HTTPRequest request) throws PluginHTTPException {
 		if(request.isParameterSet("getDeviceCapabilities")) {
-			final StringBuffer sb = new StringBuffer();
+			final StringBuilder sb = new StringBuilder();
 			sb.append("<html><head><title>UPnP report</title></head><body>");
 			listSubDev("WANDevice", _router, sb);
 			sb.append("</body></html>");
@@ -617,14 +617,14 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		while(true) {
 			DeviceList list = cp.getDeviceList();
 			System.out.println("Found " + list.size() + " devices!");
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			Iterator<Device> it = list.iterator();
 			while(it.hasNext()) {
 				Device device = it.next();
 				upnp.listSubDev(device.toString(), device, sb);
 				System.out.println("Here is the listing for " + device.toString() + " :");
 				System.out.println(sb.toString());
-				sb = new StringBuffer();
+				sb = new StringBuilder();
 			}
 			System.out.println("End");
 			Thread.sleep(2000);
