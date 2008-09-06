@@ -11,7 +11,7 @@
 *	11/26/03
 *		- first revision.
 *	03/30/05
-*		- Change parse(String) to use StringBuilderInputStream instead of URL.
+*		- Change parse(String) to use StringBufferInputStream instead of URL.
 *
 ******************************************************************/
 
@@ -68,7 +68,7 @@ public abstract class Parser
 		if (httpRes.isSuccessful() == false)
 			throw new ParserException(locationURL.toString());
 		String content = new String(httpRes.getContent());
-		StringBuilderInputStream strBuf = new StringBuilderInputStream(content);
+		StringBufferInputStream strBuf = new StringBufferInputStream(content);
 		return parse(strBuf);
 		*/
 	}
@@ -97,7 +97,7 @@ public abstract class Parser
 	public Node parse(String descr) throws ParserException
 	{
 		try {
-			StringBuilderInputStream decrIn = new StringBuilderInputStream(descr);
+			StringBufferInputStream decrIn = new StringBufferInputStream(descr);
 			Node root = parse(decrIn);
 			return root;
 		} catch (Exception e) {
