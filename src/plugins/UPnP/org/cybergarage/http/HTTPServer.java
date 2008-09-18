@@ -190,7 +190,7 @@ public class HTTPServer implements Runnable
 	
 	public boolean start()
 	{
-		httpServerThread = new Thread(this);
+		httpServerThread = new Thread(this, "UPnP-HTTPServer");
 		httpServerThread.start();
 		return true;
 	}
