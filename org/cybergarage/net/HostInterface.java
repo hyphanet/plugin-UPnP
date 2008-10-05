@@ -143,9 +143,7 @@ public class HostInterface
 	{
 		try {
 			InetAddress addr = InetAddress.getByName(host);
-			if (addr instanceof Inet6Address)
-				return true;
-			return false;
+			return (addr instanceof Inet6Address);
 		}
 		catch (Exception e) {}
 		return false;
@@ -155,9 +153,7 @@ public class HostInterface
 	{
 		try {
 			InetAddress addr = InetAddress.getByName(host);
-			if (addr instanceof Inet4Address)
-				return true;
-			return false;
+			return (addr instanceof Inet4Address);
 		}
 		catch (Exception e) {}
 		return false;
