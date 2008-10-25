@@ -27,7 +27,8 @@
 
 package plugins.UPnP.org.cybergarage.xml;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 
 public class Node 
 {
@@ -120,7 +121,7 @@ public class Node
 
 	public void setValue(int value) 
 	{
-		setValue(value);
+		setValue(Integer.toString(value));
 	}
 
 	public String getValue() 
