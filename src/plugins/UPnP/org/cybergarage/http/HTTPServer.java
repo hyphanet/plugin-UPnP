@@ -88,6 +88,7 @@ public class HTTPServer implements Runnable
 			bindAddr = InetAddress.getByName(addr);
 			bindPort = port;
 			serverSock = new ServerSocket(bindPort, 0, bindAddr);
+			serverSock.setSoTimeout(10*1000);
 		}
 		catch (IOException e) {
 			return false;
