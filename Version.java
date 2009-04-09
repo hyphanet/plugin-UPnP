@@ -4,12 +4,17 @@
 package plugins.UPnP;
 
 public class Version {
+	/** SVN revision number. Only set if the plugin is compiled properly e.g. by emu. */
         public static final String svnRevision = "@custom@";
 	public static final short MAJOR = 1;
 	public static final short MINOR = 0;
         
 	public static String getVersion() {
 		return (MAJOR + "." + MINOR);
+	}
+	
+	public static long getRealVersion() {
+		return MAJOR * 10000 + MINOR;
 	}
 	
         public static String getSvnRevision() {
