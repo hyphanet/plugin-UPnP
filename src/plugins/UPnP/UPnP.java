@@ -31,6 +31,7 @@ import freenet.pluginmanager.FredPluginBandwidthIndicator;
 import freenet.pluginmanager.FredPluginHTTP;
 import freenet.pluginmanager.FredPluginIPDetector;
 import freenet.pluginmanager.FredPluginPortForward;
+import freenet.pluginmanager.FredPluginRealVersioned;
 import freenet.pluginmanager.FredPluginThreadless;
 import freenet.pluginmanager.FredPluginVersioned;
 import freenet.pluginmanager.PluginHTTPException;
@@ -55,7 +56,7 @@ import freenet.support.transport.ip.IPUtil;
  * TODO: Advertise the node like the MDNS plugin does
  * TODO: Implement EventListener and react on ip-change
  */ 
-public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, FredPluginPortForward, FredPluginBandwidthIndicator, FredPluginVersioned, DeviceChangeListener {
+public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, FredPluginPortForward, FredPluginBandwidthIndicator, FredPluginVersioned, FredPluginRealVersioned, DeviceChangeListener {
 	private PluginRespirator pr;
 	
 	/** some schemas */
@@ -602,6 +603,10 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
 	public String getVersion() {
 		return Version.getVersion() + " " + Version.getSvnRevision();
+	}
+	
+	public long getRealVersion() {
+		return Version.getRealVersion();
 	}
 	
 	public static void main(String[] args) throws Exception {
