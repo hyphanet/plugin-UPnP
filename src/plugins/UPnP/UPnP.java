@@ -174,11 +174,11 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 	
 	private void registerPortMappings() {
-		Set ports;
+		Set ports = new HashSet<ForwardPort>();
 		synchronized(lock) {
-			ports = portsToForward;
+			ports.addAll(portsToForward);
 		}
-		if(ports == null) return;
+		if(ports.isEmpty()) return;
 		registerPorts(ports);
 	}
 
@@ -231,9 +231,9 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 	
 	public void unregisterPortMappings() {
-		Set ports;
+		Set<ForwardPort> ports = new HashSet<ForwardPort>();
 		synchronized(lock) {
-			ports = portsForwarded;
+			ports.addAll(portsForwarded);
 		}
 		this.unregisterPorts(ports);
 	}
