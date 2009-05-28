@@ -22,6 +22,7 @@ import plugins.UPnP.org.cybergarage.upnp.ServiceList;
 import plugins.UPnP.org.cybergarage.upnp.ServiceStateTable;
 import plugins.UPnP.org.cybergarage.upnp.StateVariable;
 import plugins.UPnP.org.cybergarage.upnp.device.DeviceChangeListener;
+import freenet.clients.http.PageNode;
 import freenet.pluginmanager.DetectedIP;
 import freenet.pluginmanager.ForwardPort;
 import freenet.pluginmanager.ForwardPortCallback;
@@ -401,8 +402,9 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			return sb.toString();
 		}
 		
-		HTMLNode pageNode = pr.getPageMaker().getPageNode("UP&P plugin configuration page", false, null);
-		HTMLNode contentNode = pr.getPageMaker().getContentNode(pageNode);
+		PageNode page = pr.getPageMaker().getPageNode("UP&P plugin configuration page", false, null);
+		HTMLNode pageNode = page.outer;
+		HTMLNode contentNode = page.content;
 		
 		if(isDisabled) {
 			HTMLNode disabledInfobox = contentNode.addChild("div", "class", "infobox infobox-error");
