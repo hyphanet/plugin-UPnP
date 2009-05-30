@@ -279,10 +279,16 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			return -1;
 
 		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
-		if(getIP == null || !getIP.postControlAction())
-			return -1;
-
-		return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+		if(getIP != null && !getIP.postControlAction()) {
+			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+		}
+		getIP = _service.getAction("GetCommonLinkProperties");
+		if(getIP != null && !getIP.postControlAction()) {
+			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
+		}
+		
+		// Recurse
+		return getUpstreamMaxBitRate(_router);
 	}
 	
 	/**
@@ -293,10 +299,78 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			return -1;
 
 		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
-		if(getIP == null || !getIP.postControlAction())
-			return -1;
+		if(getIP != null && !getIP.postControlAction()) {
+			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+		}
+		getIP = _service.getAction("GetCommonLinkProperties");
+		if(getIP != null && !getIP.postControlAction()) {
+			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
+		}
+		
+		// Recurse
+		return getDownstreamMaxBitRate(_router);
+	}
+	
+	private int getDownstreamMaxBitRate(Device dev) {
+		
+		ServiceList sl = dev.getServiceList();
+		for(int i=0; i<sl.size(); i++) {
+			Service serv = sl.getService(i);
+			if(serv == null) continue;
+			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
+				Action getIP = serv.getAction("GetCommonLinkProperties");
+				if(getIP == null || !getIP.postControlAction()) return -1;
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
+			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
+				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
+				if(getIP == null || !getIP.postControlAction()) return -1;
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+			}
+		}
 
-		return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+		
+		DeviceList dl = dev.getDeviceList();
+		for(int j=0; j<dl.size(); j++) {
+			Device subDev = dl.getDevice(j);
+			if(subDev == null) continue;
+			
+			int x = getDownstreamMaxBitRate(subDev);
+			if(x != -1) return x;
+		}
+		
+		return -1;
+		
+	}
+	
+	private int getUpstreamMaxBitRate(Device dev) {
+		
+		ServiceList sl = dev.getServiceList();
+		for(int i=0; i<sl.size(); i++) {
+			Service serv = sl.getService(i);
+			if(serv == null) continue;
+			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
+				Action getIP = serv.getAction("GetCommonLinkProperties");
+				if(getIP == null || !getIP.postControlAction()) return -1;
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
+			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
+				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
+				if(getIP == null || !getIP.postControlAction()) return -1;
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+			}
+		}
+
+		
+		DeviceList dl = dev.getDeviceList();
+		for(int j=0; j<dl.size(); j++) {
+			Device subDev = dl.getDevice(j);
+			if(subDev == null) continue;
+			
+			int x = getUpstreamMaxBitRate(subDev);
+			if(x != -1) return x;
+		}
+		
+		return -1;
+		
 	}
 	
 	private void listStateTable(Service serv, StringBuilder sb) {
