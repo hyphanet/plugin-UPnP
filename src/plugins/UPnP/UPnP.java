@@ -335,19 +335,22 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			if(serv == null) continue;
 			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetCommonLinkProperties");
-				if(getIP == null || !getIP.postControlAction()) return -1;
-				try {
-					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
-				} catch (NumberFormatException e) {
-					// ignore, try next
+				if(getIP != null && getIP.postControlAction()) {
+					try {
+						return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
+					} catch (NumberFormatException e) {
+						// ignore, try next
+					}
 				}
-			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
+			}
+			if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
-				if(getIP == null || !getIP.postControlAction()) return -1;
-				try {
-					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
-				} catch (NumberFormatException e) {
-					// ignore, try next
+				if(getIP != null && getIP.postControlAction()) {
+					try {
+						return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+					} catch (NumberFormatException e) {
+						// ignore, try next
+					}
 				}
 			}
 		}
@@ -373,19 +376,22 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			if(serv == null) continue;
 			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetCommonLinkProperties");
-				if(getIP == null || !getIP.postControlAction()) return -1;
-				try {
-					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
-				} catch (NumberFormatException e) {
-					// ignore, try next
+				if(getIP != null && getIP.postControlAction()) {
+					try {
+						return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
+					} catch (NumberFormatException e) {
+						// ignore, try next
+					}
 				}
-			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
+			}
+			if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
-				if(getIP == null || !getIP.postControlAction()) return -1;
-				try {
-					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
-				} catch (NumberFormatException e) {
-					// ignore, try next
+				if(getIP != null && getIP.postControlAction()) {
+					try {
+						return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+					} catch (NumberFormatException e) {
+						// ignore, try next
+					}
 				}
 			}
 		}
