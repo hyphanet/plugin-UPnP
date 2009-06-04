@@ -280,11 +280,19 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
 		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
 		if(getIP != null && !getIP.postControlAction()) {
-			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+			try {
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+			} catch (NumberFormatException e) {
+				return -1;
+			}
 		}
 		getIP = _service.getAction("GetCommonLinkProperties");
 		if(getIP != null && !getIP.postControlAction()) {
-			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
+			try {
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
+			} catch (NumberFormatException e) {
+				return -1;
+			}
 		}
 		
 		// Recurse
@@ -300,11 +308,19 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
 		Action getIP = _service.getAction("GetLinkLayerMaxBitRates");
 		if(getIP != null && !getIP.postControlAction()) {
-			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+			try {
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+			} catch (NumberFormatException e) {
+				return -1;
+			}
 		}
 		getIP = _service.getAction("GetCommonLinkProperties");
 		if(getIP != null && !getIP.postControlAction()) {
-			return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
+			try {
+				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
+			} catch (NumberFormatException e) {
+				return -1;
+			}
 		}
 		
 		// Recurse
@@ -320,11 +336,19 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetCommonLinkProperties");
 				if(getIP == null || !getIP.postControlAction()) return -1;
-				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
+				try {
+					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
+				} catch (NumberFormatException e) {
+					return -1;
+				}
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
 				if(getIP == null || !getIP.postControlAction()) return -1;
-				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+				try {
+					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
+				} catch (NumberFormatException e) {
+					return -1;
+				}
 			}
 		}
 
@@ -351,11 +375,19 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetCommonLinkProperties");
 				if(getIP == null || !getIP.postControlAction()) return -1;
-				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
+				try {
+					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
+				} catch (NumberFormatException e) {
+					return -1;
+				}
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
 				if(getIP == null || !getIP.postControlAction()) return -1;
-				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+				try {
+					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
+				} catch (NumberFormatException e) {
+					return -1;
+				}
 			}
 		}
 
