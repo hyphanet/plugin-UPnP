@@ -283,7 +283,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			try {
 				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
 			} catch (NumberFormatException e) {
-				return -1;
+				// ignore
 			}
 		}
 		getIP = _service.getAction("GetCommonLinkProperties");
@@ -291,7 +291,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			try {
 				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
 			} catch (NumberFormatException e) {
-				return -1;
+				// ignore
 			}
 		}
 		
@@ -311,7 +311,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			try {
 				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
 			} catch (NumberFormatException e) {
-				return -1;
+				// ignore
 			}
 		}
 		getIP = _service.getAction("GetCommonLinkProperties");
@@ -319,7 +319,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			try {
 				return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
 			} catch (NumberFormatException e) {
-				return -1;
+				// ignore
 			}
 		}
 		
@@ -339,7 +339,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				try {
 					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1DownstreamMaxBitRate").getValue());
 				} catch (NumberFormatException e) {
-					return -1;
+					// ignore, try next
 				}
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
@@ -347,7 +347,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				try {
 					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewDownstreamMaxBitRate").getValue());
 				} catch (NumberFormatException e) {
-					return -1;
+					// ignore, try next
 				}
 			}
 		}
@@ -363,7 +363,6 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		}
 		
 		return -1;
-		
 	}
 	
 	private int getUpstreamMaxBitRate(Device dev) {
@@ -378,7 +377,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				try {
 					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewLayer1UpstreamMaxBitRate").getValue());
 				} catch (NumberFormatException e) {
-					return -1;
+					// ignore, try next
 				}
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				Action getIP = serv.getAction("GetLinkLayerMaxBitRates");
@@ -386,7 +385,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				try {
 					return Integer.valueOf(getIP.getOutputArgumentList().getArgument("NewUpstreamMaxBitRate").getValue());
 				} catch (NumberFormatException e) {
-					return -1;
+					// ignore, try next
 				}
 			}
 		}
