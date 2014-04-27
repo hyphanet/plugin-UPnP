@@ -3,6 +3,8 @@
  * http://www.gnu.org/ for further details of the GPL. */
 package plugins.UPnP;
 
+import static freenet.support.HTMLEncoder.encode;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -415,7 +417,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		sb.append("<div><small>");
 		for(int i=0; i<table.size(); i++) {
 			StateVariable current = table.getStateVariable(i);
-			sb.append(current.getName() + " : " + current.getValue() + "<br>");
+			sb.append(encode(current.getName()) + " : " + encode(current.getValue()) + "<br>");
 		}
 		sb.append("</small></div>");
 	}
@@ -425,7 +427,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		for(int i=0; i<ar.size(); i++) {
 			Argument argument = ar.getArgument(i);
 			if(argument == null ) continue;
-			sb.append("<div><small>argument ("+i+") :" + argument.getName()+"</small></div>");
+			sb.append("<div><small>argument ("+i+") :" + encode(argument.getName())+"</small></div>");
 		}
 	}
 	
@@ -434,7 +436,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		for(int i=0; i<al.size(); i++) {
 			Action action = al.getAction(i);
 			if(action == null ) continue;
-			sb.append("<div>action ("+i+") :" + action.getName());
+			sb.append("<div>action ("+i+") :" + encode(action.getName()));
 			listActionsArguments(action, sb);
 			sb.append("</div>");
 		}
@@ -455,33 +457,33 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		for(int i=0; i<sl.size(); i++) {
 			Service serv = sl.getService(i);
 			if(serv == null) continue;
-			sb.append("<div>service ("+i+") : "+serv.getServiceType()+"<br>");
+			sb.append("<div>service ("+i+") : "+encode(serv.getServiceType())+"<br>");
 			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
 				sb.append("WANCommonInterfaceConfig");
-				sb.append(" status: " + toString("GetCommonLinkProperties", "NewPhysicalLinkStatus", serv));
-				sb.append(" type: " + toString("GetCommonLinkProperties", "NewWANAccessType", serv));
-				sb.append(" upstream: " + toString("GetCommonLinkProperties", "NewLayer1UpstreamMaxBitRate", serv));
-				sb.append(" downstream: " + toString("GetCommonLinkProperties", "NewLayer1DownstreamMaxBitRate", serv) + "<br>");
+				sb.append(" status: " + encode(toString("GetCommonLinkProperties", "NewPhysicalLinkStatus", serv)));
+				sb.append(" type: " + encode(toString("GetCommonLinkProperties", "NewWANAccessType", serv)));
+				sb.append(" upstream: " + encode(toString("GetCommonLinkProperties", "NewLayer1UpstreamMaxBitRate", serv)));
+				sb.append(" downstream: " + encode(toString("GetCommonLinkProperties", "NewLayer1DownstreamMaxBitRate", serv) + "<br>"));
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				sb.append("WANPPPConnection");
-				sb.append(" status: " + toString("GetStatusInfo", "NewConnectionStatus", serv));
-				sb.append(" type: " + toString("GetConnectionTypeInfo", "NewConnectionType", serv));
-				sb.append(" upstream: " + toString("GetLinkLayerMaxBitRates", "NewUpstreamMaxBitRate", serv));
-				sb.append(" downstream: " + toString("GetLinkLayerMaxBitRates", "NewDownstreamMaxBitRate", serv) + "<br>");
-				sb.append(" external IP: " + toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>");
+				sb.append(" status: " + encode(toString("GetStatusInfo", "NewConnectionStatus", serv)));
+				sb.append(" type: " + encode(toString("GetConnectionTypeInfo", "NewConnectionType", serv)));
+				sb.append(" upstream: " + encode(toString("GetLinkLayerMaxBitRates", "NewUpstreamMaxBitRate", serv)));
+				sb.append(" downstream: " + encode(toString("GetLinkLayerMaxBitRates", "NewDownstreamMaxBitRate", serv) + "<br>"));
+				sb.append(" external IP: " + encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>"));
 			}else if("urn:schemas-upnp-org:service:Layer3Forwarding:1".equals(serv.getServiceType())){
 				sb.append("Layer3Forwarding");
-				sb.append("DefaultConnectionService: " + toString("GetDefaultConnectionService", "NewDefaultConnectionService", serv));
+				sb.append("DefaultConnectionService: " + encode(toString("GetDefaultConnectionService", "NewDefaultConnectionService", serv)));
 			}else if(WAN_IP_CONNECTION.equals(serv.getServiceType())){
 				sb.append("WANIPConnection");
-				sb.append(" status: " + toString("GetStatusInfo", "NewConnectionStatus", serv));
-				sb.append(" type: " + toString("GetConnectionTypeInfo", "NewConnectionType", serv));
-				sb.append(" external IP: " + toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>");
+				sb.append(" status: " + encode(toString("GetStatusInfo", "NewConnectionStatus", serv)));
+				sb.append(" type: " + encode(toString("GetConnectionTypeInfo", "NewConnectionType", serv)));
+				sb.append(" external IP: " + encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>"));
 			}else if("urn:schemas-upnp-org:service:WANEthernetLinkConfig:1".equals(serv.getServiceType())){
 				sb.append("WANEthernetLinkConfig");
-				sb.append(" status: " + toString("GetEthernetLinkStatus", "NewEthernetLinkStatus", serv) + "<br>");
+				sb.append(" status: " + encode(toString("GetEthernetLinkStatus", "NewEthernetLinkStatus", serv) + "<br>"));
 			}else
-				sb.append("~~~~~~~ "+serv.getServiceType());
+				sb.append("~~~~~~~ "+encode(serv.getServiceType()));
 			listActions(serv, sb);
 			listStateTable(serv, sb);
 			sb.append("</div>");
@@ -489,7 +491,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 	
 	private void listSubDev(String prefix, Device dev, StringBuilder sb){
-		sb.append("<div><p>Device : "+dev.getFriendlyName()+" - "+ dev.getDeviceType()+"<br>");
+		sb.append("<div><p>Device : "+encode(dev.getFriendlyName())+" - "+ encode(dev.getDeviceType())+"<br>");
 		listSubServices(dev, sb);
 		
 		DeviceList dl = dev.getDeviceList();
