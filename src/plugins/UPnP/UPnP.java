@@ -121,10 +121,10 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				status = DetectedIP.FULL_INTERNET;
 			
 			result = new DetectedIP(detectedIP, status);
-			
-			Logger.normal(this, "Successful UP&P discovery :" + result);
-			System.out.println("Successful UP&P discovery :" + result);
-			
+
+			Logger.normal(this, "Successful UP&P discovery:" + result);
+			System.out.println("Successful UP&P discovery:" + result);
+
 			return new DetectedIP[] { result };
 		} catch (UnknownHostException e) {
 			Logger.error(this, "Caught an UnknownHostException resolving " + natAddress, e);
@@ -155,9 +155,9 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			stop();
 			return;
 		}
-		
-		Logger.normal(this, "UP&P IGD found : " + dev.getFriendlyName());
-		System.out.println("UP&P IGD found : " + dev.getFriendlyName());
+
+		Logger.normal(this, "UP&P IGD found: " + dev.getFriendlyName());
+		System.out.println("UP&P IGD found: " + dev.getFriendlyName());
 		synchronized(lock) {
 			_router = dev;
 		}
@@ -544,14 +544,14 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		
 		// FIXME L10n!
 		foundInfoboxHeader.addChild("#", "UP&P plugin report");
-		foundInfoboxContent.addChild("p", "The following device has been found : ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
-		foundInfoboxContent.addChild("p", "Our current external ip address is : " + getNATAddress());
+		foundInfoboxContent.addChild("p", "The following device has been found: ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
+		foundInfoboxContent.addChild("p", "Our current external ip address is: " + getNATAddress());
 		int downstreamMaxBitRate = getDownstreamMaxBitRate();
 		int upstreamMaxBitRate = getUpstramMaxBitRate();
 		if(downstreamMaxBitRate > 0)
-			foundInfoboxContent.addChild("p", "Our reported max downstream bit rate is : " + getDownstreamMaxBitRate()+ " bits/sec");
+			foundInfoboxContent.addChild("p", "Our reported max downstream bit rate is: " + getDownstreamMaxBitRate()+ " bits/sec");
 		if(upstreamMaxBitRate > 0)
-			foundInfoboxContent.addChild("p", "Our reported max upstream bit rate is : " + getUpstramMaxBitRate()+ " bits/sec");
+			foundInfoboxContent.addChild("p", "Our reported max upstream bit rate is: " + getUpstramMaxBitRate()+ " bits/sec");
 		synchronized(lock) {
 			if(portsToForward != null) {
 				for(ForwardPort port : portsToForward) {
@@ -739,7 +739,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			while(it.hasNext()) {
 				Device device = it.next();
 				upnp.listSubDev(device.toString(), device, sb);
-				System.out.println("Here is the listing for " + device.toString() + " :");
+				System.out.println("Here is the listing for " + device.toString() + ":");
 				System.out.println(sb.toString());
 				sb = new StringBuilder();
 			}
