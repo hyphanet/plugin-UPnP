@@ -464,14 +464,14 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				sb.append(format(" status: %s", encode(toString("GetCommonLinkProperties", "NewPhysicalLinkStatus", serv))));
 				sb.append(format(" type: %s", encode(toString("GetCommonLinkProperties", "NewWANAccessType", serv))));
 				sb.append(format(" upstream: %s", encode(toString("GetCommonLinkProperties", "NewLayer1UpstreamMaxBitRate", serv))));
-				sb.append(format(" downstream: %s", encode(toString("GetCommonLinkProperties", "NewLayer1DownstreamMaxBitRate", serv) + "<br>")));
+				sb.append(format(" downstream: %s<br>", encode(toString("GetCommonLinkProperties", "NewLayer1DownstreamMaxBitRate", serv))));
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				sb.append("WANPPPConnection");
 				sb.append(format(" status: %s", encode(toString("GetStatusInfo", "NewConnectionStatus", serv))));
 				sb.append(format(" type: %s", encode(toString("GetConnectionTypeInfo", "NewConnectionType", serv))));
 				sb.append(format(" upstream: %s", encode(toString("GetLinkLayerMaxBitRates", "NewUpstreamMaxBitRate", serv))));
-				sb.append(format(" downstream: %s", encode(toString("GetLinkLayerMaxBitRates", "NewDownstreamMaxBitRate", serv) + "<br>")));
-				sb.append(format(" external IP: %s", encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>")));
+				sb.append(format(" downstream: %s<br>", encode(toString("GetLinkLayerMaxBitRates", "NewDownstreamMaxBitRate", serv))));
+				sb.append(format(" external IP: %s<br>", encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv))));
 			}else if("urn:schemas-upnp-org:service:Layer3Forwarding:1".equals(serv.getServiceType())){
 				sb.append("Layer3Forwarding");
 				sb.append(format("DefaultConnectionService: %s", encode(toString("GetDefaultConnectionService", "NewDefaultConnectionService", serv))));
@@ -479,10 +479,10 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				sb.append("WANIPConnection");
 				sb.append(format(" status: %s", encode(toString("GetStatusInfo", "NewConnectionStatus", serv))));
 				sb.append(format(" type: %s", encode(toString("GetConnectionTypeInfo", "NewConnectionType", serv))));
-				sb.append(format(" external IP: %s", encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>")));
+				sb.append(format(" external IP: %s<br>", encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv))));
 			}else if("urn:schemas-upnp-org:service:WANEthernetLinkConfig:1".equals(serv.getServiceType())){
 				sb.append("WANEthernetLinkConfig");
-				sb.append(format(" status: %s", encode(toString("GetEthernetLinkStatus", "NewEthernetLinkStatus", serv) + "<br>")));
+				sb.append(format(" status: %s<br>", encode(toString("GetEthernetLinkStatus", "NewEthernetLinkStatus", serv))));
 			}else
 				sb.append(format("~~~~~~~ %s", encode(serv.getServiceType())));
 			listActions(serv, sb);
