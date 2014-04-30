@@ -3,6 +3,9 @@
  * http://www.gnu.org/ for further details of the GPL. */
 package plugins.UPnP;
 
+import static freenet.support.HTMLEncoder.encode;
+import static java.lang.String.format;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -118,10 +121,10 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 				status = DetectedIP.FULL_INTERNET;
 			
 			result = new DetectedIP(detectedIP, status);
-			
-			Logger.normal(this, "Successful UP&P discovery :" + result);
-			System.out.println("Successful UP&P discovery :" + result);
-			
+
+			Logger.normal(this, "Successful UP&P discovery:" + result);
+			System.out.println("Successful UP&P discovery:" + result);
+
 			return new DetectedIP[] { result };
 		} catch (UnknownHostException e) {
 			Logger.error(this, "Caught an UnknownHostException resolving " + natAddress, e);
@@ -152,9 +155,9 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			stop();
 			return;
 		}
-		
-		Logger.normal(this, "UP&P IGD found : " + dev.getFriendlyName());
-		System.out.println("UP&P IGD found : " + dev.getFriendlyName());
+
+		Logger.normal(this, "UP&P IGD found: " + dev.getFriendlyName());
+		System.out.println("UP&P IGD found: " + dev.getFriendlyName());
 		synchronized(lock) {
 			_router = dev;
 		}
@@ -415,7 +418,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		sb.append("<div><small>");
 		for(int i=0; i<table.size(); i++) {
 			StateVariable current = table.getStateVariable(i);
-			sb.append(current.getName() + " : " + current.getValue() + "<br>");
+			sb.append(format("%s: %s<br>", encode(current.getName()), encode(current.getValue())));
 		}
 		sb.append("</small></div>");
 	}
@@ -425,7 +428,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		for(int i=0; i<ar.size(); i++) {
 			Argument argument = ar.getArgument(i);
 			if(argument == null ) continue;
-			sb.append("<div><small>argument ("+i+") :" + argument.getName()+"</small></div>");
+			sb.append(format("<div><small>argument (%d): %s</small></div>", i, encode(argument.getName())));
 		}
 	}
 	
@@ -434,7 +437,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		for(int i=0; i<al.size(); i++) {
 			Action action = al.getAction(i);
 			if(action == null ) continue;
-			sb.append("<div>action ("+i+") :" + action.getName());
+			sb.append(format("<div>action (%d): %s", i, encode(action.getName())));
 			listActionsArguments(action, sb);
 			sb.append("</div>");
 		}
@@ -455,33 +458,33 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		for(int i=0; i<sl.size(); i++) {
 			Service serv = sl.getService(i);
 			if(serv == null) continue;
-			sb.append("<div>service ("+i+") : "+serv.getServiceType()+"<br>");
+			sb.append(format("<div>service (%d): %s<br>", i, encode(serv.getServiceType())));
 			if("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1".equals(serv.getServiceType())){
 				sb.append("WANCommonInterfaceConfig");
-				sb.append(" status: " + toString("GetCommonLinkProperties", "NewPhysicalLinkStatus", serv));
-				sb.append(" type: " + toString("GetCommonLinkProperties", "NewWANAccessType", serv));
-				sb.append(" upstream: " + toString("GetCommonLinkProperties", "NewLayer1UpstreamMaxBitRate", serv));
-				sb.append(" downstream: " + toString("GetCommonLinkProperties", "NewLayer1DownstreamMaxBitRate", serv) + "<br>");
+				sb.append(format(" status: %s", encode(toString("GetCommonLinkProperties", "NewPhysicalLinkStatus", serv))));
+				sb.append(format(" type: %s", encode(toString("GetCommonLinkProperties", "NewWANAccessType", serv))));
+				sb.append(format(" upstream: %s", encode(toString("GetCommonLinkProperties", "NewLayer1UpstreamMaxBitRate", serv))));
+				sb.append(format(" downstream: %s<br>", encode(toString("GetCommonLinkProperties", "NewLayer1DownstreamMaxBitRate", serv))));
 			}else if("urn:schemas-upnp-org:service:WANPPPConnection:1".equals(serv.getServiceType())){
 				sb.append("WANPPPConnection");
-				sb.append(" status: " + toString("GetStatusInfo", "NewConnectionStatus", serv));
-				sb.append(" type: " + toString("GetConnectionTypeInfo", "NewConnectionType", serv));
-				sb.append(" upstream: " + toString("GetLinkLayerMaxBitRates", "NewUpstreamMaxBitRate", serv));
-				sb.append(" downstream: " + toString("GetLinkLayerMaxBitRates", "NewDownstreamMaxBitRate", serv) + "<br>");
-				sb.append(" external IP: " + toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>");
+				sb.append(format(" status: %s", encode(toString("GetStatusInfo", "NewConnectionStatus", serv))));
+				sb.append(format(" type: %s", encode(toString("GetConnectionTypeInfo", "NewConnectionType", serv))));
+				sb.append(format(" upstream: %s", encode(toString("GetLinkLayerMaxBitRates", "NewUpstreamMaxBitRate", serv))));
+				sb.append(format(" downstream: %s<br>", encode(toString("GetLinkLayerMaxBitRates", "NewDownstreamMaxBitRate", serv))));
+				sb.append(format(" external IP: %s<br>", encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv))));
 			}else if("urn:schemas-upnp-org:service:Layer3Forwarding:1".equals(serv.getServiceType())){
 				sb.append("Layer3Forwarding");
-				sb.append("DefaultConnectionService: " + toString("GetDefaultConnectionService", "NewDefaultConnectionService", serv));
+				sb.append(format("DefaultConnectionService: %s", encode(toString("GetDefaultConnectionService", "NewDefaultConnectionService", serv))));
 			}else if(WAN_IP_CONNECTION.equals(serv.getServiceType())){
 				sb.append("WANIPConnection");
-				sb.append(" status: " + toString("GetStatusInfo", "NewConnectionStatus", serv));
-				sb.append(" type: " + toString("GetConnectionTypeInfo", "NewConnectionType", serv));
-				sb.append(" external IP: " + toString("GetExternalIPAddress", "NewExternalIPAddress", serv) + "<br>");
+				sb.append(format(" status: %s", encode(toString("GetStatusInfo", "NewConnectionStatus", serv))));
+				sb.append(format(" type: %s", encode(toString("GetConnectionTypeInfo", "NewConnectionType", serv))));
+				sb.append(format(" external IP: %s<br>", encode(toString("GetExternalIPAddress", "NewExternalIPAddress", serv))));
 			}else if("urn:schemas-upnp-org:service:WANEthernetLinkConfig:1".equals(serv.getServiceType())){
 				sb.append("WANEthernetLinkConfig");
-				sb.append(" status: " + toString("GetEthernetLinkStatus", "NewEthernetLinkStatus", serv) + "<br>");
+				sb.append(format(" status: %s<br>", encode(toString("GetEthernetLinkStatus", "NewEthernetLinkStatus", serv))));
 			}else
-				sb.append("~~~~~~~ "+serv.getServiceType());
+				sb.append(format("~~~~~~~ %s", encode(serv.getServiceType())));
 			listActions(serv, sb);
 			listStateTable(serv, sb);
 			sb.append("</div>");
@@ -489,7 +492,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 	}
 	
 	private void listSubDev(String prefix, Device dev, StringBuilder sb){
-		sb.append("<div><p>Device : "+dev.getFriendlyName()+" - "+ dev.getDeviceType()+"<br>");
+		sb.append(format("<div><p>Device: %s - %s<br>", encode(dev.getFriendlyName()), encode(dev.getDeviceType())));
 		listSubServices(dev, sb);
 		
 		DeviceList dl = dev.getDeviceList();
@@ -541,14 +544,14 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 		
 		// FIXME L10n!
 		foundInfoboxHeader.addChild("#", "UP&P plugin report");
-		foundInfoboxContent.addChild("p", "The following device has been found : ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
-		foundInfoboxContent.addChild("p", "Our current external ip address is : " + getNATAddress());
+		foundInfoboxContent.addChild("p", "The following device has been found: ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
+		foundInfoboxContent.addChild("p", "Our current external ip address is: " + getNATAddress());
 		int downstreamMaxBitRate = getDownstreamMaxBitRate();
 		int upstreamMaxBitRate = getUpstramMaxBitRate();
 		if(downstreamMaxBitRate > 0)
-			foundInfoboxContent.addChild("p", "Our reported max downstream bit rate is : " + getDownstreamMaxBitRate()+ " bits/sec");
+			foundInfoboxContent.addChild("p", "Our reported max downstream bit rate is: " + getDownstreamMaxBitRate()+ " bits/sec");
 		if(upstreamMaxBitRate > 0)
-			foundInfoboxContent.addChild("p", "Our reported max upstream bit rate is : " + getUpstramMaxBitRate()+ " bits/sec");
+			foundInfoboxContent.addChild("p", "Our reported max upstream bit rate is: " + getUpstramMaxBitRate()+ " bits/sec");
 		synchronized(lock) {
 			if(portsToForward != null) {
 				for(ForwardPort port : portsToForward) {
@@ -736,7 +739,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 			while(it.hasNext()) {
 				Device device = it.next();
 				upnp.listSubDev(device.toString(), device, sb);
-				System.out.println("Here is the listing for " + device.toString() + " :");
+				System.out.println("Here is the listing for " + device.toString() + ":");
 				System.out.println(sb.toString());
 				sb = new StringBuilder();
 			}
