@@ -174,8 +174,12 @@ public class HTTPUSocket
 			ssdpUniSock.send(dgmPacket);
 		}
 		catch (Exception e) {
-			Debug.warning("addr = " +ssdpUniSock.getLocalAddress().getHostName());
-			Debug.warning("port = " + ssdpUniSock.getLocalPort());
+		    if (ssdpUniSock != null && ssdpUniSock.getLocalAddress() != null) {
+			    Debug.warning("addr = " + ssdpUniSock.getLocalAddress().getHostName());
+			    Debug.warning("port = " + ssdpUniSock.getLocalPort());
+		    } else {
+		        Debug.warning("SSDP socket not open");
+		    }
 			Debug.warning(e);
 			return false;
 		}
