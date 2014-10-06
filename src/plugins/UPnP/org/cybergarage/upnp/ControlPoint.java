@@ -545,7 +545,7 @@ public class ControlPoint implements HTTPRequestListener
             }
             httpReq.returnOK();
             return;
-         }
+        }
 
         httpReq.returnBadRequest();
     }

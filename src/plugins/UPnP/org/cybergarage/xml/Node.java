@@ -76,8 +76,8 @@ public class Node
         Node rootNode = null;
         Node parentNode = getParentNode();
         while (parentNode != null) {
-             rootNode = parentNode;
-             parentNode = rootNode.getParentNode();
+            rootNode = parentNode;
+            parentNode = rootNode.getParentNode();
         }
         return rootNode;
     }

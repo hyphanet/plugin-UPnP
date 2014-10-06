@@ -80,7 +80,7 @@ public class SOAPRequest extends HTTPRequest
     {
         HTTPResponse httpRes = post(host, port);
 
-         SOAPResponse soapRes = new SOAPResponse(httpRes);
+        SOAPResponse soapRes = new SOAPResponse(httpRes);
 
         byte content[] = soapRes.getContent();
         if (content.length <= 0)
@@ -96,7 +96,7 @@ public class SOAPRequest extends HTTPRequest
             Debug.warning(e);
         }
 
-         return soapRes;
+        return soapRes;
     }
 
     ////////////////////////////////////////////////

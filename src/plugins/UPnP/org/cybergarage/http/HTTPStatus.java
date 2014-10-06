@@ -58,7 +58,7 @@ public class HTTPStatus
         case INVALID_RANGE: return "Invalid Range";
         case INTERNAL_SERVER_ERROR: return "Internal Server Error";
         }
-         return "";
+        return "";
     }
 
     ////////////////////////////////////////////////

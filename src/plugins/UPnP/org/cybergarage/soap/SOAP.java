@@ -55,7 +55,7 @@ public class SOAP
         envNode.setAttribute("xmlns" + SOAP.DELIM + SOAP.XMLNS, SOAP.XMLNS_URL);
         envNode.setAttribute(SOAP.XMLNS + SOAP.DELIM + "encodingStyle", SOAP.ENCSTYLE_URL);
 
-         // <Body>
+        // <Body>
         Node bodyNode = new Node(SOAP.XMLNS + SOAP.DELIM + SOAP.BODY);
         envNode.addNode(bodyNode);
 

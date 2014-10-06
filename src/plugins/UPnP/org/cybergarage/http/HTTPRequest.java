@@ -272,7 +272,7 @@ public class HTTPRequest extends HTTPPacket
             return false;
         setVersion(st.nextToken());
         return true;
-     }
+    }
 
     ////////////////////////////////////////////////
     //    First Line
@@ -377,8 +377,8 @@ public class HTTPRequest extends HTTPPacket
         OutputStream out = null;
         InputStream in = null;
 
-         try {
-             if (postSocket == null)
+        try {
+            if (postSocket == null)
                 postSocket = new Socket(host, port);
 
             out = postSocket.getOutputStream();

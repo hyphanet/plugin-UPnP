@@ -608,7 +608,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
         Action remove = _service.getAction("DeletePortMapping");
         if(remove == null) {
-             Logger.error(this, "Couldn't find DeletePortMapping action!");
+            Logger.error(this, "Couldn't find DeletePortMapping action!");
             return false;
         }
 

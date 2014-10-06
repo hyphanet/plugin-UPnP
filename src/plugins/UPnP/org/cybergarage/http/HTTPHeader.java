@@ -91,14 +91,14 @@ public class HTTPHeader
             while (lineStr != null && 0 < lineStr.length()) {
                 HTTPHeader header = new HTTPHeader(lineStr);
                 if (header.hasName() == false) {
-                     lineStr = reader.readLine();
+                    lineStr = reader.readLine();
                     continue;
                 }
                 String bigLineHeaderName = header.getName().toUpperCase();
                 // Thanks for Jan Newmarch <jan.newmarch@infotech.monash.edu.au> (05/26/04)
                 if (bigLineHeaderName.equals(bigName) == false) {
-                     lineStr = reader.readLine();
-                     continue;
+                    lineStr = reader.readLine();
+                    continue;
                 }
                 return header.getValue();
             }

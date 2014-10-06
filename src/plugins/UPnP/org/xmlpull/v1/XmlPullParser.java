@@ -417,8 +417,7 @@ public interface XmlPullParser {
      * @exception XmlPullParserException If the feature is not supported or can not be set
      * @exception IllegalArgumentException If string with the feature name is null
      */
-    void setFeature(String name,
-                           boolean state) throws XmlPullParserException;
+    void setFeature(String name, boolean state) throws XmlPullParserException;
 
     /**
      * Returns the current value of the given feature.
@@ -440,8 +439,7 @@ public interface XmlPullParser {
      * @exception XmlPullParserException If the property is not supported or can not be set
      * @exception IllegalArgumentException If string with the property name is null
      */
-    void setProperty(String name,
-                            Object value) throws XmlPullParserException;
+    void setProperty(String name, Object value) throws XmlPullParserException;
 
     /**
      * Look up the value of a property.
@@ -486,8 +484,7 @@ public interface XmlPullParser {
      *
      * @param inputEncoding if not null it MUST be used as encoding for inputStream
      */
-    void setInput(InputStream inputStream, String inputEncoding)
-        throws XmlPullParserException;
+    void setInput(InputStream inputStream, String inputEncoding) throws XmlPullParserException;
 
     /**
      * Returns the input encoding if known, null otherwise.
@@ -534,8 +531,7 @@ public interface XmlPullParser {
      * @see #FEATURE_PROCESS_DOCDECL
      * @see #FEATURE_VALIDATION
      */
-    void defineEntityReplacementText( String entityName,
-                                            String replacementText ) throws XmlPullParserException;
+    void defineEntityReplacementText( String entityName, String replacementText ) throws XmlPullParserException;
 
     /**
      * Returns the numbers of elements in the namespace stack for the given
@@ -897,8 +893,7 @@ public interface XmlPullParser {
      * @param name If namespaces enabled local name of attribute otherwise just attribute name
      * @return value of attribute or null if attribute with given name does not exist
      */
-    String getAttributeValue(String namespace,
-                                    String name);
+    String getAttributeValue(String namespace, String name);
 
     // --------------------------------------------------------------------------
     // actual parsing methods
@@ -909,8 +904,7 @@ public interface XmlPullParser {
      * @see #next()
      * @see #nextToken()
      */
-    int getEventType()
-        throws XmlPullParserException;
+    int getEventType() throws XmlPullParserException;
 
     /**
      * Get next parsing event - element content wil be coalesced and only one
@@ -931,8 +925,7 @@ public interface XmlPullParser {
      * @see #END_DOCUMENT
      */
 
-    int next()
-        throws XmlPullParserException, IOException;
+    int next() throws XmlPullParserException, IOException;
 
 
     /**
@@ -1023,8 +1016,7 @@ public interface XmlPullParser {
      * @see #ENTITY_REF
      * @see #IGNORABLE_WHITESPACE
      */
-    int nextToken()
-        throws XmlPullParserException, IOException;
+    int nextToken() throws XmlPullParserException, IOException;
 
     //-----------------------------------------------------------------------------
     // utility methods to mak XML parsing easier ...
@@ -1045,8 +1037,7 @@ public interface XmlPullParser {
      *     throw new XmlPullParserException( "expected "+ TYPES[ type ]+getPositionDescription());
      * </pre>
      */
-    void require(int type, String namespace, String name)
-        throws XmlPullParserException, IOException;
+    void require(int type, String namespace, String name) throws XmlPullParserException, IOException;
 
     /**
      * If current event is START_TAG then if next element is TEXT then element content is returned

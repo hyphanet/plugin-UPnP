@@ -43,7 +43,7 @@ public abstract class Parser
     public Node parse(URL locationURL) throws ParserException
     {
         try {
-             HttpURLConnection urlCon = (HttpURLConnection)locationURL.openConnection();
+            HttpURLConnection urlCon = (HttpURLConnection)locationURL.openConnection();
             urlCon.setRequestMethod("GET");
             InputStream urlIn = urlCon.getInputStream();
 

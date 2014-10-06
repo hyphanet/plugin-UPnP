@@ -183,16 +183,16 @@ public class HTTPMUSocket
     public SSDPPacket receive()
     {
         byte ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
-         SSDPPacket recvPacket = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
+        SSDPPacket recvPacket = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
         recvPacket.setLocalAddress(getLocalAddress());
-         try {
+        try {
             ssdpMultiSock.receive(recvPacket.getDatagramPacket());
             recvPacket.setTimeStamp(System.currentTimeMillis());
         }
         catch (Exception e) {
             //Debug.warning(e);
         }
-         return recvPacket;
+        return recvPacket;
     }
 }
 

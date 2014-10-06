@@ -45,9 +45,7 @@ public interface XmlSerializer {
      *
      * @exception IllegalStateException If the feature is not supported or can not be set
      */
-    void setFeature(String name,
-                           boolean state)
-        throws IllegalArgumentException, IllegalStateException;
+    void setFeature(String name, boolean state) throws IllegalArgumentException, IllegalStateException;
 
 
     /**

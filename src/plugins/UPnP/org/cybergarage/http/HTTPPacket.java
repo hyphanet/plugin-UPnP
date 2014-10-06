@@ -131,7 +131,7 @@ public class HTTPPacket
 
     protected boolean set(InputStream in, boolean onlyHeaders)
     {
-         try {
+        try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
             String firstLine = reader.readLine();
@@ -240,7 +240,7 @@ public class HTTPPacket
             // Thanks for Ralf G. R. Bergs (02/09/04)
             String contentStr = contentBuf.toString();
             setContent(contentStr.getBytes(), false);
-         }
+        }
         catch (Exception e) {
             Debug.warning(e);
             return false;
@@ -308,7 +308,7 @@ public class HTTPPacket
             lastToken = st.nextToken();
         }
         return lastToken;
-     }
+    }
 
     public boolean hasFirstLine()
     {
@@ -794,7 +794,7 @@ public class HTTPPacket
 /*
     public final static boolean parse(HTTPPacket httpPacket, InputStream in)
     {
-         try {
+        try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             return parse(httpPacket, reader);
         }

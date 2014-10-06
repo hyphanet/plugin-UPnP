@@ -42,9 +42,9 @@ public class XmlPullParserFactory {
     }
 
     /** Name of the system or midlet property that should be used for
-     a system property containing a comma separated list of factory
-     or parser class names (value:
-     plugins.JabberLinker.org.xmlpull.v1.XmlPullParserFactory). */
+    a system property containing a comma separated list of factory
+    or parser class names (value:
+    plugins.JabberLinker.org.xmlpull.v1.XmlPullParserFactory). */
 
 
     public static final String PROPERTY_NAME =
@@ -85,8 +85,7 @@ public class XmlPullParserFactory {
      * @param state if true feature will be set; if false will be ignored
      */
 
-    public void setFeature(String name,
-                           boolean state) throws XmlPullParserException {
+    public void setFeature(String name, boolean state) throws XmlPullParserException {
 
         features.put(name, new Boolean(state));
     }
@@ -277,7 +276,7 @@ public class XmlPullParserFactory {
 
                 if (is == null) throw new XmlPullParserException
                         ("resource not found: "+RESOURCE_NAME
-                             +" make sure that parser implementing XmlPull API is available");
+                            +" make sure that parser implementing XmlPull API is available");
                 final StringBuilder sb = new StringBuilder();
 
                 while (true) {

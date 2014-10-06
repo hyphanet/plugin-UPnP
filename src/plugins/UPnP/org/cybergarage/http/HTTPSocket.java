@@ -114,7 +114,7 @@ public class HTTPSocket
     public boolean open()
     {
         Socket sock = getSocket();
-         try {
+        try {
             sockIn = sock.getInputStream();
             sockOut = sock.getOutputStream();
         }
@@ -126,8 +126,8 @@ public class HTTPSocket
 
     public boolean close()
     {
-         try {
-             if (sockIn != null)
+        try {
+            if (sockIn != null)
                 sockIn.close();
             if (sockOut != null)
                 sockOut.close();

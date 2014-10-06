@@ -70,7 +70,7 @@ public class ControlResponse extends SOAPResponse
         // <s:Fault>
         Node faultNode = new Node(SOAP.XMLNS + SOAP.DELIM + SOAP.FAULT);
 
-         // <faultcode>s:Client</faultcode>
+        // <faultcode>s:Client</faultcode>
         Node faultCodeNode = new Node(SOAP.FAULT_CODE);
         faultCodeNode.setValue(SOAP.XMLNS + SOAP.DELIM + FAULT_CODE);
         faultNode.addNode(faultCodeNode);

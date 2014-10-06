@@ -168,7 +168,7 @@ public class HTTPUSocket
 
     public boolean post(String addr, int port, String msg)
     {
-         try {
+        try {
             InetAddress inetAddr = InetAddress.getByName(addr);
             DatagramPacket dgmPacket = new DatagramPacket(msg.getBytes(), msg.length(), inetAddr, port);
             ssdpUniSock.send(dgmPacket);
@@ -193,17 +193,17 @@ public class HTTPUSocket
     public SSDPPacket receive()
     {
         byte ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
-         SSDPPacket recvPacket = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
+        SSDPPacket recvPacket = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
         recvPacket.setLocalAddress(getLocalAddress());
         try {
-             ssdpUniSock.receive(recvPacket.getDatagramPacket());
+            ssdpUniSock.receive(recvPacket.getDatagramPacket());
             recvPacket.setTimeStamp(System.currentTimeMillis());
         }
         catch (Exception e) {
             //Debug.warning(e);
             return null;
         }
-         return recvPacket;
+        return recvPacket;
     }
 
     ////////////////////////////////////////////////
@@ -226,18 +226,18 @@ public class HTTPUSocket
     }
 
     boolean leaveGroup(String mcastAddr, int mcastPort, String bindAddr)
-     {
+    {
         try {
             InetSocketAddress mcastGroup = new InetSocketAddress(InetAddress.getByName(mcastAddr), mcastPort);
             NetworkInterface mcastIf = NetworkInterface.getByInetAddress(InetAddress.getByName(bindAddr));
             ssdpUniSock.leaveGroup(mcastGroup, mcastIf);
-         }
-         catch (Exception e) {
-             Debug.warning(e);
-             return false;
-         }
-         return true;
-     }
+        }
+        catch (Exception e) {
+            Debug.warning(e);
+            return false;
+        }
+        return true;
+    }
 */
 }
 
