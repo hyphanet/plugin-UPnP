@@ -1,15 +1,15 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*    CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: DeviceList.java
+*    File: DeviceList.java
 *
-*	Revision;
+*    Revision;
 *
-*	12/04/02
-*		- first revision.
+*    12/04/02
+*        - first revision.
 *
 ******************************************************************/
 
@@ -19,28 +19,28 @@ import java.util.*;
 
 public class DeviceList extends Vector 
 {
-	////////////////////////////////////////////////
-	//	Constants
-	////////////////////////////////////////////////
-	
-	private static final long serialVersionUID = 3773784061607435126L;
-	public final static String ELEM_NAME = "deviceList";
+    ////////////////////////////////////////////////
+    //    Constants
+    ////////////////////////////////////////////////
+    
+    private static final long serialVersionUID = 3773784061607435126L;
+    public final static String ELEM_NAME = "deviceList";
 
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	public DeviceList() 
-	{
-	}
-	
-	////////////////////////////////////////////////
-	//	Methods
-	////////////////////////////////////////////////
-	
-	public Device getDevice(int n)
-	{
-		return (Device)get(n);
-	}
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
+    
+    public DeviceList() 
+    {
+    }
+    
+    ////////////////////////////////////////////////
+    //    Methods
+    ////////////////////////////////////////////////
+    
+    public Device getDevice(int n)
+    {
+        return (Device)get(n);
+    }
 }
 

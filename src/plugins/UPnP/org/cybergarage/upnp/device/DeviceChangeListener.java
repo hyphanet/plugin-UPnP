@@ -1,19 +1,19 @@
 /******************************************************************
 *
-*	CyberLink for Java
+*    CyberLink for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2004
+*    Copyright (C) Satoshi Konno 2002-2004
 *
-*	File: DeviceChangeListener.java
+*    File: DeviceChangeListener.java
 *
-*	Revision;
+*    Revision;
 *
-*	09/12/04
-*		- Oliver Newell <newell@media-rush.com>
-*		- Added this class to allow ControlPoint applications to 
+*    09/12/04
+*        - Oliver Newell <newell@media-rush.com>
+*        - Added this class to allow ControlPoint applications to 
 *         be notified when the ControlPoint base class adds/removes
 *         a UPnP device
-*	
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.device;
@@ -22,6 +22,6 @@ import plugins.UPnP.org.cybergarage.upnp.Device;
 
 public interface DeviceChangeListener
 {
-	public void deviceAdded( Device dev );
-	public void deviceRemoved( Device dev );
+    public void deviceAdded( Device dev );
+    public void deviceRemoved( Device dev );
 }

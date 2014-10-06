@@ -1,17 +1,17 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*    CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2003
+*    Copyright (C) Satoshi Konno 2002-2003
 *
-*	File: SSDPSearchResponseSocketList.java
+*    File: SSDPSearchResponseSocketList.java
 *
-*	Revision;
+*    Revision;
 *
-*	05/08/03
-*		- first revision.
-*	05/28/03
-*		- Added post() to send a SSDPSearchRequest.
+*    05/08/03
+*        - first revision.
+*    05/28/03
+*        - Added post() to send a SSDPSearchRequest.
 *
 ******************************************************************/
 
@@ -25,120 +25,120 @@ import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class SSDPSearchResponseSocketList extends Vector 
 {
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	private static final long serialVersionUID = 4509857798038125744L;
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
+    
+    private static final long serialVersionUID = 4509857798038125744L;
 
-	public SSDPSearchResponseSocketList() 
-	{
-	}
+    public SSDPSearchResponseSocketList() 
+    {
+    }
 
-	////////////////////////////////////////////////
-	//	ControlPoint
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    ControlPoint
+    ////////////////////////////////////////////////
 
-	public void setControlPoint(ControlPoint ctrlPoint)
-	{
-		int nSockets = size();
-		for (int n=0; n<nSockets; n++) {
-			SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
-			sock.setControlPoint(ctrlPoint);
-		}
-	}
+    public void setControlPoint(ControlPoint ctrlPoint)
+    {
+        int nSockets = size();
+        for (int n=0; n<nSockets; n++) {
+            SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
+            sock.setControlPoint(ctrlPoint);
+        }
+    }
 
-	////////////////////////////////////////////////
-	//	get
-	////////////////////////////////////////////////
-	
-	public SSDPSearchResponseSocket getSSDPSearchResponseSocket(int n)
-	{
-		return (SSDPSearchResponseSocket)get(n);
-	}
-	
-	////////////////////////////////////////////////
-	//	Methods
-	////////////////////////////////////////////////
-	
-	public boolean open(int port)
-	{
-		try {
-			int nHostAddrs = HostInterface.getNHostAddresses();
-			for (int n=0; n<nHostAddrs; n++) {
-				String bindAddr = HostInterface.getHostAddress(n);
-				SSDPSearchResponseSocket socket = new SSDPSearchResponseSocket(bindAddr, port);
-				add(socket);
-			}
-		}
-		catch (Exception e) {
-			stop();
-			close();
-			clear();
-			return false;
-		}
-		return true;
-	}
+    ////////////////////////////////////////////////
+    //    get
+    ////////////////////////////////////////////////
+    
+    public SSDPSearchResponseSocket getSSDPSearchResponseSocket(int n)
+    {
+        return (SSDPSearchResponseSocket)get(n);
+    }
+    
+    ////////////////////////////////////////////////
+    //    Methods
+    ////////////////////////////////////////////////
+    
+    public boolean open(int port)
+    {
+        try {
+            int nHostAddrs = HostInterface.getNHostAddresses();
+            for (int n=0; n<nHostAddrs; n++) {
+                String bindAddr = HostInterface.getHostAddress(n);
+                SSDPSearchResponseSocket socket = new SSDPSearchResponseSocket(bindAddr, port);
+                add(socket);
+            }
+        }
+        catch (Exception e) {
+            stop();
+            close();
+            clear();
+            return false;
+        }
+        return true;
+    }
 
-	public boolean open() 
-	{
-		return open(SSDP.PORT);
-	}
-		
-	public void close()
-	{
-		int nSockets = size();
-		for (int n=0; n<nSockets; n++) {
-			SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
-			sock.close();
-		}
-		clear();
-	}
+    public boolean open() 
+    {
+        return open(SSDP.PORT);
+    }
+        
+    public void close()
+    {
+        int nSockets = size();
+        for (int n=0; n<nSockets; n++) {
+            SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
+            sock.close();
+        }
+        clear();
+    }
 
-	////////////////////////////////////////////////
-	//	Methods
-	////////////////////////////////////////////////
-	
-	public void start()
-	{
-		int nSockets = size();
-		for (int n=0; n<nSockets; n++) {
-			SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
-			sock.start();
-		}
-	}
+    ////////////////////////////////////////////////
+    //    Methods
+    ////////////////////////////////////////////////
+    
+    public void start()
+    {
+        int nSockets = size();
+        for (int n=0; n<nSockets; n++) {
+            SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
+            sock.start();
+        }
+    }
 
-	public void stop()
-	{
-		int nSockets = size();
-		for (int n=0; n<nSockets; n++) {
-			SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
-			sock.stop();
-		}
-	}
+    public void stop()
+    {
+        int nSockets = size();
+        for (int n=0; n<nSockets; n++) {
+            SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
+            sock.stop();
+        }
+    }
 
-	////////////////////////////////////////////////
-	//	Methods
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    Methods
+    ////////////////////////////////////////////////
 
-	public boolean post(SSDPSearchRequest req)
-	{
-		boolean ret = true;
-		int nSockets = size();
-		for (int n=0; n<nSockets; n++) {
-			SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
-			String bindAddr = sock.getLocalAddress();
-			req.setLocalAddress(bindAddr);
-			String ssdpAddr = SSDP.ADDRESS;
-			if (HostInterface.isIPv6Address(bindAddr) == true)
-				ssdpAddr = SSDP.getIPv6Address();
-			//sock.joinGroup(ssdpAddr, SSDP.PORT, bindAddr);
-			if (sock.post(ssdpAddr, SSDP.PORT, req) == false)
-				ret = false;
-			//sock.leaveGroup(ssdpAddr, SSDP.PORT, bindAddr);
-		}
-		return ret;
-	}
-	
+    public boolean post(SSDPSearchRequest req)
+    {
+        boolean ret = true;
+        int nSockets = size();
+        for (int n=0; n<nSockets; n++) {
+            SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
+            String bindAddr = sock.getLocalAddress();
+            req.setLocalAddress(bindAddr);
+            String ssdpAddr = SSDP.ADDRESS;
+            if (HostInterface.isIPv6Address(bindAddr) == true)
+                ssdpAddr = SSDP.getIPv6Address();
+            //sock.joinGroup(ssdpAddr, SSDP.PORT, bindAddr);
+            if (sock.post(ssdpAddr, SSDP.PORT, req) == false)
+                ret = false;
+            //sock.leaveGroup(ssdpAddr, SSDP.PORT, bindAddr);
+        }
+        return ret;
+    }
+    
 }
 

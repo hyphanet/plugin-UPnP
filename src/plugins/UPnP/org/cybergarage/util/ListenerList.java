@@ -1,15 +1,15 @@
 /******************************************************************
 *
-*	CyberUtil for Java
+*    CyberUtil for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: ListenerList.java
+*    File: ListenerList.java
 *
-*	Revision;
+*    Revision;
 *
-*	12/30/02
-*		- first revision.
+*    12/30/02
+*        - first revision.
 *
 ******************************************************************/
 
@@ -19,13 +19,13 @@ import java.util.*;
 
 public class ListenerList extends Vector
 {
-	private static final long serialVersionUID = 8039231561720446173L;
+    private static final long serialVersionUID = 8039231561720446173L;
 
-	public boolean add(Object obj)
-	{
-		if (0 <= indexOf(obj))
-			return false;
-		return super.add(obj);
-	}
+    public boolean add(Object obj)
+    {
+        if (0 <= indexOf(obj))
+            return false;
+        return super.add(obj);
+    }
 }
 

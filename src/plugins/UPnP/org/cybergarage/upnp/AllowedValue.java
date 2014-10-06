@@ -1,16 +1,16 @@
 /******************************************************************
 *
-*	CyberLink for Java
+*    CyberLink for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2004
+*    Copyright (C) Satoshi Konno 2002-2004
 *
-*	File: AllowedValue.java
+*    File: AllowedValue.java
 *
-*	Revision:
+*    Revision:
 *
-*	03/27/04
-*		- first revision.
-*	
+*    03/27/04
+*        - first revision.
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -19,52 +19,52 @@ import plugins.UPnP.org.cybergarage.xml.*;
 
 public class AllowedValue
 {
-	////////////////////////////////////////////////
-	//	Constants
-	////////////////////////////////////////////////
-	
-	public final static String ELEM_NAME = "allowedValue";
+    ////////////////////////////////////////////////
+    //    Constants
+    ////////////////////////////////////////////////
+    
+    public final static String ELEM_NAME = "allowedValue";
 
-	////////////////////////////////////////////////
-	//	Member
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    Member
+    ////////////////////////////////////////////////
 
-	private Node allowedValueNode;
+    private Node allowedValueNode;
 
-	public Node getAllowedValueNode()
-	{
-		return allowedValueNode;
-	}
-	
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
+    public Node getAllowedValueNode()
+    {
+        return allowedValueNode;
+    }
+    
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
 
-	public AllowedValue(Node node)
-	{
-		allowedValueNode = node;
-	}
+    public AllowedValue(Node node)
+    {
+        allowedValueNode = node;
+    }
 
-	////////////////////////////////////////////////
-	//	isAllowedValueNode
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    isAllowedValueNode
+    ////////////////////////////////////////////////
 
-	public static boolean isAllowedValueNode(Node node)
-	{
-		return ELEM_NAME.equals(node.getName());
-	}
+    public static boolean isAllowedValueNode(Node node)
+    {
+        return ELEM_NAME.equals(node.getName());
+    }
 
-	////////////////////////////////////////////////
-	//	Value
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    Value
+    ////////////////////////////////////////////////
 
-	public void setValue(String value)
-	{
-		getAllowedValueNode().setValue(value);
-	}
+    public void setValue(String value)
+    {
+        getAllowedValueNode().setValue(value);
+    }
 
-	public String getValue()
-	{
-		return getAllowedValueNode().getValue();
-	}
+    public String getValue()
+    {
+        return getAllowedValueNode().getValue();
+    }
 }

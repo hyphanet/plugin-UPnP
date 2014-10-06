@@ -1,16 +1,16 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*    CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: SubscriptionResponse.java
+*    File: SubscriptionResponse.java
 *
-*	Revision;
+*    Revision;
 *
-*	01/29/03
-*		- first revision.
-*	
+*    01/29/03
+*        - first revision.
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.event;
@@ -20,65 +20,65 @@ import plugins.UPnP.org.cybergarage.http.*;
 
 public class SubscriptionResponse extends HTTPResponse
 {
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	public SubscriptionResponse()
-	{
-		setServer(UPnP.getServerName());
-	}
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
+    
+    public SubscriptionResponse()
+    {
+        setServer(UPnP.getServerName());
+    }
 
-	public SubscriptionResponse(HTTPResponse httpRes)
-	{
-		super(httpRes);
-	}
+    public SubscriptionResponse(HTTPResponse httpRes)
+    {
+        super(httpRes);
+    }
 
-	////////////////////////////////////////////////
-	//	Error
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    Error
+    ////////////////////////////////////////////////
 
-	public void setResponse(int code)
-	{
-		setStatusCode(code);
-		setContentLength(0);
-	}
-	
-	////////////////////////////////////////////////
-	//	Error
-	////////////////////////////////////////////////
+    public void setResponse(int code)
+    {
+        setStatusCode(code);
+        setContentLength(0);
+    }
+    
+    ////////////////////////////////////////////////
+    //    Error
+    ////////////////////////////////////////////////
 
-	public void setErrorResponse(int code)
-	{
-		setStatusCode(code);
-		setContentLength(0);
-	}
-		
-	////////////////////////////////////////////////
-	//	SID
-	////////////////////////////////////////////////
+    public void setErrorResponse(int code)
+    {
+        setStatusCode(code);
+        setContentLength(0);
+    }
+        
+    ////////////////////////////////////////////////
+    //    SID
+    ////////////////////////////////////////////////
 
-	public void setSID(String id)
-	{
-		setHeader(HTTP.SID, Subscription.toSIDHeaderString(id));
-	}
+    public void setSID(String id)
+    {
+        setHeader(HTTP.SID, Subscription.toSIDHeaderString(id));
+    }
 
-	public String getSID()
-	{
-		return Subscription.getSID(getHeaderValue(HTTP.SID));
-	}
+    public String getSID()
+    {
+        return Subscription.getSID(getHeaderValue(HTTP.SID));
+    }
 
-	////////////////////////////////////////////////
-	//	Timeout
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    Timeout
+    ////////////////////////////////////////////////
 
-	public void setTimeout(long value)
-	{
-		setHeader(HTTP.TIMEOUT, Subscription.toTimeoutHeaderString(value));
-	}
+    public void setTimeout(long value)
+    {
+        setHeader(HTTP.TIMEOUT, Subscription.toTimeoutHeaderString(value));
+    }
 
-	public long getTimeout()
-	{
-		return Subscription.getTimeout(getHeaderValue(HTTP.TIMEOUT));
-	}
+    public long getTimeout()
+    {
+        return Subscription.getTimeout(getHeaderValue(HTTP.TIMEOUT));
+    }
 }

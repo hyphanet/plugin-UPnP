@@ -1,15 +1,15 @@
 /******************************************************************
 *
-*	CyberXML for Java
+*    CyberXML for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: Attribute.java
+*    File: Attribute.java
 *
-*	Revision;
+*    Revision;
 *
-*	11/27/02
-*		- first revision.
+*    11/27/02
+*        - first revision.
 *
 ******************************************************************/
 
@@ -17,45 +17,45 @@ package plugins.UPnP.org.cybergarage.xml;
 
 public class Attribute 
 {
-	private String name = new String(); 
-	private String value = new String(); 
+    private String name = new String(); 
+    private String value = new String(); 
 
-	public Attribute() 
-	{
-	}
+    public Attribute() 
+    {
+    }
 
-	public Attribute(String name, String value) 
-	{
-		setName(name);
-		setValue(value);
-	}
+    public Attribute(String name, String value) 
+    {
+        setName(name);
+        setValue(value);
+    }
 
-	////////////////////////////////////////////////
-	//	name
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    name
+    ////////////////////////////////////////////////
 
-	public void setName(String name) 
-	{
-		this.name = name;
-	}
+    public void setName(String name) 
+    {
+        this.name = name;
+    }
 
-	public String getName() 
-	{
-		return name;
-	}
+    public String getName() 
+    {
+        return name;
+    }
 
-	////////////////////////////////////////////////
-	//	value
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    value
+    ////////////////////////////////////////////////
 
-	public void setValue(String value) 
-	{
-		this.value = value;
-	}
+    public void setValue(String value) 
+    {
+        this.value = value;
+    }
 
-	public String getValue() 
-	{
-		return value;
-	}
+    public String getValue() 
+    {
+        return value;
+    }
 }
 

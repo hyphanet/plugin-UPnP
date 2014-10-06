@@ -1,25 +1,25 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*    CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: SSDPResponse.java
+*    File: SSDPResponse.java
 *
-*	Revision;
+*    Revision;
 *
-*	01/14/03
-*		- first revision.
-*	01/23/04
-*		- Oliver Newell
-*		- Overided HTTPResponse::getHeader() for Intel UPnP control points.
-*	03/16/04
-*		- Thanks for Darrell Young
-*		- Fixed to set v1.1 to the HTTP version.
-*	10/20/04 
-*		- Brent Hills <bhills@openshores.com>
-*		- Added setMYNAME() and getMYNAME().
-*	
+*    01/14/03
+*        - first revision.
+*    01/23/04
+*        - Oliver Newell
+*        - Overided HTTPResponse::getHeader() for Intel UPnP control points.
+*    03/16/04
+*        - Thanks for Darrell Young
+*        - Fixed to set v1.1 to the HTTP version.
+*    10/20/04 
+*        - Brent Hills <bhills@openshores.com>
+*        - Added setMYNAME() and getMYNAME().
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -28,99 +28,99 @@ import plugins.UPnP.org.cybergarage.http.*;
 
 public class SSDPResponse extends HTTPResponse
 {
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	public SSDPResponse()
-	{
-		setVersion(HTTP.VERSION_11);
-	}
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
+    
+    public SSDPResponse()
+    {
+        setVersion(HTTP.VERSION_11);
+    }
 
-	////////////////////////////////////////////////
-	//	ST (SearchTarget)
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    ST (SearchTarget)
+    ////////////////////////////////////////////////
 
-	public void setST(String value)
-	{
-		setHeader(HTTP.ST, value);
-	}
+    public void setST(String value)
+    {
+        setHeader(HTTP.ST, value);
+    }
 
-	public String getST()
-	{
-		return getHeaderValue(HTTP.ST);
-	}
+    public String getST()
+    {
+        return getHeaderValue(HTTP.ST);
+    }
 
-	////////////////////////////////////////////////
-	//	Location
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    Location
+    ////////////////////////////////////////////////
 
-	public void setLocation(String value)
-	{
-		setHeader(HTTP.LOCATION, value);
-	}
+    public void setLocation(String value)
+    {
+        setHeader(HTTP.LOCATION, value);
+    }
 
-	public String getLocation()
-	{
-		return getHeaderValue(HTTP.LOCATION);
-	}
+    public String getLocation()
+    {
+        return getHeaderValue(HTTP.LOCATION);
+    }
 
-	////////////////////////////////////////////////
-	//	USN
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    USN
+    ////////////////////////////////////////////////
 
-	public void setUSN(String value)
-	{
-		setHeader(HTTP.USN, value);
-	}
+    public void setUSN(String value)
+    {
+        setHeader(HTTP.USN, value);
+    }
 
-	public String getUSN()
-	{
-		return getHeaderValue(HTTP.USN);
-	}
+    public String getUSN()
+    {
+        return getHeaderValue(HTTP.USN);
+    }
 
-	////////////////////////////////////////////////
-	//	MYNAME
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    MYNAME
+    ////////////////////////////////////////////////
 
-	public void setMYNAME(String value)
-	{
-		setHeader(HTTP.MYNAME, value);
-	}
+    public void setMYNAME(String value)
+    {
+        setHeader(HTTP.MYNAME, value);
+    }
 
-	public String getMYNAME()
-	{
-		return getHeaderValue(HTTP.MYNAME);
-	}
-	
-	////////////////////////////////////////////////
-	//	CacheControl
-	////////////////////////////////////////////////
+    public String getMYNAME()
+    {
+        return getHeaderValue(HTTP.MYNAME);
+    }
+    
+    ////////////////////////////////////////////////
+    //    CacheControl
+    ////////////////////////////////////////////////
 
-	public void setLeaseTime(int len)
-	{
-		setHeader(HTTP.CACHE_CONTROL, "max-age=" + Integer.toString(len));
-	}
+    public void setLeaseTime(int len)
+    {
+        setHeader(HTTP.CACHE_CONTROL, "max-age=" + Integer.toString(len));
+    }
 
-	public int getLeaseTime()
-	{
-		String cacheCtrl = getHeaderValue(HTTP.CACHE_CONTROL);
-		return SSDP.getLeaseTime(cacheCtrl);
-	}
+    public int getLeaseTime()
+    {
+        String cacheCtrl = getHeaderValue(HTTP.CACHE_CONTROL);
+        return SSDP.getLeaseTime(cacheCtrl);
+    }
 
-	////////////////////////////////////////////////
-	//	getHeader (Override)
-	////////////////////////////////////////////////
-	
-	public String getHeader()
-	{
-		StringBuilder str = new StringBuilder();
-	
-		str.append(getStatusLineString());
-		str.append(getHeaderString());
-		str.append(HTTP.CRLF); // for Intel UPnP control points.
-		
-		return str.toString();
-	}
+    ////////////////////////////////////////////////
+    //    getHeader (Override)
+    ////////////////////////////////////////////////
+    
+    public String getHeader()
+    {
+        StringBuilder str = new StringBuilder();
+    
+        str.append(getStatusLineString());
+        str.append(getHeaderString());
+        str.append(HTTP.CRLF); // for Intel UPnP control points.
+        
+        return str.toString();
+    }
 
 }

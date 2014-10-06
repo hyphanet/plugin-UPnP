@@ -1,17 +1,17 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*    CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2003
+*    Copyright (C) Satoshi Konno 2002-2003
 *
-*	File:StateVariableData.java
+*    File:StateVariableData.java
 *
-*	Revision;
+*    Revision;
 *
-*	02/05/03
-*		- first revision.
-*	01/06/04
-*		- Added setQueryListener() and getQueryListener().
+*    02/05/03
+*        - first revision.
+*    01/06/04
+*        - Added setQueryListener() and getQueryListener().
 *
 ******************************************************************/
 
@@ -21,53 +21,53 @@ import plugins.UPnP.org.cybergarage.upnp.control.*;
 
 public class StateVariableData extends NodeData
 {
-	public StateVariableData() 
-	{
-	}
+    public StateVariableData() 
+    {
+    }
 
-	////////////////////////////////////////////////
-	// value
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // value
+    ////////////////////////////////////////////////
 
-	private String value = "";
+    private String value = "";
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	////////////////////////////////////////////////
-	// QueryListener
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // QueryListener
+    ////////////////////////////////////////////////
 
-	private QueryListener queryListener = null;
+    private QueryListener queryListener = null;
 
-	public QueryListener getQueryListener() {
-		return queryListener;
-	}
+    public QueryListener getQueryListener() {
+        return queryListener;
+    }
 
-	public void setQueryListener(QueryListener queryListener) {
-		this.queryListener = queryListener;
-	}
-	
-	////////////////////////////////////////////////
-	// QueryResponse
-	////////////////////////////////////////////////
+    public void setQueryListener(QueryListener queryListener) {
+        this.queryListener = queryListener;
+    }
+    
+    ////////////////////////////////////////////////
+    // QueryResponse
+    ////////////////////////////////////////////////
 
-	private QueryResponse queryRes = null;
+    private QueryResponse queryRes = null;
 
-	public QueryResponse getQueryResponse() 
-	{
-		return queryRes;
-	}
+    public QueryResponse getQueryResponse() 
+    {
+        return queryRes;
+    }
 
-	public void setQueryResponse(QueryResponse res) 
-	{
-		queryRes = res;
-	}
+    public void setQueryResponse(QueryResponse res) 
+    {
+        queryRes = res;
+    }
 
 }
 

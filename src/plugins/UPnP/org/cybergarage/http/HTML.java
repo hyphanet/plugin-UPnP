@@ -1,22 +1,22 @@
 /******************************************************************
 *
-*	CyberHTTP for Java
+*    CyberHTTP for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2003
+*    Copyright (C) Satoshi Konno 2002-2003
 *
-*	File: HTML.java
+*    File: HTML.java
 *
-*	Revision;
+*    Revision;
 *
-*	01/05/03
-*		- first revision.
-*	
+*    01/05/03
+*        - first revision.
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;
 
 public class HTML 
 {
-	public static final String CONTENT_TYPE = "text/html; charset=\"utf-8\"";
+    public static final String CONTENT_TYPE = "text/html; charset=\"utf-8\"";
 }
 

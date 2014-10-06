@@ -1,15 +1,15 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*    CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: ServiceStateTable.java
+*    File: ServiceStateTable.java
 *
-*	Revision:
+*    Revision:
 *
-*	12/06/02
-*		- first revision.
+*    12/06/02
+*        - first revision.
 *
 ******************************************************************/
 
@@ -19,28 +19,28 @@ import java.util.*;
 
 public class ServiceStateTable extends Vector 
 {
-	////////////////////////////////////////////////
-	//	Constants
-	////////////////////////////////////////////////
-	
-	private static final long serialVersionUID = 7626909231678469365L;
-	public final static String ELEM_NAME = "serviceStateTable";
+    ////////////////////////////////////////////////
+    //    Constants
+    ////////////////////////////////////////////////
+    
+    private static final long serialVersionUID = 7626909231678469365L;
+    public final static String ELEM_NAME = "serviceStateTable";
 
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	public ServiceStateTable() 
-	{
-	}
-	
-	////////////////////////////////////////////////
-	//	Methods
-	////////////////////////////////////////////////
-	
-	public StateVariable getStateVariable(int n)
-	{
-		return (StateVariable)get(n);
-	}
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
+    
+    public ServiceStateTable() 
+    {
+    }
+    
+    ////////////////////////////////////////////////
+    //    Methods
+    ////////////////////////////////////////////////
+    
+    public StateVariable getStateVariable(int n)
+    {
+        return (StateVariable)get(n);
+    }
 }
 

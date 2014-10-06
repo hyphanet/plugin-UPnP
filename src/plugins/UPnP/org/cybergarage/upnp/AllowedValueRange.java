@@ -1,16 +1,16 @@
 /******************************************************************
 *
-*	CyberLink for Java
+*    CyberLink for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2004
+*    Copyright (C) Satoshi Konno 2002-2004
 *
-*	File: AllowedValueRange.java
+*    File: AllowedValueRange.java
 *
-*	Revision:
+*    Revision:
 *
-*	03/27/04
-*		- first revision.
-*	
+*    03/27/04
+*        - first revision.
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -19,86 +19,86 @@ import plugins.UPnP.org.cybergarage.xml.*;
 
 public class AllowedValueRange
 {
-	////////////////////////////////////////////////
-	//	Constants
-	////////////////////////////////////////////////
-	
-	public final static String ELEM_NAME = "allowedValueRange";
+    ////////////////////////////////////////////////
+    //    Constants
+    ////////////////////////////////////////////////
+    
+    public final static String ELEM_NAME = "allowedValueRange";
 
-	////////////////////////////////////////////////
-	//	Member
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    Member
+    ////////////////////////////////////////////////
 
-	private Node allowedValueRangeNode;
+    private Node allowedValueRangeNode;
 
-	public Node getAllowedValueRangeNode()
-	{
-		return allowedValueRangeNode;
-	}
-	
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
+    public Node getAllowedValueRangeNode()
+    {
+        return allowedValueRangeNode;
+    }
+    
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
 
-	public AllowedValueRange(Node node)
-	{
-		allowedValueRangeNode = node;
-	}
+    public AllowedValueRange(Node node)
+    {
+        allowedValueRangeNode = node;
+    }
 
-	////////////////////////////////////////////////
-	//	isAllowedValueRangeNode
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    isAllowedValueRangeNode
+    ////////////////////////////////////////////////
 
-	public static boolean isAllowedValueRangeNode(Node node)
-	{
-		return ELEM_NAME.equals(node.getName());
-	}
+    public static boolean isAllowedValueRangeNode(Node node)
+    {
+        return ELEM_NAME.equals(node.getName());
+    }
 
-	////////////////////////////////////////////////
-	//	minimum
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    minimum
+    ////////////////////////////////////////////////
 
-	private final static String MINIMUM = "minimum";
-	
-	public void setMinimum(String value)
-	{
-		getAllowedValueRangeNode().setNode(MINIMUM, value);
-	}
+    private final static String MINIMUM = "minimum";
+    
+    public void setMinimum(String value)
+    {
+        getAllowedValueRangeNode().setNode(MINIMUM, value);
+    }
 
-	public String getMinimum()
-	{
-		return getAllowedValueRangeNode().getNodeValue(MINIMUM);
-	}
+    public String getMinimum()
+    {
+        return getAllowedValueRangeNode().getNodeValue(MINIMUM);
+    }
 
-	////////////////////////////////////////////////
-	//	maximum
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    maximum
+    ////////////////////////////////////////////////
 
-	private final static String MAXIMUM = "maximum";
-	
-	public void setMaximum(String value)
-	{
-		getAllowedValueRangeNode().setNode(MAXIMUM, value);
-	}
+    private final static String MAXIMUM = "maximum";
+    
+    public void setMaximum(String value)
+    {
+        getAllowedValueRangeNode().setNode(MAXIMUM, value);
+    }
 
-	public String getMaximum()
-	{
-		return getAllowedValueRangeNode().getNodeValue(MAXIMUM);
-	}
+    public String getMaximum()
+    {
+        return getAllowedValueRangeNode().getNodeValue(MAXIMUM);
+    }
 
-	////////////////////////////////////////////////
-	//	width
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //    width
+    ////////////////////////////////////////////////
 
-	private final static String STEP = "step";
-	
-	public void setStep(String value)
-	{
-		getAllowedValueRangeNode().setNode(STEP, value);
-	}
+    private final static String STEP = "step";
+    
+    public void setStep(String value)
+    {
+        getAllowedValueRangeNode().setNode(STEP, value);
+    }
 
-	public String getStep()
-	{
-		return getAllowedValueRangeNode().getNodeValue(STEP);
-	}
+    public String getStep()
+    {
+        return getAllowedValueRangeNode().getNodeValue(STEP);
+    }
 }

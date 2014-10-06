@@ -1,21 +1,21 @@
 /******************************************************************
 *
-*	CyberHTTP for Java
+*    CyberHTTP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: HTTPRequestListener.java
+*    File: HTTPRequestListener.java
 *
-*	Revision;
+*    Revision;
 *
-*	12/13/02
-*		- first revision.
-*	
+*    12/13/02
+*        - first revision.
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;
 
 public interface HTTPRequestListener
 {
-	public void httpRequestRecieved(HTTPRequest httpReq);
+    public void httpRequestRecieved(HTTPRequest httpReq);
 }

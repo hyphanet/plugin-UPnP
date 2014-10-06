@@ -1,16 +1,16 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*    CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*    Copyright (C) Satoshi Konno 2002
 *
-*	File: SSDPMSearchRequest.java
+*    File: SSDPMSearchRequest.java
 *
-*	Revision;
+*    Revision;
 *
-*	01/14/03
-*		- first revision.
-*	
+*    01/14/03
+*        - first revision.
+*    
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -19,13 +19,13 @@ import plugins.UPnP.org.cybergarage.http.*;
 
 public class SSDPNotifyRequest extends SSDPRequest
 {
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	public SSDPNotifyRequest()
-	{
-		setMethod(HTTP.NOTIFY);
-		setURI("*");
-	}
+    ////////////////////////////////////////////////
+    //    Constructor
+    ////////////////////////////////////////////////
+    
+    public SSDPNotifyRequest()
+    {
+        setMethod(HTTP.NOTIFY);
+        setURI("*");
+    }
 }
