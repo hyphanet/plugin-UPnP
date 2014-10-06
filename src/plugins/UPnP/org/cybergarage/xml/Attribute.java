@@ -15,16 +15,16 @@
 
 package plugins.UPnP.org.cybergarage.xml;
 
-public class Attribute 
+public class Attribute
 {
-    private String name = new String(); 
-    private String value = new String(); 
+    private String name = new String();
+    private String value = new String();
 
-    public Attribute() 
+    public Attribute()
     {
     }
 
-    public Attribute(String name, String value) 
+    public Attribute(String name, String value)
     {
         setName(name);
         setValue(value);
@@ -34,12 +34,12 @@ public class Attribute
     //    name
     ////////////////////////////////////////////////
 
-    public void setName(String name) 
+    public void setName(String name)
     {
         this.name = name;
     }
 
-    public String getName() 
+    public String getName()
     {
         return name;
     }
@@ -48,12 +48,12 @@ public class Attribute
     //    value
     ////////////////////////////////////////////////
 
-    public void setValue(String value) 
+    public void setValue(String value)
     {
         this.value = value;
     }
 
-    public String getValue() 
+    public String getValue()
     {
         return value;
     }

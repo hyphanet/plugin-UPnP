@@ -12,7 +12,7 @@
 *        - first revision.
 *    05/28/03
 *        - Added post() to send a SSDPSearchRequest.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -29,7 +29,7 @@ public class SSDPSearchResponseSocket extends HTTPUSocket implements Runnable
     {
         setControlPoint(null);
     }
-    
+
     public SSDPSearchResponseSocket(String bindAddr, int port)
     {
         super(bindAddr, port);
@@ -37,11 +37,11 @@ public class SSDPSearchResponseSocket extends HTTPUSocket implements Runnable
     }
 
     ////////////////////////////////////////////////
-    //    ControlPoint    
+    //    ControlPoint
     ////////////////////////////////////////////////
 
     private ControlPoint controlPoint = null;
-    
+
     public void setControlPoint(ControlPoint ctrlp)
     {
         this.controlPoint = ctrlp;
@@ -53,15 +53,15 @@ public class SSDPSearchResponseSocket extends HTTPUSocket implements Runnable
     }
 
     ////////////////////////////////////////////////
-    //    run    
+    //    run
     ////////////////////////////////////////////////
 
     private Thread deviceSearchResponseThread = null;
-        
+
     public void run()
     {
         Thread thisThread = Thread.currentThread();
-        
+
         ControlPoint ctrlPoint = getControlPoint();
 
         while (deviceSearchResponseThread == thisThread) {
@@ -70,17 +70,17 @@ public class SSDPSearchResponseSocket extends HTTPUSocket implements Runnable
             if (packet == null)
                 break;
             if (ctrlPoint != null)
-                ctrlPoint.searchResponseReceived(packet); 
+                ctrlPoint.searchResponseReceived(packet);
         }
     }
-    
+
     public void start()
     {
         deviceSearchResponseThread = new Thread(this, "UPnP-SSDPSearchResponseSocket");
         deviceSearchResponseThread.setDaemon(true);
         deviceSearchResponseThread.start();
     }
-    
+
     public void stop()
     {
         deviceSearchResponseThread = null;

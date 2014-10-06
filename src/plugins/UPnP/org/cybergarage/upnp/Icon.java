@@ -10,7 +10,7 @@
 *
 *    11/28/02
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -22,7 +22,7 @@ public class Icon
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public final static String ELEM_NAME = "icon";
 
     ////////////////////////////////////////////////
@@ -35,7 +35,7 @@ public class Icon
     {
         return iconNode;
     }
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
@@ -59,7 +59,7 @@ public class Icon
     ////////////////////////////////////////////////
 
     private final static String MIME_TYPE = "mimeType";
-    
+
     public void setMimeType(String value)
     {
         getIconNode().setNode(MIME_TYPE, value);
@@ -75,7 +75,7 @@ public class Icon
     ////////////////////////////////////////////////
 
     private final static String WIDTH = "width";
-    
+
     public void setWidth(String value)
     {
         getIconNode().setNode(WIDTH, value);
@@ -91,7 +91,7 @@ public class Icon
     ////////////////////////////////////////////////
 
     private final static String HEIGHT = "height";
-    
+
     public void setHeight(String value)
     {
         getIconNode().setNode(HEIGHT, value);
@@ -107,7 +107,7 @@ public class Icon
     ////////////////////////////////////////////////
 
     private final static String DEPTH = "depth";
-    
+
     public void setDepth(String value)
     {
         getIconNode().setNode(DEPTH, value);
@@ -123,7 +123,7 @@ public class Icon
     ////////////////////////////////////////////////
 
     private final static String URL = "url";
-    
+
     public void setURL(String value)
     {
         getIconNode().setNode(URL, value);

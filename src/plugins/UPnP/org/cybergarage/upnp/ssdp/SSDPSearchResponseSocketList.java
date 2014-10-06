@@ -23,15 +23,15 @@ import plugins.UPnP.org.cybergarage.net.*;
 
 import plugins.UPnP.org.cybergarage.upnp.*;
 
-public class SSDPSearchResponseSocketList extends Vector 
+public class SSDPSearchResponseSocketList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = 4509857798038125744L;
 
-    public SSDPSearchResponseSocketList() 
+    public SSDPSearchResponseSocketList()
     {
     }
 
@@ -51,16 +51,16 @@ public class SSDPSearchResponseSocketList extends Vector
     ////////////////////////////////////////////////
     //    get
     ////////////////////////////////////////////////
-    
+
     public SSDPSearchResponseSocket getSSDPSearchResponseSocket(int n)
     {
         return (SSDPSearchResponseSocket)get(n);
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public boolean open(int port)
     {
         try {
@@ -80,11 +80,11 @@ public class SSDPSearchResponseSocketList extends Vector
         return true;
     }
 
-    public boolean open() 
+    public boolean open()
     {
         return open(SSDP.PORT);
     }
-        
+
     public void close()
     {
         int nSockets = size();
@@ -98,7 +98,7 @@ public class SSDPSearchResponseSocketList extends Vector
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public void start()
     {
         int nSockets = size();
@@ -139,6 +139,6 @@ public class SSDPSearchResponseSocketList extends Vector
         }
         return ret;
     }
-    
+
 }
 

@@ -19,22 +19,22 @@ package plugins.UPnP.org.cybergarage.upnp.event;
 
 import java.util.*;
 
-public class SubscriberList extends Vector 
+public class SubscriberList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = -648427977601494972L;
 
-    public SubscriberList() 
+    public SubscriberList()
     {
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public Subscriber getSubscriber(int n)
     {
         Object obj = null;

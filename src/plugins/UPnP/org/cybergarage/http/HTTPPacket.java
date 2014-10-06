@@ -14,7 +14,7 @@
 *        - Giordano Sassaroli <sassarol@cefriel.it>
 *        - Problem : The API is unable to receive responses from the Microsoft UPnP stack
 *        - Error : the Microsoft UPnP stack is based on ISAPI on IIS, and whenever IIS
-*                 receives a post request, it answers with two responses: the first one has no 
+*                 receives a post request, it answers with two responses: the first one has no
 *                  body and it is a code 100 (continue) response, which has to be ignored. The
 *                  second response is the actual one and should be parsed as the response.
 *    02/09/04
@@ -34,11 +34,11 @@
 *        - Changed setCacheControl() and getChcheControl();
 *    08/25/04
 *        - Added the following methods.
-*          hasContentRange(), setContentRange(), getContentRange(), 
+*          hasContentRange(), setContentRange(), getContentRange(),
 *          getContentRangeFirstPosition(), getContentRangeLastPosition() and getContentRangeInstanceLength()
 *    08/26/04
 *        - Added the following methods.
-*          hasConnection(), setConnection(), getConnection(), 
+*          hasConnection(), setConnection(), getConnection(),
 *          isCloseConnection() and isKeepAliveConnection()
 *    08/27/04
 *        - Added a updateWithContentLength paramger to setContent().
@@ -47,7 +47,7 @@
 *        - Added init() and read().
 *    09/19/04
 *        - Added a onlyHeaders parameter to set().
-*    10/20/04 
+*    10/20/04
 *        - Brent Hills <bhills@openshores.com>
 *        - Changed hasContentRange() to check Content-Range and Range header.
 *        - Added support for Range header to getContentRange().
@@ -71,12 +71,12 @@ import plugins.UPnP.org.cybergarage.net.*;
 import plugins.UPnP.org.cybergarage.util.*;
 import java.util.Calendar;
 
-public class HTTPPacket 
+public class HTTPPacket
 {
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public HTTPPacket()
     {
         setVersion(HTTP.VERSION);
@@ -100,7 +100,7 @@ public class HTTPPacket
     ////////////////////////////////////////////////
     //    init
     ////////////////////////////////////////////////
-    
+
     public void init()
     {
         setFirstLine("");
@@ -112,33 +112,33 @@ public class HTTPPacket
     ////////////////////////////////////////////////
     //    Version
     ////////////////////////////////////////////////
-    
+
     private String version;
-    
+
     public void setVersion(String ver)
     {
         version = ver;
     }
-    
+
     public String getVersion()
     {
         return version;
     }
-        
+
     ////////////////////////////////////////////////
     //    set
     ////////////////////////////////////////////////
-    
+
     protected boolean set(InputStream in, boolean onlyHeaders)
     {
          try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            
+
             String firstLine = reader.readLine();
             if (firstLine == null || firstLine.length() <= 0)
                 return false;
             setFirstLine(firstLine);
-            
+
             // Thanks for Giordano Sassaroli <sassarol@cefriel.it> (09/03/03)
             HTTPStatus httpStatus = new HTTPStatus(firstLine);
             int statCode = httpStatus.getStatusCode();
@@ -164,7 +164,7 @@ public class HTTPPacket
                     return true;
                 }
             }
-                
+
             String headerLine = reader.readLine();
             while ((headerLine != null) && (0 < headerLine.length()) ) {
                 HTTPHeader header = new HTTPHeader(headerLine);
@@ -172,14 +172,14 @@ public class HTTPPacket
                     setHeader(header);
                 headerLine = reader.readLine();
             }
-                
+
             if (onlyHeaders == true) {
                 setContent("", false);
                 return true;
             }
-                
+
             boolean isChunkedRequest = isChunked();
-                
+
             long contentLen = 0;
             if (isChunkedRequest == true) {
                 try {
@@ -190,9 +190,9 @@ public class HTTPPacket
             }
             else
                 contentLen = getContentLength();
-                        
+
             StringBuilder contentBuf = new StringBuilder();
-            
+
             while (0 < contentLen) {
                 int chunkSize = HTTP.getChunkSize();
                 char readBuf[] = new char[chunkSize];
@@ -245,7 +245,7 @@ public class HTTPPacket
             Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
 
@@ -253,7 +253,7 @@ public class HTTPPacket
     {
         return set(in, false);
     }
-    
+
     protected boolean set(HTTPSocket httpSock)
     {
         return set(httpSock.getInputStream());
@@ -262,7 +262,7 @@ public class HTTPPacket
     protected void set(HTTPPacket httpPacket)
     {
         setFirstLine(httpPacket.getFirstLine());
-        
+
         clearHeaders();
         int nHeaders = httpPacket.getNHeaders();
         for (int n=0; n<nHeaders; n++) {
@@ -275,24 +275,24 @@ public class HTTPPacket
     ////////////////////////////////////////////////
     //    read
     ////////////////////////////////////////////////
-    
+
     public boolean read(HTTPSocket httpSock)
     {
         init();
         return set(httpSock);
     }
-    
+
     ////////////////////////////////////////////////
     //    String
     ////////////////////////////////////////////////
 
     private String firstLine = "";
-    
+
     private void setFirstLine(String value)
     {
             firstLine = value;
     }
-    
+
     protected String getFirstLine()
     {
         return firstLine;
@@ -309,18 +309,18 @@ public class HTTPPacket
         }
         return lastToken;
      }
-    
+
     public boolean hasFirstLine()
     {
         return (0 < firstLine.length()) ? true : false;
     }
-    
+
     ////////////////////////////////////////////////
     //    Header
     ////////////////////////////////////////////////
 
     private Vector httpHeaderList = new Vector();
-    
+
     public int getNHeaders()
     {
         return httpHeaderList.size();
@@ -341,7 +341,7 @@ public class HTTPPacket
     {
         return (HTTPHeader)httpHeaderList.get(n);
     }
-    
+
     public HTTPHeader getHeader(String name)
     {
         int nHeaders = getNHeaders();
@@ -349,7 +349,7 @@ public class HTTPPacket
             HTTPHeader header = getHeader(n);
             String headerName = header.getName();
             if (headerName.equalsIgnoreCase(name) == true)
-                return header;            
+                return header;
         }
         return null;
     }
@@ -359,7 +359,7 @@ public class HTTPPacket
         httpHeaderList.clear();
         httpHeaderList = new Vector();
     }
-    
+
     public boolean hasHeader(String name)
     {
         return (getHeader(name) != null) ? true : false;
@@ -384,7 +384,7 @@ public class HTTPPacket
     {
         setHeader(name, Long.toString(value));
     }
-    
+
     public void setHeader(HTTPHeader header)
     {
         setHeader(header.getName(), header.getValue());
@@ -416,7 +416,7 @@ public class HTTPPacket
     {
         setStringHeader(name, value, "\"", "\"");
     }
-    
+
     public String getStringHeaderValue(String name, String startWidth, String endWidth)
     {
         String headerValue = getHeaderValue(name);
@@ -426,7 +426,7 @@ public class HTTPPacket
             headerValue = headerValue.substring(0, headerValue.length()-1);
         return headerValue;
     }
-    
+
     public String getStringHeaderValue(String name)
     {
         return getStringHeaderValue(name, "\"", "\"");
@@ -436,12 +436,12 @@ public class HTTPPacket
     {
         setHeader(name, Integer.toString(value));
     }
-    
+
     public void setLongHeader(String name, long value)
     {
         setHeader(name, Long.toString(value));
     }
-    
+
     public int getIntegerHeaderValue(String name)
     {
         HTTPHeader header = getHeader(name);
@@ -461,17 +461,17 @@ public class HTTPPacket
     ////////////////////////////////////////////////
     //    getHeader
     ////////////////////////////////////////////////
-    
+
     public String getHeaderString()
     {
         StringBuilder str = new StringBuilder();
-    
+
         int nHeaders = getNHeaders();
         for (int n=0; n<nHeaders; n++) {
             HTTPHeader header = getHeader(n);
             str.append(header.getName() + ": " + header.getValue() + HTTP.CRLF);
         }
-        
+
         return str.toString();
     }
 
@@ -480,7 +480,7 @@ public class HTTPPacket
     ////////////////////////////////////////////////
 
     private byte content[] = new byte[0];
-    
+
     public void setContent(byte data[], boolean updateWithContentLength)
     {
         content = data;
@@ -492,7 +492,7 @@ public class HTTPPacket
     {
         setContent(data, true);
     }
-    
+
     public void setContent(String data, boolean updateWithContentLength)
     {
         setContent(data.getBytes(), updateWithContentLength);
@@ -502,7 +502,7 @@ public class HTTPPacket
     {
         setContent(data, true);
     }
-    
+
     public  byte []getContent()
     {
         return content;
@@ -512,7 +512,7 @@ public class HTTPPacket
     {
         return new String(content);
     }
-    
+
     public boolean hasContent()
     {
         return (content.length > 0) ? true : false;
@@ -523,7 +523,7 @@ public class HTTPPacket
     ////////////////////////////////////////////////
 
     private InputStream contentInput = null;
-    
+
     public void setContentInputStream(InputStream in)
     {
         contentInput = in;
@@ -587,7 +587,7 @@ public class HTTPPacket
     }
 
     public boolean isCloseConnection()
-    {    
+    {
         if (hasConnection() == false)
             return false;
         String connection = getConnection();
@@ -597,7 +597,7 @@ public class HTTPPacket
     }
 
     public boolean isKeepAliveConnection()
-    {    
+    {
         if (hasConnection() == false)
             return false;
         String connection = getConnection();
@@ -605,7 +605,7 @@ public class HTTPPacket
             return false;
         return connection.equalsIgnoreCase(HTTP.KEEP_ALIVE);
     }
-    
+
     ////////////////////////////////////////////////
     //    ContentRange
     ////////////////////////////////////////////////
@@ -614,7 +614,7 @@ public class HTTPPacket
     {
         return (hasHeader(HTTP.CONTENT_RANGE) || hasHeader(HTTP.RANGE));
     }
-    
+
     public void setContentRange(long firstPos, long lastPos, long length)
     {
         String rangeStr = "";
@@ -667,7 +667,7 @@ public class HTTPPacket
         catch (NumberFormatException e) {};
         return range;
     }
-    
+
     public long getContentRangeFirstPosition()
     {
         long range[] = getContentRange();
@@ -685,7 +685,7 @@ public class HTTPPacket
         long range[] = getContentRange();
         return range[2];
     }
-    
+
     ////////////////////////////////////////////////
     //    CacheControl
     ////////////////////////////////////////////////
@@ -694,13 +694,13 @@ public class HTTPPacket
     {
         setHeader(HTTP.CACHE_CONTROL, directive);
     }
-    
+
     public void setCacheControl(String directive, int value)
     {
         String strVal = directive + "=" + Integer.toString(value);
         setHeader(HTTP.CACHE_CONTROL, strVal);
     }
-    
+
     public void setCacheControl(int value)
     {
         setCacheControl(HTTP.MAX_AGE, value);
@@ -778,7 +778,7 @@ public class HTTPPacket
     }
 
     public boolean isChunked()
-    {    
+    {
         if (hasTransferEncoding() == false)
             return false;
         String transEnc = getTransferEncoding();
@@ -786,7 +786,7 @@ public class HTTPPacket
             return false;
         return transEnc.equalsIgnoreCase(HTTP.CHUNKED);
     }
-    
+
     ////////////////////////////////////////////////
     //    set
     ////////////////////////////////////////////////

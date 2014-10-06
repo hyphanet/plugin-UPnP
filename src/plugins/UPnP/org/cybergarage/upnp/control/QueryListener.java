@@ -12,7 +12,7 @@
 *        - first revision.
 *    01/04/04
 *        - Changed the interface.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.control;

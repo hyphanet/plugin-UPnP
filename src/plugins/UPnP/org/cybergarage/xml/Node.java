@@ -56,7 +56,7 @@ public class Node
     ////////////////////////////////////////////////
 
     private Node parentNode = null;
-    
+
     public void setParentNode(Node node)
     {
         parentNode = node;
@@ -87,7 +87,7 @@ public class Node
     ////////////////////////////////////////////////
 
     private String name = new String();
-    
+
     public void setName(String name)
     {
         this.name = name;
@@ -107,13 +107,13 @@ public class Node
     {
         return name.equals(value);
     }
-    
+
     ////////////////////////////////////////////////
     //    value
     ////////////////////////////////////////////////
 
     private String value = "";
-    
+
     public void setValue(String value)
     {
         this.value = value;
@@ -209,7 +209,7 @@ public class Node
         catch (Exception e) {}
         return 0;
     }
-    
+
     ////////////////////////////////////////////////
     //    Attribute (xmlns)
     ////////////////////////////////////////////////
@@ -218,7 +218,7 @@ public class Node
     {
         setAttribute("xmlns:" + ns, value);
     }
-        
+
     ////////////////////////////////////////////////
     //    Child node
     ////////////////////////////////////////////////
@@ -237,7 +237,7 @@ public class Node
     {
         return nodeList.getNode(name);
     }
-    
+
     public Node getNodeEndsWith(String name)
     {
         return nodeList.getEndsWith(name);
@@ -266,14 +266,14 @@ public class Node
     {
         nodeList.clear();
     }
-    
+
     public boolean hasNodes()
     {
         if (0 < getNNodes())
             return true;
         return false;
     }
-    
+
     ////////////////////////////////////////////////
     //    Element (Child Node)
     ////////////////////////////////////////////////
@@ -301,7 +301,7 @@ public class Node
     ////////////////////////////////////////////////
 
     private Object userData = null;
-    
+
     public void setUserData(Object data)
     {
         userData = data;
@@ -312,7 +312,7 @@ public class Node
         return userData;
     }
 
-    
+
     ////////////////////////////////////////////////
     //    toString
     ////////////////////////////////////////////////
@@ -351,14 +351,14 @@ public class Node
             } else {
                 ps.println(">" + XML.escapeXMLChars(value) + "</" + name + ">");
             }
-            
+
             return;
         }
-        
+
         ps.print(indentString + "<" + name);
         outputAttributes(ps);
         ps.println(">");
-    
+
         int nChildNodes = getNNodes();
         for (int n=0; n<nChildNodes; n++) {
             Node cnode = getNode(n);
@@ -376,13 +376,13 @@ public class Node
         pr.flush();
         return byteOut.toString();
     }
-        
+
     @Override
     public String toString()
     {
         return toString(true);
     }
-    
+
     public String toXMLString(boolean hasChildNode)
     {
         String xmlStr = toString();
@@ -400,7 +400,7 @@ public class Node
     {
         return toXMLString(true);
     }
-    
+
     public void print(boolean hasChildNode)
     {
         PrintWriter pr = new PrintWriter(System.out);

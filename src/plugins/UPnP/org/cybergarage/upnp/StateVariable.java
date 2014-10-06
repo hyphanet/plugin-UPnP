@@ -17,8 +17,8 @@
 *        - Added UPnP status methods.
 *    01/06/04
 *        - Added the following methods.
-*          getQueryListener() 
-*          setQueryListener() 
+*          getQueryListener()
+*          setQueryListener()
 *          performQueryListener()
 *    01/07/04
 *        - Added StateVariable() and set();
@@ -39,7 +39,7 @@
 *        - Fixed setValue() to compare only when the current value is not null.
 *    02/28/05
 *        - Changed getAllowedValueList() to use AllowedValue instead of String as the member.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -55,7 +55,7 @@ public class StateVariable extends NodeData
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public final static String ELEM_NAME = "stateVariable";
 
     ////////////////////////////////////////////////
@@ -82,7 +82,7 @@ public class StateVariable extends NodeData
     {
         return stateVariableNode;
     }
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
@@ -92,7 +92,7 @@ public class StateVariable extends NodeData
         this.serviceNode = null;
         this.stateVariableNode = new Node();
     }
-    
+
     public StateVariable(Node serviceNode, Node stateVarNode)
     {
         this.serviceNode = serviceNode;
@@ -113,7 +113,7 @@ public class StateVariable extends NodeData
     ////////////////////////////////////////////////
 
     private final static String NAME = "name";
-    
+
     public void setName(String value)
     {
         getStateVariableNode().setNode(NAME, value);
@@ -129,7 +129,7 @@ public class StateVariable extends NodeData
     ////////////////////////////////////////////////
 
     private final static String DATATYPE = "dataType";
-    
+
     public void setDataType(String value)
     {
         getStateVariableNode().setNode(DATATYPE, value);
@@ -152,7 +152,7 @@ public class StateVariable extends NodeData
     {
         getStateVariableNode().setAttribute(SENDEVENTS, (state == true) ? SENDEVENTS_YES : SENDEVENTS_NO);
     }
-    
+
     public boolean isSendEvents()
     {
         String state = getStateVariableNode().getAttributeValue(SENDEVENTS);
@@ -162,19 +162,19 @@ public class StateVariable extends NodeData
             return true;
         return false;
     }
-    
+
     ////////////////////////////////////////////////
     // set
     ////////////////////////////////////////////////
 
-    public void set(StateVariable stateVar) 
+    public void set(StateVariable stateVar)
     {
         setName(stateVar.getName());
         setValue(stateVar.getValue());
         setDataType(stateVar.getDataType());
         setSendEvents(stateVar.isSendEvents());
     }
-    
+
     ////////////////////////////////////////////////
     //    UserData
     ////////////////////////////////////////////////
@@ -195,16 +195,16 @@ public class StateVariable extends NodeData
     //    Value
     ////////////////////////////////////////////////
 
-    public void setValue(String value) 
+    public void setValue(String value)
     {
         // Thnaks for Tho Beisch (11/09/04)
         String currValue = getStateVariableData().getValue();
         // Thnaks for Tho Rick Keiner (11/18/04)
         if (currValue != null && currValue.equals(value) == true)
             return;
-        
+
         getStateVariableData().setValue(value);
-        
+
         // notify event
         Service service = getService();
         if (service == null)
@@ -216,15 +216,15 @@ public class StateVariable extends NodeData
 
     public void setValue(int value)
     {
-        setValue(Integer.toString(value));    
+        setValue(Integer.toString(value));
     }
-    
+
     public void setValue(long value)
     {
-        setValue(Long.toString(value));    
+        setValue(Long.toString(value));
     }
-    
-    public String getValue() 
+
+    public String getValue()
     {
         return getStateVariableData().getValue();
     }
@@ -246,7 +246,7 @@ public class StateVariable extends NodeData
                 continue;
             AllowedValue allowedVal = new AllowedValue(node);
             valueList.add(allowedVal);
-        } 
+        }
         return valueList;
     }
 
@@ -255,7 +255,7 @@ public class StateVariable extends NodeData
         AllowedValueList valueList = getAllowedValueList();
         return (0 < valueList.size()) ? true : false;
     }
-    
+
     ////////////////////////////////////////////////
     //    AllowedValueRange
     ////////////////////////////////////////////////
@@ -277,16 +277,16 @@ public class StateVariable extends NodeData
     //    queryAction
     ////////////////////////////////////////////////
 
-    public QueryListener getQueryListener() 
+    public QueryListener getQueryListener()
     {
         return getStateVariableData().getQueryListener();
     }
 
-    public void setQueryListener(QueryListener listener) 
+    public void setQueryListener(QueryListener listener)
     {
         getStateVariableData().setQueryListener(listener);
     }
-    
+
     public boolean performQueryListener(QueryRequest queryReq)
     {
         QueryListener listener = getQueryListener();
@@ -312,12 +312,12 @@ public class StateVariable extends NodeData
     //    ActionControl
     ////////////////////////////////////////////////
 
-    public QueryResponse getQueryResponse() 
+    public QueryResponse getQueryResponse()
     {
         return getStateVariableData().getQueryResponse();
     }
 
-    private void setQueryResponse(QueryResponse res) 
+    private void setQueryResponse(QueryResponse res)
     {
         getStateVariableData().setQueryResponse(res);
     }
@@ -326,7 +326,7 @@ public class StateVariable extends NodeData
     {
         return getQueryResponse().getUPnPError();
     }
-    
+
     ////////////////////////////////////////////////
     //    ActionControl
     ////////////////////////////////////////////////
@@ -355,7 +355,7 @@ public class StateVariable extends NodeData
     ////////////////////////////////////////////////
 
     private UPnPStatus upnpStatus = new UPnPStatus();
-    
+
     public void setStatus(int code, String descr)
     {
         upnpStatus.setCode(code);
@@ -366,7 +366,7 @@ public class StateVariable extends NodeData
     {
         setStatus(code, UPnPStatus.code2String(code));
     }
-    
+
     public UPnPStatus getStatus()
     {
         return upnpStatus;

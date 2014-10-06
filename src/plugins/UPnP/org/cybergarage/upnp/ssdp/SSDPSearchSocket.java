@@ -18,7 +18,7 @@
 *        - Mikael Hakman <mhakman@dkab.net>
 *        - Added close() in stop().
 *        - Added test for null return from receive() in run().
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -33,7 +33,7 @@ public class SSDPSearchSocket extends HTTPMUSocket implements Runnable
     public SSDPSearchSocket()
     {
     }
-    
+
     public SSDPSearchSocket(String bindAddr)
     {
         open(bindAddr);
@@ -51,22 +51,22 @@ public class SSDPSearchSocket extends HTTPMUSocket implements Runnable
         }
         return open(addr, SSDP.PORT, bindAddr);
     }
-    
+
     ////////////////////////////////////////////////
     //    deviceSearch
     ////////////////////////////////////////////////
 
     private ListenerList deviceSearchListenerList = new ListenerList();
-         
+
     public void addSearchListener(SearchListener listener)
     {
         deviceSearchListenerList.add(listener);
-    }        
+    }
 
     public void removeSearchListener(SearchListener listener)
     {
         deviceSearchListenerList.remove(listener);
-    }        
+    }
 
     public void performSearchListener(SSDPPacket ssdpPacket)
     {
@@ -75,43 +75,43 @@ public class SSDPSearchSocket extends HTTPMUSocket implements Runnable
             SearchListener listener = (SearchListener)deviceSearchListenerList.get(n);
             listener.deviceSearchReceived(ssdpPacket);
         }
-    }        
-    
+    }
+
     ////////////////////////////////////////////////
-    //    run    
+    //    run
     ////////////////////////////////////////////////
 
     private Thread deviceSearchThread = null;
-        
+
     public void run()
     {
         Thread thisThread = Thread.currentThread();
-        
+
         while (deviceSearchThread == thisThread) {
             Thread.yield();
             SSDPPacket packet = receive();
-            
+
             // Thanks for Mikael Hakman (04/20/05)
             if (packet == null)
                 continue;
-                
+
             if (packet.isDiscover() == true)
                 performSearchListener(packet);
         }
     }
-    
+
     public void start()
     {
         deviceSearchThread = new Thread(this,"UPnP-SSDPSearchSocket");
         deviceSearchThread.setDaemon(true);
         deviceSearchThread.start();
     }
-    
+
     public void stop()
     {
         // Thanks for Mikael Hakman (04/20/05)
         close();
-        
+
         deviceSearchThread = null;
     }
 }

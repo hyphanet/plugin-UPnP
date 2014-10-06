@@ -19,7 +19,7 @@
 *        - Mikael Hakman <mhakman@dkab.net>
 *        - Handle receive() returning null.
 *        - Added close() in stop().
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -34,11 +34,11 @@ import plugins.UPnP.org.cybergarage.upnp.*;
 public class SSDPNotifySocket extends HTTPMUSocket implements Runnable
 {
     private boolean useIPv6Address;
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public SSDPNotifySocket(String bindAddr)
     {
         String addr = SSDP.ADDRESS;
@@ -52,11 +52,11 @@ public class SSDPNotifySocket extends HTTPMUSocket implements Runnable
     }
 
     ////////////////////////////////////////////////
-    //    ControlPoint    
+    //    ControlPoint
     ////////////////////////////////////////////////
 
     private ControlPoint controlPoint = null;
-    
+
     public void setControlPoint(ControlPoint ctrlp)
     {
         this.controlPoint = ctrlp;
@@ -81,25 +81,25 @@ public class SSDPNotifySocket extends HTTPMUSocket implements Runnable
     }
 
     ////////////////////////////////////////////////
-    //    run    
+    //    run
     ////////////////////////////////////////////////
 
     private Thread deviceNotifyThread = null;
-        
+
     public void run()
     {
         Thread thisThread = Thread.currentThread();
-        
+
         ControlPoint ctrlPoint = getControlPoint();
-        
+
         while (deviceNotifyThread == thisThread) {
             Thread.yield();
             SSDPPacket packet = receive();
-            
+
             // Thanks for Mikael Hakman (04/20/05)
             if (packet == null)
                 continue;
-            
+
             // Thanks for Inma (02/20/04)
             InetAddress maddr = getMulticastInetAddress();
             InetAddress pmaddr = packet.getHostInetAddress();
@@ -107,24 +107,24 @@ public class SSDPNotifySocket extends HTTPMUSocket implements Runnable
                 Debug.warning("Invalidate Multicast Recieved : " + maddr + "," + pmaddr);
                 continue;
             }
-                                                
+
             if (ctrlPoint != null)
-                ctrlPoint.notifyReceived(packet); 
+                ctrlPoint.notifyReceived(packet);
         }
     }
-    
+
     public void start()
     {
         deviceNotifyThread = new Thread(this, "UPnP-SSDPNotifySocket");
         deviceNotifyThread.setDaemon(true);
         deviceNotifyThread.start();
     }
-    
+
     public void stop()
     {
         // Thanks for Mikael Hakman (04/20/05)
         close();
-        
+
         deviceNotifyThread = null;
     }
 }

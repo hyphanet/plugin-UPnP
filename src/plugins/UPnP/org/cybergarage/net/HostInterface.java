@@ -20,7 +20,7 @@
 *    06/30/04
 *        - Theo Beisch <theo.beisch@gmx.de>
 *        - Changed isUseAddress() to isUsableAddress().
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.net;
@@ -33,38 +33,38 @@ public class HostInterface
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public static boolean USE_LOOPBACK_ADDR = false;
     public static boolean USE_ONLY_IPV4_ADDR = false;
     public static boolean USE_ONLY_IPV6_ADDR = false;
-     
+
     ////////////////////////////////////////////////
     //    Network Interfaces
     ////////////////////////////////////////////////
-    
+
     private static String ifAddress = "";
 
     public final static void setInterface(String ifaddr)
     {
         ifAddress = ifaddr;
     }
-    
+
     public final static String getInterface()
     {
         return ifAddress;
     }
-    
+
     private final static boolean hasAssignedInterface()
     {
         return (0 < ifAddress.length()) ? true : false;
     }
-    
+
     ////////////////////////////////////////////////
     //    Network Interfaces
     ////////////////////////////////////////////////
 
     // Thanks for Theo Beisch (10/27/04)
-    
+
     private final static boolean isUsableAddress(InetAddress addr)
     {
         if (USE_LOOPBACK_ADDR == false) {
@@ -81,12 +81,12 @@ public class HostInterface
         }
         return true;
     }
-    
+
     public final static int getNHostAddresses()
     {
         if (hasAssignedInterface() == true)
             return 1;
-            
+
         int nHostAddrs = 0;
         try {
             Enumeration nis = NetworkInterface.getNetworkInterfaces();
@@ -109,7 +109,7 @@ public class HostInterface
     {
         if (hasAssignedInterface() == true)
             return getInterface();
-            
+
         int hostAddrCnt = 0;
         try {
             Enumeration nis = NetworkInterface.getNetworkInterfaces();
@@ -138,7 +138,7 @@ public class HostInterface
     ////////////////////////////////////////////////
     //    isIPv?Address
     ////////////////////////////////////////////////
-    
+
     public final static boolean isIPv6Address(String host)
     {
         try {
@@ -214,17 +214,17 @@ public class HostInterface
     ////////////////////////////////////////////////
     //    getHostURL
     ////////////////////////////////////////////////
-    
+
     public final static String getHostURL(String host, int port, String uri)
     {
         String hostAddr = host;
         if (isIPv6Address(host) == true)
             hostAddr = "[" + host + "]";
-        return 
+        return
             "http://" +
-            hostAddr + 
+            hostAddr +
             ":" + Integer.toString(port) +
             uri;
     }
-    
+
 }

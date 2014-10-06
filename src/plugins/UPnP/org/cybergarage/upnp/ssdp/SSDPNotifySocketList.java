@@ -21,22 +21,22 @@ import plugins.UPnP.org.cybergarage.net.*;
 
 import plugins.UPnP.org.cybergarage.upnp.*;
 
-public class SSDPNotifySocketList extends Vector 
+public class SSDPNotifySocketList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = -7066290881503106399L;
 
-    public SSDPNotifySocketList() 
+    public SSDPNotifySocketList()
     {
     }
 
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public SSDPNotifySocket getSSDPNotifySocket(int n)
     {
         return (SSDPNotifySocket)get(n);
@@ -58,8 +58,8 @@ public class SSDPNotifySocketList extends Vector
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
-    public boolean open() 
+
+    public boolean open()
     {
         int nHostAddrs = HostInterface.getNHostAddresses();
         for (int n=0; n<nHostAddrs; n++) {
@@ -69,7 +69,7 @@ public class SSDPNotifySocketList extends Vector
         }
         return true;
     }
-    
+
     public void close()
     {
         int nSockets = size();
@@ -79,11 +79,11 @@ public class SSDPNotifySocketList extends Vector
         }
         clear();
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public void start()
     {
         int nSockets = size();
@@ -101,6 +101,6 @@ public class SSDPNotifySocketList extends Vector
             sock.stop();
         }
     }
-    
+
 }
 

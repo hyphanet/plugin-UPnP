@@ -17,27 +17,27 @@ package plugins.UPnP.org.cybergarage.upnp;
 
 import java.util.*;
 
-public class ArgumentList extends Vector 
+public class ArgumentList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = -5412792105767389170L;
     public final static String ELEM_NAME = "argumentList";
 
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
-    public ArgumentList() 
+
+    public ArgumentList()
     {
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public Argument getArgument(int n)
     {
         return (Argument)get(n);
@@ -60,7 +60,7 @@ public class ArgumentList extends Vector
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public void set(ArgumentList inArgList)
     {
         int nInArgs = inArgList.size();

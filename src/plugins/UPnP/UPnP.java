@@ -47,7 +47,7 @@ import freenet.support.transport.ip.IPUtil;
 
 /**
  * This plugin implements UP&P support on a Freenet node.
- * 
+ *
  * @author Florent Daigni&egrave;re &lt;nextgens@freenetproject.org&gt;
  *
  *
@@ -55,14 +55,14 @@ import freenet.support.transport.ip.IPUtil;
  *
  * @see http://www.upnp.org/
  * @see http://en.wikipedia.org/wiki/Universal_Plug_and_Play
- * 
+ *
  * TODO: Support multiple IGDs ?
  * TODO: Advertise the node like the MDNS plugin does
  * TODO: Implement EventListener and react on ip-change
- */ 
+ */
 public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, FredPluginThreadless, FredPluginIPDetector, FredPluginPortForward, FredPluginBandwidthIndicator, FredPluginVersioned, FredPluginRealVersioned, DeviceChangeListener {
     private PluginRespirator pr;
-    
+
     /** some schemas */
     private static final String ROUTER_DEVICE = "urn:schemas-upnp-org:device:InternetGatewayDevice:1";
     private static final String WAN_DEVICE = "urn:schemas-upnp-org:device:WANDevice:1";
@@ -76,20 +76,20 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
     private final Object lock = new Object();
     // FIXME: detect it for real and deal with it! @see #2524
     private volatile boolean thinksWeAreDoubleNatted = false;
-    
+
     /** List of ports we want to forward */
     private Set<ForwardPort> portsToForward;
     /** List of ports we have actually forwarded */
     private Set<ForwardPort> portsForwarded;
     /** Callback to call when a forward fails or succeeds */
     private ForwardPortCallback forwardCallback;
-    
+
     public UPnP() {
         super();
         portsForwarded = new HashSet<ForwardPort>();
         addDeviceChangeListener(this);
     }
-    
+
     public void runPlugin(PluginRespirator pr) {
         this.pr = pr;
         super.start();
@@ -99,7 +99,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
         unregisterPortMappings();
         super.stop();
     }
-    
+
     public DetectedIP[] getAddress() {
         Logger.minor(this, "UP&P.getAddress() is called \\o/");
         if(isDisabled) {
@@ -109,7 +109,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             Logger.normal(this, "No UP&P device found, detection of the external ip address using the plugin has failed");
             return null;
         }
-        
+
         DetectedIP result = null;
         final String natAddress = getNATAddress();
         try {
@@ -119,7 +119,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             // If we have forwarded a port AND we don't have a private address
             if((portsForwarded.size() > 1) && (!thinksWeAreDoubleNatted))
                 status = DetectedIP.FULL_INTERNET;
-            
+
             result = new DetectedIP(detectedIP, status);
 
             Logger.normal(this, "Successful UP&P discovery:" + result);
@@ -132,7 +132,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             return null;
         }
     }
-    
+
     public void deviceAdded(Device dev) {
         synchronized (lock) {
             if(isDisabled) {
@@ -146,12 +146,12 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             Logger.error(this, "We got a second IGD on the network! the plugin doesn't handle that: let's disable it.");
             System.err.println("The UP&P plugin has found more than one IGD on the network, as a result it will be disabled");
             isDisabled = true;
-            
+
             synchronized(lock) {
                 _router = null;
                 _service = null;
             }
-            
+
             stop();
             return;
         }
@@ -161,7 +161,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
         synchronized(lock) {
             _router = dev;
         }
-        
+
         discoverService();
         // We have found the device we need: stop the listener thread
         stop();
@@ -176,7 +176,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
         }
         registerPortMappings();
     }
-    
+
     private void registerPortMappings() {
         Set ports = new HashSet<ForwardPort>();
         synchronized(lock) {
@@ -201,7 +201,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
                     Device current2 = l.getDevice(i);
                     if (!current2.getDeviceType().equals(WANCON_DEVICE))
                         continue;
-                    
+
                     _service = current2.getService(WAN_PPP_CONNECTION);
                     if(_service == null) {
                         Logger.normal(this, _router.getFriendlyName()+ " doesn't seems to be using PPP; we won't be able to extract bandwidth-related informations out of it.");
@@ -209,13 +209,13 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
                         if(_service == null)
                             Logger.error(this, _router.getFriendlyName()+ " doesn't export WAN_IP_CONNECTION either: we won't be able to use it!");
                     }
-                    
+
                     return;
                 }
             }
         }
     }
-    
+
     public boolean tryAddMapping(String protocol, int port, String description, ForwardPort fp) {
         Logger.normal(this, "Registering a port mapping for " + port + "/" + protocol);
         System.err.println("UPnP: Registering a port mapping for " + port + "/" + protocol);
@@ -226,14 +226,14 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             if(isPortForwarded)
                 break;
             try {
-                Thread.sleep(5000);    
+                Thread.sleep(5000);
             } catch (InterruptedException e) {}
         }
         Logger.normal(this, (isPortForwarded ? "Mapping is successful!" : "Mapping has failed!") + " ("+ nbOfTries + " tries)");
         System.err.println("UPnP: "+(isPortForwarded ? "Mapping is successful!" : "Mapping has failed!") + " ("+ nbOfTries + " tries)");
         return isPortForwarded;
     }
-    
+
     public void unregisterPortMappings() {
         Set<ForwardPort> ports = new HashSet<ForwardPort>();
         synchronized(lock) {
@@ -241,7 +241,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
         }
         this.unregisterPorts(ports);
     }
-    
+
     public void deviceRemoved(Device dev ){
         synchronized (lock) {
             if(_router == null) return;
@@ -251,7 +251,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             }
         }
     }
-    
+
     /**
      * @return whether we are behind an UPnP-enabled NAT/router
      */
@@ -297,11 +297,11 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
                 // ignore
             }
         }
-        
+
         // Recurse
         return getUpstreamMaxBitRate(_router);
     }
-    
+
     /**
      * @return the reported downstream bit rate in bits per second. -1 if it's not available. Blocking.
      */
@@ -325,13 +325,13 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
                 // ignore
             }
         }
-        
+
         // Recurse
         return getDownstreamMaxBitRate(_router);
     }
-    
+
     private int getDownstreamMaxBitRate(Device dev) {
-        
+
         ServiceList sl = dev.getServiceList();
         for(int i=0; i<sl.size(); i++) {
             Service serv = sl.getService(i);
@@ -358,21 +358,21 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             }
         }
 
-        
+
         DeviceList dl = dev.getDeviceList();
         for(int j=0; j<dl.size(); j++) {
             Device subDev = dl.getDevice(j);
             if(subDev == null) continue;
-            
+
             int x = getDownstreamMaxBitRate(subDev);
             if(x != -1) return x;
         }
-        
+
         return -1;
     }
-    
+
     private int getUpstreamMaxBitRate(Device dev) {
-        
+
         ServiceList sl = dev.getServiceList();
         for(int i=0; i<sl.size(); i++) {
             Service serv = sl.getService(i);
@@ -399,20 +399,20 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             }
         }
 
-        
+
         DeviceList dl = dev.getDeviceList();
         for(int j=0; j<dl.size(); j++) {
             Device subDev = dl.getDevice(j);
             if(subDev == null) continue;
-            
+
             int x = getUpstreamMaxBitRate(subDev);
             if(x != -1) return x;
         }
-        
+
         return -1;
-        
+
     }
-    
+
     private void listStateTable(Service serv, StringBuilder sb) {
         ServiceStateTable table = serv.getServiceStateTable();
         sb.append("<div><small>");
@@ -431,7 +431,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             sb.append(format("<div><small>argument (%d): %s</small></div>", i, encode(argument.getName())));
         }
     }
-    
+
     private void listActions(Service service, StringBuilder sb) {
         ActionList al = service.getActionList();
         for(int i=0; i<al.size(); i++) {
@@ -442,16 +442,16 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             sb.append("</div>");
         }
     }
-    
+
     private String toString(String action, String Argument, Service serv) {
         Action getIP = serv.getAction(action);
         if(getIP == null || !getIP.postControlAction())
             return null;
-        
+
         Argument ret = getIP.getOutputArgumentList().getArgument(Argument);
         return ret.getValue();
     }
-    
+
     // TODO: extend it! RTFM
     private void listSubServices(Device dev, StringBuilder sb) {
         ServiceList sl = dev.getServiceList();
@@ -490,23 +490,23 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             sb.append("</div>");
         }
     }
-    
+
     private void listSubDev(String prefix, Device dev, StringBuilder sb){
         sb.append(format("<div><p>Device: %s - %s<br>", encode(dev.getFriendlyName()), encode(dev.getDeviceType())));
         listSubServices(dev, sb);
-        
+
         DeviceList dl = dev.getDeviceList();
         for(int j=0; j<dl.size(); j++) {
             Device subDev = dl.getDevice(j);
             if(subDev == null) continue;
-            
+
             sb.append("<div>");
             listSubDev(dev.getFriendlyName(), subDev, sb);
             sb.append("</div></div>");
         }
         sb.append("</p></div>");
     }
-    
+
     public String handleHTTPGet(HTTPRequest request) throws PluginHTTPException {
         if(request.isParameterSet("getDeviceCapabilities")) {
             final StringBuilder sb = new StringBuilder();
@@ -515,11 +515,11 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             sb.append("</body></html>");
             return sb.toString();
         }
-        
+
         PageNode page = pr.getPageMaker().getPageNode("UP&P plugin configuration page", false, null);
         HTMLNode pageNode = page.outer;
         HTMLNode contentNode = page.content;
-        
+
         if(isDisabled) {
             HTMLNode disabledInfobox = contentNode.addChild("div", "class", "infobox infobox-error");
             HTMLNode disabledInfoboxHeader = disabledInfobox.addChild("div", "class", "infobox-header");
@@ -535,13 +535,13 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
 
             notFoundInfoboxHeader.addChild("#", "UP&P plugin report");
             notFoundInfoboxContent.addChild("#", "The plugin hasn't found any UP&P aware, compatible device on your LAN.");
-            return pageNode.generate();            
+            return pageNode.generate();
         }
-        
+
         HTMLNode foundInfobox = contentNode.addChild("div", "class", "infobox infobox-normal");
         HTMLNode foundInfoboxHeader = foundInfobox.addChild("div", "class", "infobox-header");
         HTMLNode foundInfoboxContent = foundInfobox.addChild("div", "class", "infobox-content");
-        
+
         // FIXME L10n!
         foundInfoboxHeader.addChild("#", "UP&P plugin report");
         foundInfoboxContent.addChild("p", "The following device has been found: ").addChild("a", "href", "?getDeviceCapabilities").addChild("#", _router.getFriendlyName());
@@ -563,28 +563,28 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
                 }
             }
         }
-        
+
         return pageNode.generate();
     }
 
     public String handleHTTPPost(HTTPRequest request) throws PluginHTTPException {
         return null;
     }
-    
+
     private boolean addMapping(String protocol, int port, String description, ForwardPort fp) {
         if(isDisabled || !isNATPresent() || _router == null)
             return false;
-        
+
         // Just in case...
         removeMapping(protocol, port, fp, true);
-        
+
         Action add = _service.getAction("AddPortMapping");
         if(add == null) {
             Logger.error(this, "Couldn't find AddPortMapping action!");
             return false;
         }
-            
-        
+
+
         add.setArgumentValue("NewRemoteHost", "");
         add.setArgumentValue("NewExternalPort", port);
         add.setArgumentValue("NewInternalClient", _router.getInterfaceAddress());
@@ -593,7 +593,7 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
         add.setArgumentValue("NewPortMappingDescription", description);
         add.setArgumentValue("NewEnabled","1");
         add.setArgumentValue("NewLeaseDuration", 0);
-        
+
         if(add.postControlAction()) {
             synchronized(lock) {
                 portsForwarded.add(fp);
@@ -601,26 +601,26 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
             return true;
         } else return false;
     }
-    
+
     private boolean removeMapping(String protocol, int port, ForwardPort fp, boolean noLog) {
         if(isDisabled || !isNATPresent())
             return false;
-        
+
         Action remove = _service.getAction("DeletePortMapping");
         if(remove == null) {
              Logger.error(this, "Couldn't find DeletePortMapping action!");
             return false;
         }
-        
+
         // remove.setArgumentValue("NewRemoteHost", "");
         remove.setArgumentValue("NewExternalPort", port);
         remove.setArgumentValue("NewProtocol", protocol);
-        
+
         boolean retval = remove.postControlAction();
         synchronized(lock) {
             portsForwarded.remove(fp);
         }
-        
+
         if(!noLog)
             System.err.println("UPnP: Removed mapping for "+fp.name+" "+port+" / "+protocol);
         return retval;
@@ -720,11 +720,11 @@ public class UPnP extends ControlPoint implements FredPluginHTTP, FredPlugin, Fr
     public String getVersion() {
         return Version.getVersion() + " " + Version.getSvnRevision();
     }
-    
+
     public long getRealVersion() {
         return Version.getRealVersion();
     }
-    
+
     public static void main(String[] args) throws Exception {
         UPnP upnp = new UPnP();
         ControlPoint cp = new ControlPoint();

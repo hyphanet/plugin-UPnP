@@ -14,7 +14,7 @@
 *        - Improved the HTTP server using multithreading.
 *    08/27/04
 *        - Changed accept() to set a default timeout, HTTP.DEFAULT_TIMEOUT, to the socket.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;
@@ -41,11 +41,11 @@ public class HTTPServer implements Runnable
         String osVer = System.getProperty("os.version");
         return osName + "/"  + osVer + " " + NAME + "/" + VERSION;
     }
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public HTTPServer()
     {
         serverSock = null;
@@ -58,7 +58,7 @@ public class HTTPServer implements Runnable
     private ServerSocket serverSock = null;
     private InetAddress bindAddr = null;
     private int bindPort = 0;
-    
+
     public ServerSocket getServerSock()
     {
         return serverSock;
@@ -75,11 +75,11 @@ public class HTTPServer implements Runnable
     {
         return bindPort;
     }
-    
+
     ////////////////////////////////////////////////
     //    open/close
     ////////////////////////////////////////////////
-    
+
     public boolean open(String addr, int port)
     {
         if (serverSock != null)
@@ -137,16 +137,16 @@ public class HTTPServer implements Runnable
     ////////////////////////////////////////////////
 
     private ListenerList httpRequestListenerList = new ListenerList();
-         
+
     public void addRequestListener(HTTPRequestListener listener)
     {
         httpRequestListenerList.add(listener);
-    }        
+    }
 
     public void removeRequestListener(HTTPRequestListener listener)
     {
         httpRequestListenerList.remove(listener);
-    }        
+    }
 
     public void performRequestListener(HTTPRequest httpReq)
     {
@@ -155,21 +155,21 @@ public class HTTPServer implements Runnable
             HTTPRequestListener listener = (HTTPRequestListener)httpRequestListenerList.get(n);
             listener.httpRequestRecieved(httpReq);
         }
-    }        
-    
+    }
+
     ////////////////////////////////////////////////
-    //    run    
+    //    run
     ////////////////////////////////////////////////
 
     private Thread httpServerThread = null;
-        
+
     public void run()
     {
         if (isOpened() == false)
             return;
-            
+
         Thread thisThread = Thread.currentThread();
-        
+
         while (httpServerThread == thisThread) {
             Thread.yield();
             Socket sock;
@@ -184,18 +184,18 @@ public class HTTPServer implements Runnable
                 break;
             }
             HTTPServerThread httpServThread = new HTTPServerThread(this, sock);
-            httpServThread.start(); 
+            httpServThread.start();
             Debug.message("httpServThread ...");
         }
     }
-    
+
     public boolean start()
     {
         httpServerThread = new Thread(this, "UPnP-HTTPServer");
         httpServerThread.start();
         return true;
     }
-    
+
     public boolean stop()
     {
         httpServerThread = null;

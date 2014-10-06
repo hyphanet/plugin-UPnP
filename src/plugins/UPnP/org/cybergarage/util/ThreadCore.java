@@ -10,7 +10,7 @@
 *
 *    01/05/04
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.util;
@@ -24,13 +24,13 @@ public class ThreadCore implements Runnable
     public ThreadCore()
     {
     }
-    
+
     ////////////////////////////////////////////////
     //    Thread
     ////////////////////////////////////////////////
-    
+
     private java.lang.Thread mThreadObject = null;
-    
+
     public void setThreadObject(java.lang.Thread obj) {
         mThreadObject = obj;
     }
@@ -39,7 +39,7 @@ public class ThreadCore implements Runnable
         return mThreadObject;
     }
 
-    public void start() 
+    public void start()
     {
         java.lang.Thread threadObject = getThreadObject();
         if (threadObject == null) {
@@ -48,7 +48,7 @@ public class ThreadCore implements Runnable
             threadObject.start();
         }
     }
-    
+
     public void run()
     {
     }
@@ -57,17 +57,17 @@ public class ThreadCore implements Runnable
     {
         return (Thread.currentThread() == getThreadObject()) ? true : false;
     }
-    
-    public void stop() 
+
+    public void stop()
     {
         java.lang.Thread threadObject = getThreadObject();
-        if (threadObject != null) { 
+        if (threadObject != null) {
             //threadObject.destroy();
             //threadObject.stop();
             setThreadObject(null);
         }
     }
-    
+
     public void restart()
     {
         stop();

@@ -12,7 +12,7 @@
 *        - first revision.
 *    02/28/05
 *        - Changed to use AllowedValue instead of String as the member.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -24,7 +24,7 @@ public class AllowedValueList extends Vector
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = 5740394642751180992L;
     public final static String ELEM_NAME = "allowedValueList";
 
@@ -32,15 +32,15 @@ public class AllowedValueList extends Vector
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
-    public AllowedValueList() 
+
+    public AllowedValueList()
     {
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public AllowedValue getAllowedValue(int n)
     {
         return (AllowedValue)get(n);

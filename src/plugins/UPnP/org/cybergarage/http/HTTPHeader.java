@@ -13,7 +13,7 @@
 *    05/26/04
 *        - Jan Newmarch <jan.newmarch@infotech.monash.edu.au> (05/26/04)
 *        - Fixed getValue() to compare using String::equals() instead of String::startWidth().
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;
@@ -22,7 +22,7 @@ import java.io.*;
 
 import plugins.UPnP.org.cybergarage.util.*;
 
-public class HTTPHeader 
+public class HTTPHeader
 {
     private String name;
     private String value;
@@ -42,8 +42,8 @@ public class HTTPHeader
         int colonIdx = lineStr.indexOf(':');
         if (colonIdx < 0)
             return;
-        String name = new String(lineStr.getBytes(), 0, colonIdx);                
-        String value = new String(lineStr.getBytes(), colonIdx+1, lineStr.length()-colonIdx-1);                
+        String name = new String(lineStr.getBytes(), 0, colonIdx);
+        String value = new String(lineStr.getBytes(), colonIdx+1, lineStr.length()-colonIdx-1);
         setName(name.trim());
         setValue(value.trim());
     }
@@ -51,12 +51,12 @@ public class HTTPHeader
     ////////////////////////////////////////////////
     //    Member
     ////////////////////////////////////////////////
-    
+
     public void setName(String name)
     {
         this.name = name;
     }
-        
+
     public void setValue(String value)
     {
         this.value = value;
@@ -78,11 +78,11 @@ public class HTTPHeader
             return false;
         return true;
     }
-    
+
     ////////////////////////////////////////////////
     //    static methods
     ////////////////////////////////////////////////
-    
+
     public final static String getValue(LineNumberReader reader, String name)
     {
         String bigName = name.toUpperCase();

@@ -10,7 +10,7 @@
 *
 *    01/29/03
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.control;
@@ -25,11 +25,11 @@ public class ControlResponse extends SOAPResponse
 {
     public static final String FAULT_CODE = "Client";
     public static final String FAULT_STRING = "UPnPError";
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public ControlResponse()
     {
         setServer(UPnP.getServerName());
@@ -39,7 +39,7 @@ public class ControlResponse extends SOAPResponse
     {
         super(soapRes);
     }
-    
+
     ////////////////////////////////////////////////
     //    FaultResponse
     ////////////////////////////////////////////////
@@ -47,7 +47,7 @@ public class ControlResponse extends SOAPResponse
     public void setFaultResponse(int errCode, String errDescr)
     {
         setStatusCode(HTTPStatus.INTERNAL_SERVER_ERROR);
-        
+
         Node bodyNode = getBodyNode();
         Node faultNode = createFaultResponseNode(errCode, errDescr);
         bodyNode.addNode(faultNode);
@@ -74,7 +74,7 @@ public class ControlResponse extends SOAPResponse
         Node faultCodeNode = new Node(SOAP.FAULT_CODE);
         faultCodeNode.setValue(SOAP.XMLNS + SOAP.DELIM + FAULT_CODE);
         faultNode.addNode(faultCodeNode);
-        
+
         // <faultstring>UPnPError</faultstring>
         Node faultStringNode = new Node(SOAP.FAULT_STRING);
         faultStringNode.setValue(FAULT_STRING);
@@ -98,16 +98,16 @@ public class ControlResponse extends SOAPResponse
         Node errorDesctiprionNode = new Node(SOAP.ERROR_DESCRIPTION);
         errorDesctiprionNode.setValue(errDescr);
         upnpErrorNode.addNode(errorDesctiprionNode);
-        
+
         return faultNode;
     }
-    
+
     ////////////////////////////////////////////////
     //    UPnP Error
     ////////////////////////////////////////////////
-    
+
     private UPnPStatus upnpErr = new UPnPStatus();
-    
+
     private Node getUPnPErrorNode()
     {
         Node detailNode = getFaultDetailNode();

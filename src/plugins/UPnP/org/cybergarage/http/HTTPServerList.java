@@ -19,15 +19,15 @@ import java.util.*;
 
 import plugins.UPnP.org.cybergarage.net.*;
 
-public class HTTPServerList extends Vector 
+public class HTTPServerList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = 2379889735659369065L;
 
-    public HTTPServerList() 
+    public HTTPServerList()
     {
     }
 
@@ -42,8 +42,8 @@ public class HTTPServerList extends Vector
             HTTPServer server = getHTTPServer(n);
             server.addRequestListener(listener);
         }
-    }        
-    
+    }
+
     public HTTPServer getHTTPServer(int n)
     {
         return (HTTPServer)get(n);
@@ -62,7 +62,7 @@ public class HTTPServerList extends Vector
         }
     }
 
-    public boolean open(int port) 
+    public boolean open(int port)
     {
         int nHostAddrs = HostInterface.getNHostAddresses();
         for (int n=0; n<nHostAddrs; n++) {
@@ -77,11 +77,11 @@ public class HTTPServerList extends Vector
         }
         return true;
     }
-    
+
     ////////////////////////////////////////////////
     //    start/stop
     ////////////////////////////////////////////////
-    
+
     public void start()
     {
         int nServers = size();

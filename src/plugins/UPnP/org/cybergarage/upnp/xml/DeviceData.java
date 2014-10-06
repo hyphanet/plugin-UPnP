@@ -28,7 +28,7 @@ import plugins.UPnP.org.cybergarage.upnp.device.*;
 
 public class DeviceData extends NodeData
 {
-    public DeviceData() 
+    public DeviceData()
     {
     }
 
@@ -36,9 +36,9 @@ public class DeviceData extends NodeData
     // description
     ////////////////////////////////////////////////
 
-    private String descriptionURI = null; 
+    private String descriptionURI = null;
     private File descriptionFile = null;
-    
+
     public File getDescriptionFile() {
         return descriptionFile;
     }
@@ -60,7 +60,7 @@ public class DeviceData extends NodeData
     ////////////////////////////////////////////////
 
     private String location = "";
-    
+
     public String getLocation() {
         return location;
     }
@@ -70,33 +70,33 @@ public class DeviceData extends NodeData
     }
 
     ////////////////////////////////////////////////
-    //    LeaseTime 
+    //    LeaseTime
     ////////////////////////////////////////////////
 
     private int leaseTime = Device.DEFAULT_LEASE_TIME;
-    
-    public int getLeaseTime() 
+
+    public int getLeaseTime()
     {
         return leaseTime;
     }
 
-    public void setLeaseTime(int val) 
+    public void setLeaseTime(int val)
     {
         leaseTime = val;
     }
 
     ////////////////////////////////////////////////
-    //    HTTPServer 
+    //    HTTPServer
     ////////////////////////////////////////////////
 
-    private HTTPServerList httpServerList = new HTTPServerList();        
+    private HTTPServerList httpServerList = new HTTPServerList();
 
     public HTTPServerList getHTTPServerList() {
         return httpServerList;
     }
 
     ////////////////////////////////////////////////
-    //    httpPort 
+    //    httpPort
     ////////////////////////////////////////////////
 
     private int httpPort = Device.HTTP_DEFAULT_PORT;
@@ -128,9 +128,9 @@ public class DeviceData extends NodeData
     ////////////////////////////////////////////////
     // SSDPSearchSocket
     ////////////////////////////////////////////////
-    
+
     private SSDPSearchSocketList ssdpSearchSocketList = new SSDPSearchSocketList();
-    
+
     public SSDPSearchSocketList getSSDPSearchSocketList() {
         return ssdpSearchSocketList;
     }
@@ -138,9 +138,9 @@ public class DeviceData extends NodeData
     ////////////////////////////////////////////////
     // SSDPPacket
     ////////////////////////////////////////////////
-    
+
     private SSDPPacket ssdpPacket = null;
-    
+
     public SSDPPacket getSSDPPacket() {
         return ssdpPacket;
     }
@@ -154,13 +154,13 @@ public class DeviceData extends NodeData
     ////////////////////////////////////////////////
 
     private Advertiser advertiser = null;
-    
-    public void setAdvertiser(Advertiser adv) 
+
+    public void setAdvertiser(Advertiser adv)
     {
         advertiser = adv;
     }
-    
-    public Advertiser getAdvertiser() 
+
+    public Advertiser getAdvertiser()
     {
         return advertiser;
     }

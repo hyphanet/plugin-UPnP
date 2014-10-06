@@ -19,7 +19,7 @@
 *    11/19/04
 *        - Theo Beisch <theo.beisch@gmx.de>
 *        - Changed send() to set the TTL as 4.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -39,15 +39,15 @@ public class HTTPMUSocket
     private InetSocketAddress ssdpMultiGroup = null;
     private MulticastSocket ssdpMultiSock = null;
     private NetworkInterface ssdpMultiIf = null;
-             
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public HTTPMUSocket()
     {
     }
-    
+
     public HTTPMUSocket(String addr, int port, String bindAddr)
     {
         open(addr, port, bindAddr);
@@ -79,17 +79,17 @@ public class HTTPMUSocket
     ////////////////////////////////////////////////
     //    MulticastAddr
     ////////////////////////////////////////////////
-    
+
     public InetAddress getMulticastInetAddress()
     {
         return ssdpMultiGroup.getAddress();
     }
-    
+
     public String getMulticastAddress()
     {
         return getMulticastInetAddress().getHostAddress();
     }
-    
+
     ////////////////////////////////////////////////
     //    open/close
     ////////////////////////////////////////////////
@@ -109,7 +109,7 @@ public class HTTPMUSocket
             Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
 
@@ -117,7 +117,7 @@ public class HTTPMUSocket
     {
         if (ssdpMultiSock == null)
             return true;
-            
+
         try {
             ssdpMultiSock.leaveGroup(ssdpMultiGroup, ssdpMultiIf);
             ssdpMultiSock = null;
@@ -126,7 +126,7 @@ public class HTTPMUSocket
             //Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
 
@@ -142,7 +142,7 @@ public class HTTPMUSocket
                 msock = new MulticastSocket(null);
                 msock.bind(new InetSocketAddress(bindAddr, bindPort));
             }
-            else 
+            else
                 msock = new MulticastSocket();
             DatagramPacket dgmPacket = new DatagramPacket(msg.getBytes(), msg.length(), ssdpMultiGroup);
             // Thnaks for Tho Beisch (11/09/04)

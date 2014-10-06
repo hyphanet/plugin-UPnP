@@ -54,7 +54,7 @@
 *    07/24/04
 *        - Thanks for Stefano Lenzi <kismet-sl@users.sourceforge.net>
 *        - Added getParentDevice().
-*    10/20/04 
+*    10/20/04
 *        - Brent Hills <bhills@openshores.com>
 *        - Changed postSearchResponse() to add MYNAME header.
 *    11/19/04
@@ -81,8 +81,8 @@
 *         - Changed getDescriptionData() to add a XML declaration at first line.
 *     04/25/05
 *        - Thanks for Mikael Hakman <mhakman@dkab.net>
-*        - Added a new setActionListener() and serQueryListner() to include the sub devices. 
-* 
+*        - Added a new setActionListener() and serQueryListner() to include the sub devices.
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -108,7 +108,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public final static String ELEM_NAME = "device";
     public final static String UPNP_ROOTDEVICE = "upnp:rootdevice";
 
@@ -119,7 +119,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     public final static int HTTP_DEFAULT_PORT = 4004;
 
     public final static String DEFAULT_DESCRIPTION_URI = "/description.xml";
-    
+
     ////////////////////////////////////////////////
     //    Member
     ////////////////////////////////////////////////
@@ -150,16 +150,16 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         deviceNode = node;
     }
-                
+
     ////////////////////////////////////////////////
     //    Initialize
     ////////////////////////////////////////////////
-    
-    static 
+
+    static
     {
         UPnP.initialize();
     }
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
@@ -176,7 +176,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         this(null, null);
     }
-    
+
     public Device(Node device)
     {
         this(null, device);
@@ -196,23 +196,23 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
     // Mutex
     ////////////////////////////////////////////////
-    
+
     private Mutex mutex = new Mutex();
-    
+
     public void lock()
     {
         mutex.lock();
     }
-    
+
     public void unlock()
     {
         mutex.unlock();
     }
-    
+
     ////////////////////////////////////////////////
     //    NMPR
     ////////////////////////////////////////////////
-    
+
     public void setNMPRMode(boolean flag)
     {
         Node devNode = getDeviceNode();
@@ -234,13 +234,13 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             return false;
         return (devNode.getNode(UPnP.INMPR03) != null) ? true : false;
     }
-    
+
     ////////////////////////////////////////////////
     //    Wireless
     ////////////////////////////////////////////////
-    
+
     private boolean wirelessMode;
-    
+
     public void setWirelessMode(boolean flag)
     {
         wirelessMode = flag;
@@ -263,26 +263,26 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private String devUUID;
-    
+
     private void setUUID(String uuid)
     {
         devUUID = uuid;
     }
-    
-    private String getUUID() 
+
+    private String getUUID()
     {
         return devUUID;
     }
-    
+
     private void updateUDN()
     {
-        setUDN("uuid:" + getUUID());    
+        setUDN("uuid:" + getUUID());
     }
-    
+
     ////////////////////////////////////////////////
     //    Root Device
     ////////////////////////////////////////////////
-    
+
     public Device getRootDevice()
     {
         Node rootNode = getRootNode();
@@ -297,11 +297,11 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
     //    Parent Device
     ////////////////////////////////////////////////
-    
+
     // Thanks for Stefano Lenzi (07/24/04)
 
     public Device getParentDevice()
-    { 
+    {
         if(isRootDevice())
             return null;
         Node devNode = getDeviceNode();
@@ -325,7 +325,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         }
         return userData;
     }
-    
+
     ////////////////////////////////////////////////
     //    Description
     ////////////////////////////////////////////////
@@ -380,15 +380,15 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         catch (ParserException e) {
             throw new InvalidDescriptionException(e);
         }
-        
+
         if (initializeLoadedDescription() == false)
             return false;
 
         setDescriptionFile(null);
-                
+
         return true;
     }
-    
+
     public boolean loadDescription(File file) throws InvalidDescriptionException
     {
         try {
@@ -403,12 +403,12 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         catch (ParserException e) {
             throw new InvalidDescriptionException(e);
         }
-        
+
         if (initializeLoadedDescription() == false)
             return false;
 
         setDescriptionFile(file);
-                
+
         return true;
     }
 
@@ -421,10 +421,10 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         // Thanks for Oliver Newell (03/23/04)
         if (hasUDN() == false)
             updateUDN();
-                
+
         return true;
     }
-    
+
     ////////////////////////////////////////////////
     //    isDeviceNode
     ////////////////////////////////////////////////
@@ -433,7 +433,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         return Device.ELEM_NAME.equals(node.getName());
     }
-    
+
     ////////////////////////////////////////////////
     //    Root Device
     ////////////////////////////////////////////////
@@ -442,7 +442,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         return (getRootNode() != null) ? true : false;
     }
-    
+
     ////////////////////////////////////////////////
     //    Root Device
     ////////////////////////////////////////////////
@@ -458,9 +458,9 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             return null;
         return getDeviceData().getSSDPPacket();
     }
-    
+
     ////////////////////////////////////////////////
-    //    Location 
+    //    Location
     ////////////////////////////////////////////////
 
     public void setLocation(String value)
@@ -477,7 +477,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     }
 
     ////////////////////////////////////////////////
-    //    LeaseTime 
+    //    LeaseTime
     ////////////////////////////////////////////////
 
     public void setLeaseTime(int value)
@@ -494,19 +494,19 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         SSDPPacket packet = getSSDPPacket();
         if (packet != null)
-            return packet.getLeaseTime();    
+            return packet.getLeaseTime();
         return getDeviceData().getLeaseTime();
     }
 
     ////////////////////////////////////////////////
-    //    TimeStamp 
+    //    TimeStamp
     ////////////////////////////////////////////////
 
     public long getTimeStamp()
     {
         SSDPPacket packet = getSSDPPacket();
         if (packet != null)
-            return packet.getTimeStamp();        
+            return packet.getTimeStamp();
         return 0;
     }
 
@@ -523,13 +523,13 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             return true;
         return false;
     }
-    
+
     ////////////////////////////////////////////////
     //    URL Base
     ////////////////////////////////////////////////
 
     private final static String URLBASE_NAME = "URLBase";
-    
+
     private void setURLBase(String value)
     {
         if (isRootDevice() == true) {
@@ -552,7 +552,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         String urlBase = HostInterface.getHostURL(host, getHTTPPort(), "");
         setURLBase(urlBase);
     }
-  
+
     public String getURLBase()
     {
         if (isRootDevice() == true)
@@ -565,7 +565,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String DEVICE_TYPE = "deviceType";
-    
+
     public void setDeviceType(String value)
     {
         getDeviceNode().setNode(DEVICE_TYPE, value);
@@ -588,7 +588,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String FRIENDLY_NAME = "friendlyName";
-    
+
     public void setFriendlyName(String value)
     {
         getDeviceNode().setNode(FRIENDLY_NAME, value);
@@ -604,7 +604,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String MANUFACTURE = "manufacture";
-    
+
     public void setManufacture(String value)
     {
         getDeviceNode().setNode(MANUFACTURE, value);
@@ -620,7 +620,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String MANUFACTURE_URL = "manufactureURL";
-    
+
     public void setManufactureURL(String value)
     {
         getDeviceNode().setNode(MANUFACTURE_URL, value);
@@ -636,7 +636,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String MODEL_DESCRIPTION = "modelDescription";
-    
+
     public void setModelDescription(String value)
     {
         getDeviceNode().setNode(MODEL_DESCRIPTION, value);
@@ -652,7 +652,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String MODEL_NAME = "modelName";
-    
+
     public void setModelName(String value)
     {
         getDeviceNode().setNode(MODEL_NAME, value);
@@ -668,7 +668,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String MODEL_NUMBER = "modelNumber";
-    
+
     public void setModelNumber(String value)
     {
         getDeviceNode().setNode(MODEL_NUMBER, value);
@@ -684,7 +684,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String MODEL_URL = "modelURL";
-    
+
     public void setModelURL(String value)
     {
         getDeviceNode().setNode(MODEL_URL, value);
@@ -700,7 +700,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String SERIAL_NUMBER = "serialNumber";
-    
+
     public void setSerialNumber(String value)
     {
         getDeviceNode().setNode(SERIAL_NUMBER, value);
@@ -716,7 +716,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String UDN = "UDN";
-    
+
     public void setUDN(String value)
     {
         getDeviceNode().setNode(UDN, value);
@@ -734,13 +734,13 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             return false;
         return true;
     }
-    
+
     ////////////////////////////////////////////////
     //    UPC
     ////////////////////////////////////////////////
 
     private final static String UPC = "UPC";
-    
+
     public void setUPC(String value)
     {
         getDeviceNode().setNode(UPC, value);
@@ -756,7 +756,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     private final static String presentationURL = "presentationURL";
-    
+
     public void setPresentationURL(String value)
     {
         getDeviceNode().setNode(presentationURL, value);
@@ -784,7 +784,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
                 continue;
             Device dev = new Device(node);
             devList.add(dev);
-        } 
+        }
         return devList;
     }
 
@@ -800,7 +800,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             return true;
         return false;
     }
-    
+
     public Device getDevice(String name)
     {
         DeviceList devList = getDeviceList();
@@ -815,7 +815,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         }
         return null;
     }
-    
+
     public Device getDeviceByDescriptionURI(String uri)
     {
         DeviceList devList = getDeviceList();
@@ -830,7 +830,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         }
         return null;
     }
-    
+
     ////////////////////////////////////////////////
     //    serviceList
     ////////////////////////////////////////////////
@@ -848,7 +848,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
                 continue;
             Service service = new Service(node);
             serviceList.add(service);
-        } 
+        }
         return serviceList;
     }
 
@@ -861,7 +861,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service.isService(name) == true)
                 return service;
         }
-        
+
         DeviceList devList = getDeviceList();
         int devCnt = devList.size();
         for (int n=0; n<devCnt; n++) {
@@ -870,7 +870,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service != null)
                 return service;
         }
-        
+
         return null;
     }
 
@@ -883,7 +883,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service.isSCPDURL(searchUrl) == true)
                 return service;
         }
-        
+
         DeviceList devList = getDeviceList();
         int devCnt = devList.size();
         for (int n=0; n<devCnt; n++) {
@@ -892,7 +892,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service != null)
                 return service;
         }
-        
+
         return null;
     }
 
@@ -905,7 +905,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service.isControlURL(searchUrl) == true)
                 return service;
         }
-        
+
         DeviceList devList = getDeviceList();
         int devCnt = devList.size();
         for (int n=0; n<devCnt; n++) {
@@ -914,7 +914,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service != null)
                 return service;
         }
-        
+
         return null;
     }
 
@@ -927,7 +927,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service.isEventSubURL(searchUrl) == true)
                 return service;
         }
-        
+
         DeviceList devList = getDeviceList();
         int devCnt = devList.size();
         for (int n=0; n<devCnt; n++) {
@@ -936,7 +936,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service != null)
                 return service;
         }
-        
+
         return null;
     }
 
@@ -950,7 +950,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (uuid.equals(sid) == true)
                 return service;
         }
-        
+
         DeviceList devList = getDeviceList();
         int devCnt = devList.size();
         for (int n=0; n<devCnt; n++) {
@@ -959,7 +959,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (service != null)
                 return service;
         }
-        
+
         return null;
     }
 
@@ -971,7 +971,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         if (serviceType == null && name == null)
             return null;
-        
+
         ServiceList serviceList = getServiceList();
         int serviceCnt = serviceList.size();
         for (int n=0; n<serviceCnt; n++) {
@@ -985,7 +985,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (stateVar != null)
                 return stateVar;
         }
-        
+
         DeviceList devList = getDeviceList();
         int devCnt = devList.size();
         for (int n=0; n<devCnt; n++) {
@@ -994,7 +994,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (stateVar != null)
                 return stateVar;
         }
-        
+
         return null;
     }
 
@@ -1002,7 +1002,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         return getStateVariable(null, name);
     }
-    
+
     ////////////////////////////////////////////////
     //    Action
     ////////////////////////////////////////////////
@@ -1024,7 +1024,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
                     return action;
             }
         }
-        
+
         DeviceList devList = getDeviceList();
         int devCnt = devList.size();
         for (int n=0; n<devCnt; n++) {
@@ -1033,7 +1033,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             if (action != null)
                 return action;
         }
-        
+
         return null;
     }
 
@@ -1054,10 +1054,10 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
                 continue;
             Icon icon = new Icon(node);
             iconList.add(icon);
-        } 
+        }
         return iconList;
     }
-    
+
     public Icon getIcon(int n)
     {
         IconList iconList = getIconList();
@@ -1078,14 +1078,14 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     private String getNotifyDeviceNT()
     {
         if (isRootDevice() == false)
-            return getUDN();            
+            return getUDN();
         return UPNP_ROOTDEVICE;
     }
 
     private String getNotifyDeviceUSN()
     {
         if (isRootDevice() == false)
-            return getUDN();            
+            return getUDN();
         return getUDN() + "::" + UPNP_ROOTDEVICE;
     }
 
@@ -1098,16 +1098,16 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         return getUDN() + "::" + getDeviceType();
     }
-    
+
     public final static void notifyWait()
     {
         TimerUtil.waitRandom(DEFAULT_DISCOVERY_WAIT_TIME);
     }
-        
+
     public void announce(String bindAddr)
     {
         String devLocation = getLocationURL(bindAddr);
-        
+
         SSDPNotifySocket ssdpSock = new SSDPNotifySocket(bindAddr);
 
         SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
@@ -1115,26 +1115,26 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         ssdpReq.setLeaseTime(getLeaseTime());
         ssdpReq.setLocation(devLocation);
         ssdpReq.setNTS(NTS.ALIVE);
-        
-        // uuid:device-UUID(::upnp:rootdevice)* 
+
+        // uuid:device-UUID(::upnp:rootdevice)*
         if (isRootDevice() == true) {
-            String devNT = getNotifyDeviceNT();            
+            String devNT = getNotifyDeviceNT();
             String devUSN = getNotifyDeviceUSN();
             ssdpReq.setNT(devNT);
             ssdpReq.setUSN(devUSN);
             ssdpSock.post(ssdpReq);
         }
-        
-        // uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:v 
-        String devNT = getNotifyDeviceTypeNT();            
+
+        // uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:v
+        String devNT = getNotifyDeviceTypeNT();
         String devUSN = getNotifyDeviceTypeUSN();
         ssdpReq.setNT(devNT);
         ssdpReq.setUSN(devUSN);
         ssdpSock.post(ssdpReq);
-        
+
         // Thanks for Mikael Hakman (04/25/05)
         ssdpSock.close();
-        
+
         ServiceList serviceList = getServiceList();
         int serviceCnt = serviceList.size();
         for (int n=0; n<serviceCnt; n++) {
@@ -1153,7 +1153,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     public void announce()
     {
         notifyWait();
-        
+
         int nHostAddrs = HostInterface.getNHostAddresses();
         for (int n=0; n<nHostAddrs; n++) {
             String bindAddr = HostInterface.getHostAddress(n);
@@ -1164,25 +1164,25 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
                 announce(bindAddr);
         }
     }
-    
+
     public void byebye(String bindAddr)
     {
         SSDPNotifySocket ssdpSock = new SSDPNotifySocket(bindAddr);
-        
+
         SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
         ssdpReq.setNTS(NTS.BYEBYE);
-        
-        // uuid:device-UUID(::upnp:rootdevice)* 
+
+        // uuid:device-UUID(::upnp:rootdevice)*
         if (isRootDevice() == true) {
-            String devNT = getNotifyDeviceNT();            
+            String devNT = getNotifyDeviceNT();
             String devUSN = getNotifyDeviceUSN();
             ssdpReq.setNT(devNT);
             ssdpReq.setUSN(devUSN);
             ssdpSock.post(ssdpReq);
         }
-        
-        // uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:v 
-        String devNT = getNotifyDeviceTypeNT();            
+
+        // uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:v
+        String devNT = getNotifyDeviceTypeNT();
         String devUSN = getNotifyDeviceTypeUSN();
         ssdpReq.setNT(devNT);
         ssdpReq.setUSN(devUSN);
@@ -1190,7 +1190,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
 
         // Thanks for Mikael Hakman (04/25/05)
         ssdpSock.close();
-        
+
         ServiceList serviceList = getServiceList();
         int serviceCnt = serviceList.size();
         for (int n=0; n<serviceCnt; n++) {
@@ -1228,7 +1228,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         String localAddr = ssdpPacket.getLocalAddress();
         Device rootDev = getRootDevice();
         String rootDevLocation = rootDev.getLocationURL(localAddr);
-        
+
         SSDPSearchResponse ssdpRes = new SSDPSearchResponse();
         ssdpRes.setLeaseTime(getLeaseTime());
         ssdpRes.setDate(Calendar.getInstance());
@@ -1240,7 +1240,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
 
         int mx = ssdpPacket.getMX();
         TimerUtil.waitRandom(mx * 1000);
-        
+
         String remoteAddr = ssdpPacket.getRemoteAddress();
         int remotePort = ssdpPacket.getRemotePort();
         SSDPSearchResponseSocket ssdpResSock = new SSDPSearchResponseSocket();
@@ -1249,10 +1249,10 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         int ssdpCount = getSSDPAnnounceCount();
         for (int i=0; i<ssdpCount; i++)
             ssdpResSock.post(remoteAddr, remotePort, ssdpRes);
-            
+
         return true;
     }
-    
+
     public void deviceSearchResponse(SSDPPacket ssdpPacket)
     {
         String ssdpST = ssdpPacket.getST();
@@ -1261,13 +1261,13 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             return;
 
         boolean isRootDevice = isRootDevice();
-        
+
         String devUSN = getUDN();
         if (isRootDevice == true)
             devUSN += "::" + USN.ROOTDEVICE;
-            
+
         if (ST.isAllDevice(ssdpST) == true) {
-            String devNT = getNotifyDeviceNT();            
+            String devNT = getNotifyDeviceNT();
             int repeatCnt = (isRootDevice == true) ? 3 : 2;
             for (int n=0; n<repeatCnt; n++)
                 postSearchResponse(ssdpPacket, devNT, devUSN);
@@ -1289,14 +1289,14 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
                 postSearchResponse(ssdpPacket, devType, devUSN);
             }
         }
-        
+
         ServiceList serviceList = getServiceList();
         int serviceCnt = serviceList.size();
         for (int n=0; n<serviceCnt; n++) {
             Service service = serviceList.getService(n);
             service.serviceSearchResponse(ssdpPacket);
         }
-        
+
         DeviceList childDeviceList = getDeviceList();
         int childDeviceCnt = childDeviceList.size();
         for (int n=0; n<childDeviceCnt; n++) {
@@ -1304,21 +1304,21 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             childDevice.deviceSearchResponse(ssdpPacket);
         }
     }
-    
+
     public void deviceSearchReceived(SSDPPacket ssdpPacket)
     {
         deviceSearchResponse(ssdpPacket);
     }
-    
+
     ////////////////////////////////////////////////
-    //    HTTP Server    
+    //    HTTP Server
     ////////////////////////////////////////////////
 
     public void setHTTPPort(int port)
     {
         getDeviceData().setHTTPPort(port);
     }
-    
+
     public int getHTTPPort()
     {
         return getDeviceData().getHTTPPort();
@@ -1328,7 +1328,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         if (Debug.isOn() == true)
             httpReq.print();
-    
+
         if (httpReq.isGetRequest() == true) {
             httpGetRequestRecieved(httpReq);
             return;
@@ -1361,7 +1361,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         desc += rootNode.toString();
         return desc.getBytes();
     }
-    
+
     private void httpGetRequestRecieved(HTTPRequest httpReq)
     {
         String uri = httpReq.getURI();
@@ -1370,10 +1370,10 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             httpReq.returnBadRequest();
             return;
         }
-                    
+
         Device embDev;
         Service embService;
-        
+
         byte fileByte[] = new byte[0];
         if (isDescriptionURI(uri) == true) {
             String localAddr = httpReq.getLocalAddress();
@@ -1390,7 +1390,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             httpReq.returnBadRequest();
             return;
         }
-        
+
         HTTPResponse httpRes = new HTTPResponse();
         if (FileUtil.isXMLFileName(uri) == true)
             httpRes.setContentType(XML.CONTENT_TYPE);
@@ -1456,7 +1456,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         if (Debug.isOn() == true)
             ctlReq.print();
-            
+
         String actionName = ctlReq.getActionName();
         Action action = service.getAction(actionName);
         if (action == null) {
@@ -1519,13 +1519,13 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             deviceEventNewSubscriptionRecieved(service, subReq);
             return;
         }
-        
+
         // SUBSCRIBE (RENEW)
         if (subReq.hasSID() == true) {
             deviceEventRenewSubscriptionRecieved(service, subReq);
             return;
         }
-        
+
         upnpBadSubscriptionRecieved(subReq, HTTPStatus.PRECONDITION_FAILED);
     }
 
@@ -1542,13 +1542,13 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
 
         long timeOut = subReq.getTimeout();
         String sid = Subscription.createSID();
-            
+
         Subscriber sub = new Subscriber();
         sub.setDeliveryURL(callback);
         sub.setTimeOut(timeOut);
         sub.setSID(sid);
         service.addSubscriber(sub);
-            
+
         SubscriptionResponse subRes = new SubscriptionResponse();
         subRes.setStatusCode(HTTPStatus.OK);
         subRes.setSID(sid);
@@ -1559,7 +1559,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
 
         if (Debug.isOn() == true)
             subRes.print();
-        
+
         service.notifyAllStateVariables();
     }
 
@@ -1576,16 +1576,16 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         long timeOut = subReq.getTimeout();
         sub.setTimeOut(timeOut);
         sub.renew();
-                
+
         SubscriptionResponse subRes = new SubscriptionResponse();
         subRes.setStatusCode(HTTPStatus.OK);
         subRes.setSID(sid);
         subRes.setTimeout(timeOut);
         subReq.post(subRes);
-        
+
         if (Debug.isOn() == true)
             subRes.print();
-    }        
+    }
 
     private void deviceEventUnsubscriptionRecieved(Service service, SubscriptionRequest subReq)
     {
@@ -1598,35 +1598,35 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         }
 
         service.removeSubscriber(sub);
-                        
+
         SubscriptionResponse subRes = new SubscriptionResponse();
         subRes.setStatusCode(HTTPStatus.OK);
         subReq.post(subRes);
-        
+
         if (Debug.isOn() == true)
             subRes.print();
-    }        
-    
+    }
+
     ////////////////////////////////////////////////
-    //    Thread    
+    //    Thread
     ////////////////////////////////////////////////
 
-    private HTTPServerList getHTTPServerList() 
+    private HTTPServerList getHTTPServerList()
     {
         return getDeviceData().getHTTPServerList();
     }
 
-    private SSDPSearchSocketList getSSDPSearchSocketList() 
+    private SSDPSearchSocketList getSSDPSearchSocketList()
     {
         return getDeviceData().getSSDPSearchSocketList();
     }
 
-    private void setAdvertiser(Advertiser adv) 
+    private void setAdvertiser(Advertiser adv)
     {
         getDeviceData().setAdvertiser(adv);
     }
-    
-    private Advertiser getAdvertiser() 
+
+    private Advertiser getAdvertiser()
     {
         return getDeviceData().getAdvertiser();
     }
@@ -1634,11 +1634,11 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     public boolean start()
     {
         stop(true);
-        
+
         ////////////////////////////////////////
         // HTTP Server
         ////////////////////////////////////////
-        
+
         int retryCnt = 0;
         int bindPort = getHTTPPort();
         HTTPServerList httpServerList = getHTTPServerList();
@@ -1655,7 +1655,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         ////////////////////////////////////////
         // SSDP Seach Socket
         ////////////////////////////////////////
-        
+
         SSDPSearchSocketList ssdpSearchSockList = getSSDPSearchSocketList();
         if (ssdpSearchSockList.open() == false)
             return false;
@@ -1665,9 +1665,9 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         ////////////////////////////////////////
         // Announce
         ////////////////////////////////////////
-        
+
         announce();
-        
+
         ////////////////////////////////////////
         // Advertiser
         ////////////////////////////////////////
@@ -1675,7 +1675,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
         Advertiser adv = new Advertiser(this);
         setAdvertiser(adv);
         adv.start();
-        
+
         return true;
     }
 
@@ -1683,17 +1683,17 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     {
         if (doByeBye == true)
             byebye();
-        
+
         HTTPServerList httpServerList = getHTTPServerList();
         httpServerList.stop();
         httpServerList.close();
         httpServerList.clear();
-        
+
         SSDPSearchSocketList ssdpSearchSockList = getSSDPSearchSocketList();
         ssdpSearchSockList.stop();
         ssdpSearchSockList.close();
         ssdpSearchSockList.clear();
-        
+
         Advertiser adv = getAdvertiser();
         if (adv != null) {
             adv.stop();
@@ -1702,7 +1702,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
 
         return true;
     }
-    
+
     public boolean stop()
     {
         return stop(true);
@@ -1711,8 +1711,8 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
     // Interface Address
     ////////////////////////////////////////////////
-    
-    public String getInterfaceAddress() 
+
+    public String getInterfaceAddress()
     {
         SSDPPacket ssdpPacket = getSSDPPacket();
         if (ssdpPacket == null)
@@ -1723,7 +1723,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
     // Acion/QueryListener
     ////////////////////////////////////////////////
-    
+
     public void setActionListener(ActionListener listener)
     {
         ServiceList serviceList = getServiceList();
@@ -1749,7 +1749,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
     ////////////////////////////////////////////////
 
     // Thanks for Mikael Hakman (04/25/05)
-    public void setActionListener(ActionListener listener, boolean includeSubDevices) 
+    public void setActionListener(ActionListener listener, boolean includeSubDevices)
     {
         setActionListener(listener);
         if (includeSubDevices == true) {
@@ -1761,9 +1761,9 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             }
         }
     }
-        
+
     // Thanks for Mikael Hakman (04/25/05)
-    public void setQueryListener(QueryListener listener, boolean includeSubDevices) 
+    public void setQueryListener(QueryListener listener, boolean includeSubDevices)
     {
         setQueryListener(listener);
         if (includeSubDevices == true) {
@@ -1775,13 +1775,13 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
             }
         }
     }
-    
+
     ////////////////////////////////////////////////
     //    output
     ////////////////////////////////////////////////
 
 /*
-    public void output(PrintWriter ps) 
+    public void output(PrintWriter ps)
     {
         ps.println("deviceType = " + getDeviceType());
         ps.println("freindlyName = " + getFriendlyName());
@@ -1789,7 +1789,7 @@ public class Device implements plugins.UPnP.org.cybergarage.http.HTTPRequestList
 
         DeviceList devList = getDeviceList();
         ps.println("devList = " + devList.size());
-        
+
         ServiceList serviceList = getServiceList();
         ps.println("serviceList = " + serviceList.size());
 

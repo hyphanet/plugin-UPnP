@@ -10,7 +10,7 @@
 *
 *    03/27/04
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -22,7 +22,7 @@ public class AllowedValue
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public final static String ELEM_NAME = "allowedValue";
 
     ////////////////////////////////////////////////
@@ -35,7 +35,7 @@ public class AllowedValue
     {
         return allowedValueNode;
     }
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////

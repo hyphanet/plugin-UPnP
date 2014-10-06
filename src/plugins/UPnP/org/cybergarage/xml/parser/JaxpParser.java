@@ -37,7 +37,7 @@ public class JaxpParser extends Parser
     {
         super();
     }
-    
+
     ////////////////////////////////////////////////
     //    parse (Node)
     ////////////////////////////////////////////////
@@ -47,7 +47,7 @@ public class JaxpParser extends Parser
         int domNodeType = domNode.getNodeType();
 //        if (domNodeType != Node.ELEMENT_NODE)
 //            return;
-            
+
         String domNodeName = domNode.getNodeName();
         String domNodeValue = domNode.getNodeValue();
 
@@ -68,7 +68,7 @@ public class JaxpParser extends Parser
         if (parentNode != null)
             parentNode.addNode(node);
 
-        NamedNodeMap attrMap = domNode.getAttributes(); 
+        NamedNodeMap attrMap = domNode.getAttributes();
         int attrLen = attrMap.getLength();
         //Debug.message("attrLen = " + attrLen);
         for (int n = 0; n<attrLen; n++) {
@@ -77,13 +77,13 @@ public class JaxpParser extends Parser
             String attrValue = attr.getNodeValue();
             node.setAttribute(attrName, attrValue);
         }
-        
+
         org.w3c.dom.Node child = domNode.getFirstChild();
         while (child != null) {
             parse(node, child, rank+1);
             child = child.getNextSibling();
         }
-        
+
         return node;
     }
 
@@ -98,7 +98,7 @@ public class JaxpParser extends Parser
     public Node parse(InputStream inStream) throws ParserException
     {
         plugins.UPnP.org.cybergarage.xml.Node root = null;
-        
+
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -112,7 +112,7 @@ public class JaxpParser extends Parser
 /*
             NodeList rootList = doc.getElementsByTagName("root");
             Debug.message("rootList = " + rootList.getLength());
-            
+
             if (0 < rootList.getLength())
                 root = parse(root, rootList.item(0));
 */
@@ -120,7 +120,7 @@ public class JaxpParser extends Parser
         catch (Exception e) {
             throw new ParserException(e);
         }
-        
+
         return root;
     }
 

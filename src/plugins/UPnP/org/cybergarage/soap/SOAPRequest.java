@@ -15,7 +15,7 @@
 *        - Added XML header, <?xml version=\"1.0\"?> to setContent().
 *    05/11/04
 *        - Changed the XML header to <?xml version="1.0" encoding="utf-8"?> in setContent().
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.soap;
@@ -29,11 +29,11 @@ import plugins.UPnP.org.cybergarage.util.*;
 public class SOAPRequest extends HTTPRequest
 {
     private final static String SOAPACTION = "SOAPACTION";
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public SOAPRequest()
     {
         setContentType(SOAP.CONTENT_TYPE);
@@ -53,7 +53,7 @@ public class SOAPRequest extends HTTPRequest
     {
         setStringHeader(SOAPACTION, action);
     }
-    
+
     public String getSOAPAction()
     {
         return getStringHeaderValue(SOAPACTION);
@@ -71,7 +71,7 @@ public class SOAPRequest extends HTTPRequest
             return false;
         return soapAction.equals(value);
     }
- 
+
     ////////////////////////////////////////////////
     //    post
     ////////////////////////////////////////////////
@@ -79,13 +79,13 @@ public class SOAPRequest extends HTTPRequest
     public SOAPResponse postMessage(String host, int port)
     {
         HTTPResponse httpRes = post(host, port);
-        
+
          SOAPResponse soapRes = new SOAPResponse(httpRes);
 
         byte content[] = soapRes.getContent();
         if (content.length <= 0)
             return soapRes;
-        
+
         try {
             ByteArrayInputStream byteIn = new ByteArrayInputStream(content);
             Parser xmlParser = SOAP.getXMLParser();
@@ -95,7 +95,7 @@ public class SOAPRequest extends HTTPRequest
         catch (Exception e) {
             Debug.warning(e);
         }
-            
+
          return soapRes;
     }
 
@@ -104,17 +104,17 @@ public class SOAPRequest extends HTTPRequest
     ////////////////////////////////////////////////
 
     private Node rootNode;
-    
+
     private void setRootNode(Node node)
     {
         rootNode = node;
     }
-    
+
     private synchronized Node getRootNode()
     {
         if (rootNode != null)
             return rootNode;
-            
+
         try {
             byte content[] = getContent();
             ByteArrayInputStream contentIn = new ByteArrayInputStream(content);
@@ -124,10 +124,10 @@ public class SOAPRequest extends HTTPRequest
         catch (ParserException e) {
             Debug.warning(e);
         }
-        
+
         return rootNode;
     }
-    
+
     ////////////////////////////////////////////////
     //    XML
     ////////////////////////////////////////////////
@@ -136,12 +136,12 @@ public class SOAPRequest extends HTTPRequest
     {
         setRootNode(node);
     }
-    
+
     public Node getEnvelopeNode()
     {
         return getRootNode();
     }
-        
+
     public Node getBodyNode()
     {
         Node envNode = getEnvelopeNode();
@@ -155,21 +155,21 @@ public class SOAPRequest extends HTTPRequest
     ////////////////////////////////////////////////
     //    XML Contents
     ////////////////////////////////////////////////
-    
+
     public void setContent(Node node)
     {
         // Thanks for Ralf G. R. Bergs <Ralf@Ber.gs>, Inma Marin Lopez <inma@dif.um.es>.
         String conStr = "";
         conStr += SOAP.VERSION_HEADER;
         conStr += "\n";
-        conStr += node.toString(); 
+        conStr += node.toString();
         setContent(conStr);
     }
 
     ////////////////////////////////////////////////
     //    print
     ////////////////////////////////////////////////
-    
+
     public void print()
     {
         System.out.println(toString());

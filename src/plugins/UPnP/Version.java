@@ -8,15 +8,15 @@ public class Version {
         public static final String svnRevision = "@custom@";
     public static final short MAJOR = 1;
     public static final short MINOR = 6;
-        
+
     public static String getVersion() {
         return (MAJOR + "." + MINOR);
     }
-    
+
     public static long getRealVersion() {
         return MAJOR * 10000 + MINOR;
     }
-    
+
         public static String getSvnRevision() {
                 return svnRevision;
         }

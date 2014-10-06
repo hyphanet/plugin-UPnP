@@ -21,7 +21,7 @@ public final class FileUtil
 {
     public final static byte[] load(String fileName)
     {
-        try {    
+        try {
             FileInputStream fin=new FileInputStream(fileName);
             return load(fin);
         }
@@ -33,7 +33,7 @@ public final class FileUtil
 
     public final static byte[] load(File file)
     {
-        try {    
+        try {
             FileInputStream fin=new FileInputStream(file);
             return load(fin);
         }
@@ -46,18 +46,18 @@ public final class FileUtil
     public final static byte[] load(FileInputStream fin)
     {
         byte readBuf[] = new byte[512*1024];
-    
-        try {    
+
+        try {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        
+
             int readCnt = fin.read(readBuf);
             while (0 < readCnt) {
                 bout.write(readBuf, 0, readCnt);
                 readCnt = fin.read(readBuf);
             }
-            
+
             fin.close();
-            
+
             return bout.toByteArray();
         }
         catch (Exception e) {
@@ -65,7 +65,7 @@ public final class FileUtil
             return new byte[0];
         }
     }
-    
+
     public final static boolean isXMLFileName(String name)
     {
         if (StringUtil.hasData(name) == false)

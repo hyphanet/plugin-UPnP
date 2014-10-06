@@ -10,7 +10,7 @@
 *
 *    12/13/02
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;

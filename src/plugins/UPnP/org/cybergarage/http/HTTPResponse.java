@@ -14,7 +14,7 @@
 *        - Changed to initialize a content length header.
 *    10/22/04
 *        - Added isSuccessful().
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;
@@ -26,7 +26,7 @@ public class HTTPResponse extends HTTPPacket
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public HTTPResponse()
     {
         setContentType(HTML.CONTENT_TYPE);
@@ -54,7 +54,7 @@ public class HTTPResponse extends HTTPPacket
     ////////////////////////////////////////////////
 
     private int statusCode = 0;
-    
+
     public void setStatusCode(int code)
     {
         statusCode = code;
@@ -72,30 +72,30 @@ public class HTTPResponse extends HTTPPacket
     {
         return HTTPStatus.isSuccessful(getStatusCode());
     }
-    
+
     public String getStatusLineString()
     {
         return "HTTP/" + getVersion() + " " + getStatusCode() + " " + HTTPStatus.code2String(statusCode) + HTTP.CRLF;
     }
-    
+
     ////////////////////////////////////////////////
     //    getHeader
     ////////////////////////////////////////////////
-    
+
     public String getHeader()
     {
         StringBuilder str = new StringBuilder();
-    
+
         str.append(getStatusLineString());
         str.append(getHeaderString());
-        
+
         return str.toString();
     }
 
     ////////////////////////////////////////////////
     //    toString
     ////////////////////////////////////////////////
-    
+
     public String toString()
     {
         StringBuilder str = new StringBuilder();
@@ -104,7 +104,7 @@ public class HTTPResponse extends HTTPPacket
         str.append(getHeaderString());
         str.append(HTTP.CRLF);
         str.append(getContentString());
-        
+
         return str.toString();
     }
 

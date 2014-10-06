@@ -24,27 +24,27 @@ import plugins.UPnP.org.cybergarage.net.*;
 
 import plugins.UPnP.org.cybergarage.upnp.device.*;
 
-public class SSDPSearchSocketList extends Vector 
+public class SSDPSearchSocketList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = 4071292828166415028L;
 
-    public SSDPSearchSocketList() 
+    public SSDPSearchSocketList()
     {
     }
 
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public SSDPSearchSocket getSSDPSearchSocket(int n)
     {
         return (SSDPSearchSocket)get(n);
     }
-    
+
     public void addSearchListener(SearchListener listener)
     {
         int nServers = size();
@@ -52,13 +52,13 @@ public class SSDPSearchSocketList extends Vector
             SSDPSearchSocket sock = getSSDPSearchSocket(n);
             sock.addSearchListener(listener);
         }
-    }        
+    }
 
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
-    public boolean open() 
+
+    public boolean open()
     {
         int nHostAddrs = HostInterface.getNHostAddresses();
         for (int n=0; n<nHostAddrs; n++) {
@@ -68,7 +68,7 @@ public class SSDPSearchSocketList extends Vector
         }
         return true;
     }
-        
+
     public void close()
     {
         int nSockets = size();
@@ -78,11 +78,11 @@ public class SSDPSearchSocketList extends Vector
         }
         clear();
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public void start()
     {
         int nSockets = size();

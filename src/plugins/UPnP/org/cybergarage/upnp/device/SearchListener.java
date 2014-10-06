@@ -10,7 +10,7 @@
 *
 *    11/18/02b
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.device;

@@ -17,7 +17,7 @@
 *        - Added a isOnlyHeader to post().
 *    03/02/05
 *        - Changed post() to suppot chunked stream.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;
@@ -31,7 +31,7 @@ public class HTTPSocket
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public HTTPSocket(Socket socket)
     {
         setSocket(socket);
@@ -44,12 +44,12 @@ public class HTTPSocket
         setInputStream(socket.getInputStream());
         setOutputStream(socket.getOutputStream());
     }
-    
+
     public void finalize()
     {
         close();
     }
-    
+
     ////////////////////////////////////////////////
     //    Socket
     ////////////////////////////////////////////////
@@ -69,15 +69,15 @@ public class HTTPSocket
     ////////////////////////////////////////////////
     //    local address/port
     ////////////////////////////////////////////////
-    
+
     public String getLocalAddress()
     {
-        return getSocket().getLocalAddress().getHostAddress();    
+        return getSocket().getLocalAddress().getHostAddress();
     }
 
     public int getLocalPort()
     {
-        return getSocket().getLocalPort();    
+        return getSocket().getLocalPort();
     }
 
     ////////////////////////////////////////////////
@@ -91,7 +91,7 @@ public class HTTPSocket
     {
         sockIn = in;
     }
-    
+
     public InputStream getInputStream()
     {
         return sockIn;
@@ -101,7 +101,7 @@ public class HTTPSocket
     {
         sockOut = out;
     }
-    
+
     private OutputStream getOutputStream()
     {
         return sockOut;
@@ -139,7 +139,7 @@ public class HTTPSocket
         }
         return true;
     }
-    
+
     ////////////////////////////////////////////////
     //    post
     ////////////////////////////////////////////////
@@ -151,40 +151,40 @@ public class HTTPSocket
 
         try {
             httpRes.setContentLength(contentLength);
-            
+
             out.write(httpRes.getHeader().getBytes());
             out.write(HTTP.CRLF.getBytes());
             if (isOnlyHeader == true) {
                 out.flush();
                 return true;
             }
-            
+
             boolean isChunkedResponse = httpRes.isChunked();
-            
+
             if (isChunkedResponse == true) {
                 String chunSizeBuf = Long.toString(contentLength);
                 out.write(chunSizeBuf.getBytes());
                 out.write(HTTP.CRLF.getBytes());
             }
-            
+
             out.write(content, (int)contentOffset, (int)contentLength);
-            
+
             if (isChunkedResponse == true) {
                 out.write(HTTP.CRLF.getBytes());
                 out.write("0".getBytes());
                 out.write(HTTP.CRLF.getBytes());
             }
-            
+
             out.flush();
         }
         catch (Exception e) {
             //Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
-    
+
     private boolean post(HTTPResponse httpRes, InputStream in, long contentOffset, long contentLength, boolean isOnlyHeader)
     {
         httpRes.setDate(Calendar.getInstance());
@@ -192,20 +192,20 @@ public class HTTPSocket
 
         try {
             httpRes.setContentLength(contentLength);
-            
+
             out.write(httpRes.getHeader().getBytes());
             out.write(HTTP.CRLF.getBytes());
-            
+
             if (isOnlyHeader == true) {
                 out.flush();
                 return true;
             }
-            
+
             boolean isChunkedResponse = httpRes.isChunked();
-            
+
             if (0 < contentOffset)
                 in.skip(contentOffset);
-            
+
             int chunkSize = HTTP.getChunkSize();
             byte readBuf[] = new byte[chunkSize];
             long readCnt = 0;
@@ -224,22 +224,22 @@ public class HTTPSocket
                 readSize = (chunkSize < (contentLength-readCnt)) ? chunkSize : (contentLength-readCnt);
                 readLen = in.read(readBuf, 0, (int)readSize);
             }
-            
+
             if (isChunkedResponse == true) {
                 out.write("0".getBytes());
                 out.write(HTTP.CRLF.getBytes());
             }
-            
+
             out.flush();
         }
         catch (Exception e) {
             //Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
-    
+
     public boolean post(HTTPResponse httpRes, long contentOffset, long contentLength, boolean isOnlyHeader)
     {
         if (httpRes.hasContentInputStream() == true)

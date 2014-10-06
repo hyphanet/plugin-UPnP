@@ -17,7 +17,7 @@
 
 package plugins.UPnP.org.cybergarage.xml;
 
-public class ParserException extends Exception 
+public class ParserException extends Exception
 {
     private static final long serialVersionUID = 7443033796560597360L;
 
@@ -25,7 +25,7 @@ public class ParserException extends Exception
     {
         super(e);
     }
-    
+
     public ParserException(String s)
     {
         super(s);

@@ -17,27 +17,27 @@ package plugins.UPnP.org.cybergarage.upnp;
 
 import java.util.*;
 
-public class DeviceList extends Vector 
+public class DeviceList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     private static final long serialVersionUID = 3773784061607435126L;
     public final static String ELEM_NAME = "deviceList";
 
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
-    public DeviceList() 
+
+    public DeviceList()
     {
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public Device getDevice(int n)
     {
         return (Device)get(n);

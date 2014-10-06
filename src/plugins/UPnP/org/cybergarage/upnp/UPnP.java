@@ -16,7 +16,7 @@
 *        - Added support for XML Parser
 *    06/18/03
 *        - Added INMPR03 and INMPR03_VERSION.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -33,7 +33,7 @@ public class UPnP
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public final static String NAME = "CyberLink";
     public final static String VERSION = "1.7";
 
@@ -46,17 +46,17 @@ public class UPnP
         String osVer = System.getProperty("os.version");
         return osName + "/"  + osVer + " UPnP/1.0 " + NAME + "/" + VERSION;
     }
-    
+
     public final static String INMPR03 = "INMPR03";
     public final static String INMPR03_VERSION = "1.0";
     public final static int INMPR03_DISCOVERY_OVER_WIRELESS_COUNT = 4;
 
     public final static String XML_DECLARATION = "<?xml version=\"1.0\"?>";
-    
+
     ////////////////////////////////////////////////
     //    Enable / Disable
     ////////////////////////////////////////////////
-    
+
     public final static int USE_ONLY_IPV6_ADDR = 1;
     public final static int USE_LOOPBACK_ADDR = 2;
     public final static int USE_IPV6_LINK_LOCAL_SCOPE = 3;
@@ -66,7 +66,7 @@ public class UPnP
     public final static int USE_IPV6_GLOBAL_SCOPE = 7;
     public final static int USE_SSDP_SEARCHRESPONSE_MULTIPLE_INTERFACES = 8;
     public final static int USE_ONLY_IPV4_ADDR = 9;
-    
+
     public final static void setEnable(int value)
     {
         switch (value) {
@@ -74,42 +74,42 @@ public class UPnP
             {
                 HostInterface.USE_ONLY_IPV6_ADDR = true;
             }
-            break;    
+            break;
         case USE_ONLY_IPV4_ADDR:
             {
                 HostInterface.USE_ONLY_IPV4_ADDR = true;
             }
-            break;    
+            break;
         case USE_LOOPBACK_ADDR:
             {
                 HostInterface.USE_LOOPBACK_ADDR = true;
             }
-            break;    
+            break;
         case USE_IPV6_LINK_LOCAL_SCOPE:
             {
                 SSDP.setIPv6Address(SSDP.IPV6_LINK_LOCAL_ADDRESS);
             }
-            break;    
+            break;
         case USE_IPV6_SUBNET_SCOPE:
             {
                 SSDP.setIPv6Address(SSDP.IPV6_SUBNET_ADDRESS);
             }
-            break;    
+            break;
         case USE_IPV6_ADMINISTRATIVE_SCOPE:
             {
                 SSDP.setIPv6Address(SSDP.IPV6_ADMINISTRATIVE_ADDRESS);
             }
-            break;    
+            break;
         case USE_IPV6_SITE_LOCAL_SCOPE:
             {
                 SSDP.setIPv6Address(SSDP.IPV6_SITE_LOCAL_ADDRESS);
             }
-            break;    
+            break;
         case USE_IPV6_GLOBAL_SCOPE:
             {
                 SSDP.setIPv6Address(SSDP.IPV6_GLOBAL_ADDRESS);
             }
-            break;    
+            break;
         }
     }
 
@@ -120,17 +120,17 @@ public class UPnP
             {
                 HostInterface.USE_ONLY_IPV6_ADDR = false;
             }
-            break;    
+            break;
         case USE_ONLY_IPV4_ADDR:
             {
                 HostInterface.USE_ONLY_IPV4_ADDR = false;
             }
-            break;    
+            break;
         case USE_LOOPBACK_ADDR:
             {
                 HostInterface.USE_LOOPBACK_ADDR = false;
             }
-            break;    
+            break;
         }
     }
 
@@ -167,12 +167,12 @@ public class UPnP
         uuid += id;
         return uuid;
     }
-    
+
     public static final String createUUID()
     {
         long time1 = System.currentTimeMillis();
         long time2 = (long)((double)System.currentTimeMillis() * Math.random());
-        return 
+        return
             toUUID((int)(time1 & 0xFFFF)) + "-" +
             toUUID((int)((time1 >> 32) | 0xA000) & 0xFFFF) + "-" +
             toUUID((int)(time2 & 0xFFFF)) + "-" +
@@ -184,31 +184,31 @@ public class UPnP
     ////////////////////////////////////////////////
 
     private static Parser xmlParser;
-    
+
     public final static void setXMLParser(Parser parser)
     {
         xmlParser = parser;
         SOAP.setXMLParser(parser);
     }
-    
+
     public final static Parser getXMLParser()
     {
         return xmlParser;
     }
-    
+
     ////////////////////////////////////////////////
     //    Initialize
     ////////////////////////////////////////////////
-    
-    static 
+
+    static
     {
         ////////////////////////////
         // Interface Option
         ////////////////////////////
-        
+
         setXMLParser(new JaxpParser());
         //setXMLParser(new kXML2Parser());
-        
+
         ////////////////////////////
         // Interface Option
         ////////////////////////////
@@ -216,14 +216,14 @@ public class UPnP
         if (HostInterface.hasIPv6Addresses() == true)
             setEnable(USE_ONLY_IPV6_ADDR);
         */
-        
+
         ////////////////////////////
         // Debug Option
         ////////////////////////////
-        
+
         //Debug.on();
     }
-    
+
     public final static void initialize()
     {
         // Dummy function to call UPnP.static

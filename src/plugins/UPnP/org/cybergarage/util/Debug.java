@@ -18,7 +18,7 @@ package plugins.UPnP.org.cybergarage.util;
 public final class Debug
 {
     public static boolean enabled = false;
-    
+
     public static final void on() {
         enabled = true;
     }

@@ -17,14 +17,14 @@ package plugins.UPnP.org.cybergarage.http;
 
 import java.util.*;
 
-public class ParameterList extends Vector 
+public class ParameterList extends Vector
 {
     private static final long serialVersionUID = -6026765325018137641L;
 
-    public ParameterList() 
+    public ParameterList()
     {
     }
-    
+
     public Parameter at(int n)
     {
         return (Parameter)get(n);
@@ -34,13 +34,13 @@ public class ParameterList extends Vector
     {
         return (Parameter)get(n);
     }
-    
-    public Parameter getParameter(String name) 
+
+    public Parameter getParameter(String name)
     {
         if (name == null)
             return null;
-        
-        int nLists = size(); 
+
+        int nLists = size();
         for (int n=0; n<nLists; n++) {
             Parameter param = at(n);
             if (name.compareTo(param.getName()) == 0)
@@ -49,7 +49,7 @@ public class ParameterList extends Vector
         return null;
     }
 
-    public String getValue(String name) 
+    public String getValue(String name)
     {
         Parameter param = getParameter(name);
         if (param == null)

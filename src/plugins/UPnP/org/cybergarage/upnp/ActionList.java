@@ -17,7 +17,7 @@ package plugins.UPnP.org.cybergarage.upnp;
 
 import java.util.*;
 
-public class ActionList extends Vector 
+public class ActionList extends Vector
 {
     ////////////////////////////////////////////////
     //    Constants
@@ -29,15 +29,15 @@ public class ActionList extends Vector
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
-    public ActionList() 
+
+    public ActionList()
     {
     }
-    
+
     ////////////////////////////////////////////////
     //    Methods
     ////////////////////////////////////////////////
-    
+
     public Action getAction(int n)
     {
         return (Action)get(n);

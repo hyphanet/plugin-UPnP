@@ -26,11 +26,11 @@
 *        - problem: not able to retrieve service information when URLBase is missing and SCPDURL is relative
 *        - fix: modify to retrieve host information from Header's Location (required) field and update the
 *               BaseURL tag in the xml so subsequent information retrieval can be done (Steven Yen, 8.27.2003)
-*        - note: 1. in the case that Header's Location field combine with SCPDURL is not able to retrieve proper 
+*        - note: 1. in the case that Header's Location field combine with SCPDURL is not able to retrieve proper
 *                  information, updating BaseURL would not hurt, since exception will be thrown with or without update.
-*                2. this problem was discovered when using PC running MS win XP with ICS enabled (gateway). 
+*                2. this problem was discovered when using PC running MS win XP with ICS enabled (gateway).
 *                  It seems that  root device xml file does not have BaseURL and SCPDURL are all relative.
-*                3. UPnP device architecture states that BaseURL is optional and SCPDURL may be relative as 
+*                3. UPnP device architecture states that BaseURL is optional and SCPDURL may be relative as
 *                  specified by UPnP vendor, so MS does not seem to violate the rule.
 *    10/22/03
 *        - Added setActionListener().
@@ -38,8 +38,8 @@
 *        - Changed about new QueryListener interface.
 *    01/06/04
 *        - Moved the following methods to StateVariable class.
-*          getQueryListener() 
-*          setQueryListener() 
+*          getQueryListener()
+*          setQueryListener()
 *          performQueryListener()
 *        - Added new setQueryListener() to set a listner to all state variables.
 *    07/02/04
@@ -83,7 +83,7 @@ public class Service
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public final static String ELEM_NAME = "service";
 
     ////////////////////////////////////////////////
@@ -109,19 +109,19 @@ public class Service
     ////////////////////////////////////////////////
     // Mutex
     ////////////////////////////////////////////////
-    
+
     private Mutex mutex = new Mutex();
-    
+
     public void lock()
     {
         mutex.lock();
     }
-    
+
     public void unlock()
     {
         mutex.unlock();
     }
-    
+
     ////////////////////////////////////////////////
     //    isServiceNode
     ////////////////////////////////////////////////
@@ -130,7 +130,7 @@ public class Service
     {
         return Service.ELEM_NAME.equals(node.getName());
     }
-    
+
     ////////////////////////////////////////////////
     //    Device/Root Node
     ////////////////////////////////////////////////
@@ -167,7 +167,7 @@ public class Service
     ////////////////////////////////////////////////
 
     private final static String SERVICE_TYPE = "serviceType";
-    
+
     public void setServiceType(String value)
     {
         getServiceNode().setNode(SERVICE_TYPE, value);
@@ -183,7 +183,7 @@ public class Service
     ////////////////////////////////////////////////
 
     private final static String SERVICE_ID = "serviceId";
-    
+
     public void setServiceID(String value)
     {
         getServiceNode().setNode(SERVICE_ID, value);
@@ -197,7 +197,7 @@ public class Service
     ////////////////////////////////////////////////
     //    isURL
     ////////////////////////////////////////////////
-    
+
     // Thanks for Giordano Sassaroli <sassarol@cefriel.it> (09/03/03)
     private boolean isURL(String referenceUrl, String url)
     {
@@ -212,13 +212,13 @@ public class Service
             return true;
         return false;
     }
-    
+
     ////////////////////////////////////////////////
     //    SCPDURL
     ////////////////////////////////////////////////
 
     private final static String SCPDURL = "SCPDURL";
-    
+
     public void setSCPDURL(String value)
     {
         getServiceNode().setNode(SCPDURL, value);
@@ -233,13 +233,13 @@ public class Service
     {
         return isURL(getSCPDURL(), url);
     }
-    
+
     ////////////////////////////////////////////////
     //    controlURL
     ////////////////////////////////////////////////
 
     private final static String CONTROL_URL = "controlURL";
-    
+
     public void setControlURL(String value)
     {
         getServiceNode().setNode(CONTROL_URL, value);
@@ -260,7 +260,7 @@ public class Service
     ////////////////////////////////////////////////
 
     private final static String EVENT_SUB_URL = "eventSubURL";
-    
+
     public void setEventSubURL(String value)
     {
         getServiceNode().setNode(EVENT_SUB_URL, value);
@@ -275,7 +275,7 @@ public class Service
     {
         return isURL(getEventSubURL(), url);
     }
-    
+
     ////////////////////////////////////////////////
     //    SCPD node
     ////////////////////////////////////////////////
@@ -306,13 +306,13 @@ public class Service
         data.setSCPDNode(scpdNode);
         return true;
     }
-    
+
     private Node getSCPDNode(URL scpdUrl) throws ParserException
     {
         Parser parser = UPnP.getXMLParser();
         return parser.parse(scpdUrl);
     }
-    
+
     private Node getSCPDNode(File scpdFile) throws ParserException
     {
         Parser parser = UPnP.getXMLParser();
@@ -325,7 +325,7 @@ public class Service
         Node scpdNode = data.getSCPDNode();
         if (scpdNode != null)
             return scpdNode;
-        
+
         String scpdURLStr = getSCPDURL();
         try {
             URL scpdUrl = new URL(scpdURLStr);
@@ -366,7 +366,7 @@ public class Service
         }
 
         data.setSCPDNode(scpdNode);
-        
+
         return scpdNode;
     }
 
@@ -382,7 +382,7 @@ public class Service
         desc += scpdNode.toString();
         return desc.getBytes();
     }
-    
+
     ////////////////////////////////////////////////
     //    actionList
     ////////////////////////////////////////////////
@@ -404,7 +404,7 @@ public class Service
                 continue;
             Action action = new Action(serviceNode, node);
             actionList.add(action);
-        } 
+        }
         return actionList;
     }
 
@@ -422,7 +422,7 @@ public class Service
         }
         return null;
     }
-    
+
     ////////////////////////////////////////////////
     //    serviceStateTable
     ////////////////////////////////////////////////
@@ -444,7 +444,7 @@ public class Service
                 continue;
             StateVariable serviceVar = new StateVariable(serviceNode, node);
             stateTable.add(serviceVar);
-        } 
+        }
         return stateTable;
     }
 
@@ -462,7 +462,7 @@ public class Service
         }
         return null;
     }
-    
+
     public boolean hasStateVariable(String name)
     {
         return (getStateVariable(name) != null ) ? true : false;
@@ -471,7 +471,7 @@ public class Service
     ////////////////////////////////////////////////
     //    UserData
     ////////////////////////////////////////////////
-    
+
     public boolean isService(String name)
     {
         if (name == null)
@@ -482,7 +482,7 @@ public class Service
             return true;
         return false;
     }
-     
+
     ////////////////////////////////////////////////
     //    UserData
     ////////////////////////////////////////////////
@@ -512,17 +512,17 @@ public class Service
     {
         return getDevice().getUDN() + "::" + getServiceType();
     }
-        
+
     public void announce(String bindAddr)
     {
-        // uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:v 
+        // uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:v
         Device rootDev = getRootDevice();
         String devLocation = rootDev.getLocationURL(bindAddr);
-        String serviceNT = getNotifyServiceTypeNT();            
+        String serviceNT = getNotifyServiceTypeNT();
         String serviceUSN = getNotifyServiceTypeUSN();
 
         Device dev = getDevice();
-        
+
         SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
         ssdpReq.setServer(UPnP.getServerName());
         ssdpReq.setLeaseTime(dev.getLeaseTime());
@@ -538,11 +538,11 @@ public class Service
 
     public void byebye(String bindAddr)
     {
-        // uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:v 
-        
-        String devNT = getNotifyServiceTypeNT();            
+        // uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:v
+
+        String devNT = getNotifyServiceTypeNT();
         String devUSN = getNotifyServiceTypeUSN();
-        
+
         SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
         ssdpReq.setNTS(NTS.BYEBYE);
         ssdpReq.setNT(devNT);
@@ -559,12 +559,12 @@ public class Service
 
         if (ssdpST == null)
             return false;
-            
+
         Device dev = getDevice();
-            
-        String serviceNT = getNotifyServiceTypeNT();            
+
+        String serviceNT = getNotifyServiceTypeNT();
         String serviceUSN = getNotifyServiceTypeUSN();
-        
+
         if (ST.isAllDevice(ssdpST) == true) {
             dev.postSearchResponse(ssdpPacket, serviceNT, serviceUSN);
         }
@@ -573,15 +573,15 @@ public class Service
             if (ssdpST.equals(serviceType) == true)
                 dev.postSearchResponse(ssdpPacket, serviceType, serviceUSN);
         }
-        
+
         return true;
     }
-    
+
     ////////////////////////////////////////////////
     // QueryListener
     ////////////////////////////////////////////////
 
-    public void setQueryListener(QueryListener queryListener) 
+    public void setQueryListener(QueryListener queryListener)
     {
         ServiceStateTable stateTable = getServiceStateTable();
         int tableSize = stateTable.size();
@@ -590,27 +590,27 @@ public class Service
             var.setQueryListener(queryListener);
         }
     }
-    
+
     ////////////////////////////////////////////////
     //    Subscription
     ////////////////////////////////////////////////
 
-    public SubscriberList getSubscriberList() 
+    public SubscriberList getSubscriberList()
     {
         return getServiceData().getSubscriberList();
     }
 
-    public void addSubscriber(Subscriber sub) 
+    public void addSubscriber(Subscriber sub)
     {
         getSubscriberList().add(sub);
     }
 
-    public void removeSubscriber(Subscriber sub) 
+    public void removeSubscriber(Subscriber sub)
     {
         getSubscriberList().remove(sub);
     }
 
-    public Subscriber getSubscriber(String name) 
+    public Subscriber getSubscriber(String name)
     {
         SubscriberList subList = getSubscriberList();
         int subListCnt = subList.size();
@@ -631,19 +631,19 @@ public class Service
     {
         String varName = stateVar.getName();
         String value = stateVar.getValue();
-        
+
         String host = sub.getDeliveryHost();
         int port = sub.getDeliveryPort();
-        
+
         NotifyRequest notifyReq = new NotifyRequest();
         notifyReq.setRequest(sub, varName, value);
-        
+
         HTTPResponse res = notifyReq.post(host, port);
         if (res.isSuccessful() == false)
             return false;
-            
-        sub.incrementNotifyCount();        
-        
+
+        sub.incrementNotifyCount();
+
         return true;
     }
 
@@ -652,7 +652,7 @@ public class Service
         SubscriberList subList = getSubscriberList();
         int subListCnt;
         Subscriber subs[];
-        
+
         // Remove expired subscribers.
         subListCnt = subList.size();
         subs = new Subscriber[subListCnt];
@@ -663,7 +663,7 @@ public class Service
             if (sub.isExpired() == true)
                 removeSubscriber(sub);
         }
-        
+
         // Notify to subscribers.
         subListCnt = subList.size();
         subs = new Subscriber[subListCnt];
@@ -694,12 +694,12 @@ public class Service
     // SID
     ////////////////////////////////////////////////
 
-    public String getSID() 
+    public String getSID()
     {
         return getServiceData().getSID();
     }
 
-    public void setSID(String id) 
+    public void setSID(String id)
     {
         getServiceData().setSID(id);
     }
@@ -709,27 +709,27 @@ public class Service
         setSID("");
         setTimeout(0);
     }
-    
+
     public boolean hasSID()
     {
         return StringUtil.hasData(getSID());
-    }        
+    }
 
     public boolean isSubscribed()
     {
         return hasSID();
     }
-    
+
     ////////////////////////////////////////////////
     // Timeout
     ////////////////////////////////////////////////
 
-    public long getTimeout() 
+    public long getTimeout()
     {
         return getServiceData().getTimeout();
     }
 
-    public void setTimeout(long value) 
+    public void setTimeout(long value)
     {
         getServiceData().setTimeout(value);
     }
@@ -737,7 +737,7 @@ public class Service
     ////////////////////////////////////////////////
     // AcionListener
     ////////////////////////////////////////////////
-    
+
     public void setActionListener(ActionListener listener)
     {
         ActionList actionList = getActionList();

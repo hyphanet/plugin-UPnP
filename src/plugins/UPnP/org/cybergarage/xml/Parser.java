@@ -20,7 +20,7 @@ package plugins.UPnP.org.cybergarage.xml;
 import java.net.*;
 import java.io.*;
 
-public abstract class Parser 
+public abstract class Parser
 {
     ////////////////////////////////////////////////
     //    Constructor
@@ -48,12 +48,12 @@ public abstract class Parser
             InputStream urlIn = urlCon.getInputStream();
 
             Node rootElem = parse(urlIn);
-            
+
             urlIn.close();
             urlCon.disconnect();
 
             return rootElem;
-            
+
         } catch (Exception e) {
             throw new ParserException(e);
         }
@@ -84,7 +84,7 @@ public abstract class Parser
             Node root = parse(fileIn);
             fileIn.close();
             return root;
-            
+
         } catch (Exception e) {
             throw new ParserException(e);
         }
@@ -93,7 +93,7 @@ public abstract class Parser
     ////////////////////////////////////////////////
     //    parse (Memory)
     ////////////////////////////////////////////////
-    
+
     public Node parse(String descr) throws ParserException
     {
         try {

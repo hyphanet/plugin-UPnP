@@ -12,7 +12,7 @@
 *        - first revision.
 *    05/13/03
 *        - Added constants for IPv6.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -24,7 +24,7 @@ public class SSDP
     ////////////////////////////////////////////////
 
     public static final int PORT = 1900;
-    
+
     public static final String ADDRESS = "239.255.255.250";
 
     public static final String IPV6_LINK_LOCAL_ADDRESS = "FF02::C";
@@ -32,7 +32,7 @@ public class SSDP
     public static final String IPV6_ADMINISTRATIVE_ADDRESS = "FF04::C";
     public static final String IPV6_SITE_LOCAL_ADDRESS = "FF05::C";
     public static final String IPV6_GLOBAL_ADDRESS = "FF0E::C";
-    
+
     private static String IPV6_ADDRESS;
 
     public static final void setIPv6Address(String addr)
@@ -44,7 +44,7 @@ public class SSDP
     {
         return IPV6_ADDRESS;
     }
-    
+
     public static final int DEFAULT_MSEARCH_MX = 3;
 
     public static final int RECV_MESSAGE_BUFSIZE = 1024;
@@ -53,15 +53,15 @@ public class SSDP
     //    Initialize
     ////////////////////////////////////////////////
 
-    static 
+    static
     {
         setIPv6Address(IPV6_LINK_LOCAL_ADDRESS);
     }
-    
+
     ////////////////////////////////////////////////
     //    LeaseTime
     ////////////////////////////////////////////////
-    
+
     public final static int getLeaseTime(String cacheCont)
     {
         int equIdx = cacheCont.indexOf('=');

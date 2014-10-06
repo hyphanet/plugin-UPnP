@@ -10,7 +10,7 @@
 *
 *    10/10/03
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.http;
@@ -21,11 +21,11 @@ public class HTTPServerThread extends Thread
 {
     private HTTPServer httpServer;
     private Socket sock;
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
-    
+
     public HTTPServerThread(HTTPServer httpServer, Socket sock)
     {
         this.httpServer = httpServer;
@@ -34,7 +34,7 @@ public class HTTPServerThread extends Thread
     }
 
     ////////////////////////////////////////////////
-    //    run    
+    //    run
     ////////////////////////////////////////////////
 
     public void run()

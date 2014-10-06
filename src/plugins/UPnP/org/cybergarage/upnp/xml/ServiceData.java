@@ -26,7 +26,7 @@ import plugins.UPnP.org.cybergarage.upnp.event.*;
 
 public class ServiceData extends NodeData
 {
-    public ServiceData() 
+    public ServiceData()
     {
     }
 
@@ -59,7 +59,7 @@ public class ServiceData extends NodeData
     ////////////////////////////////////////////////
 
     private SubscriberList subscriberList = new SubscriberList();
-    
+
     public SubscriberList getSubscriberList() {
         return subscriberList;
     }
@@ -69,7 +69,7 @@ public class ServiceData extends NodeData
     ////////////////////////////////////////////////
 
     private String sid = "";
-    
+
     public String getSID() {
         return sid;
     }
@@ -84,12 +84,12 @@ public class ServiceData extends NodeData
 
     private long timeout = 0;
 
-    public long getTimeout() 
+    public long getTimeout()
     {
         return timeout;
     }
 
-    public void setTimeout(long value) 
+    public void setTimeout(long value)
     {
         timeout = value;
     }

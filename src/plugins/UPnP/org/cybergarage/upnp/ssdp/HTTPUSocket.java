@@ -18,7 +18,7 @@
 *    01/06/04
 *        - Oliver Newell <olivern@users.sourceforge.net>
 *        - Added to set a current timestamp when the packet are received.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
@@ -40,7 +40,7 @@ public class HTTPUSocket
     {
         return ssdpUniSock;
     }
-        
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
@@ -49,7 +49,7 @@ public class HTTPUSocket
     {
         open();
     }
-    
+
     public HTTPUSocket(String bindAddr, int bindPort)
     {
         open(bindAddr, bindPort);
@@ -75,7 +75,7 @@ public class HTTPUSocket
     {
         localAddr = addr;
     }
-    
+
     public String getLocalAddress()
     {
         if (0 < localAddr.length())
@@ -86,11 +86,11 @@ public class HTTPUSocket
     ////////////////////////////////////////////////
     //    open
     ////////////////////////////////////////////////
-    
+
     public boolean open()
     {
         close();
-        
+
         try {
             ssdpUniSock = new DatagramSocket();
         }
@@ -98,14 +98,14 @@ public class HTTPUSocket
             Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
-    
+
     public boolean open(String bindAddr, int bindPort)
     {
         close();
-        
+
         try {
             // Bind only using the port without the interface address. (2003/12/12)
             InetSocketAddress bindSock = new InetSocketAddress(/*InetAddress.getByName(bindAddr), */ bindPort);
@@ -117,16 +117,16 @@ public class HTTPUSocket
             Debug.warning(e);
             return false;
         }
-        
+
         setLocalAddress(bindAddr);
-        
+
         return true;
     }
 
     public boolean open(int bindPort)
     {
         close();
-        
+
         try {
             InetSocketAddress bindSock = new InetSocketAddress(bindPort);
             ssdpUniSock = new DatagramSocket(null);
@@ -137,10 +137,10 @@ public class HTTPUSocket
             //Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
-        
+
     ////////////////////////////////////////////////
     //    close
     ////////////////////////////////////////////////
@@ -149,7 +149,7 @@ public class HTTPUSocket
     {
         if (ssdpUniSock == null)
             return true;
-            
+
         try {
             ssdpUniSock.close();
             ssdpUniSock = null;
@@ -158,7 +158,7 @@ public class HTTPUSocket
             Debug.warning(e);
             return false;
         }
-        
+
         return true;
     }
 
@@ -213,7 +213,7 @@ public class HTTPUSocket
 /*
     boolean joinGroup(String mcastAddr, int mcastPort, String bindAddr)
     {
-        try {         
+        try {
             InetSocketAddress mcastGroup = new InetSocketAddress(InetAddress.getByName(mcastAddr), mcastPort);
             NetworkInterface mcastIf = NetworkInterface.getByInetAddress(InetAddress.getByName(bindAddr));
             ssdpUniSock.joinGroup(mcastGroup, mcastIf);
@@ -227,7 +227,7 @@ public class HTTPUSocket
 
     boolean leaveGroup(String mcastAddr, int mcastPort, String bindAddr)
      {
-        try {         
+        try {
             InetSocketAddress mcastGroup = new InetSocketAddress(InetAddress.getByName(mcastAddr), mcastPort);
             NetworkInterface mcastIf = NetworkInterface.getByInetAddress(InetAddress.getByName(bindAddr));
             ssdpUniSock.leaveGroup(mcastGroup, mcastIf);

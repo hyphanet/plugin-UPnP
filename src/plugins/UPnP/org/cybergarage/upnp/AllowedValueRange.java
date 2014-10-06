@@ -10,7 +10,7 @@
 *
 *    03/27/04
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp;
@@ -22,7 +22,7 @@ public class AllowedValueRange
     ////////////////////////////////////////////////
     //    Constants
     ////////////////////////////////////////////////
-    
+
     public final static String ELEM_NAME = "allowedValueRange";
 
     ////////////////////////////////////////////////
@@ -35,7 +35,7 @@ public class AllowedValueRange
     {
         return allowedValueRangeNode;
     }
-    
+
     ////////////////////////////////////////////////
     //    Constructor
     ////////////////////////////////////////////////
@@ -59,7 +59,7 @@ public class AllowedValueRange
     ////////////////////////////////////////////////
 
     private final static String MINIMUM = "minimum";
-    
+
     public void setMinimum(String value)
     {
         getAllowedValueRangeNode().setNode(MINIMUM, value);
@@ -75,7 +75,7 @@ public class AllowedValueRange
     ////////////////////////////////////////////////
 
     private final static String MAXIMUM = "maximum";
-    
+
     public void setMaximum(String value)
     {
         getAllowedValueRangeNode().setNode(MAXIMUM, value);
@@ -91,7 +91,7 @@ public class AllowedValueRange
     ////////////////////////////////////////////////
 
     private final static String STEP = "step";
-    
+
     public void setStep(String value)
     {
         getAllowedValueRangeNode().setNode(STEP, value);

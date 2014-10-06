@@ -17,25 +17,25 @@ package plugins.UPnP.org.cybergarage.xml;
 
 import java.util.*;
 
-public class NodeList extends Vector 
+public class NodeList extends Vector
 {
     private static final long serialVersionUID = 1528884682346143213L;
 
-    public NodeList() 
+    public NodeList()
     {
     }
-    
+
     public Node getNode(int n)
     {
         return (Node)get(n);
     }
 
-    public Node getNode(String name) 
+    public Node getNode(String name)
     {
         if (name == null)
             return null;
-        
-        int nLists = size(); 
+
+        int nLists = size();
         for (int n=0; n<nLists; n++) {
             Node node = getNode(n);
             String nodeName = node.getName();
@@ -45,12 +45,12 @@ public class NodeList extends Vector
         return null;
     }
 
-    public Node getEndsWith(String name) 
+    public Node getEndsWith(String name)
     {
         if (name == null)
             return null;
 
-        int nLists = size(); 
+        int nLists = size();
         for (int n=0; n<nLists; n++) {
             Node node = getNode(n);
             String nodeName = node.getName();

@@ -10,7 +10,7 @@
 *
 *    11/18/02
 *        - first revision.
-*    
+*
 ******************************************************************/
 
 package plugins.UPnP.org.cybergarage.upnp.event;
