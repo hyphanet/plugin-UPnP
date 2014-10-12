@@ -1,48 +1,44 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*   CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*   Copyright (C) Satoshi Konno 2002
 *
-*	File: SubscriberList.java
+*   File: SubscriberList.java
 *
-*	Revision;
+*   Revision;
 *
-*	01/31/03
-*		- first revision.
-*	06/18/03
-*		- Fixed to catch ArrayIndexOutOfBounds.
+*   01/31/03
+*       - first revision.
+*   06/18/03
+*       - Fixed to catch ArrayIndexOutOfBounds.
 *
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.upnp.event;
 
 import java.util.*;
 
-public class SubscriberList extends Vector 
-{
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	private static final long serialVersionUID = -648427977601494972L;
+public class SubscriberList extends Vector {
 
-	public SubscriberList() 
-	{
-	}
-	
-	////////////////////////////////////////////////
-	//	Methods
-	////////////////////////////////////////////////
-	
-	public Subscriber getSubscriber(int n)
-	{
-		Object obj = null;
-		try {
-			obj = get(n);
-		}
-		catch (Exception e) {}
-		return (Subscriber)obj;
-	}
+    ////////////////////////////////////////////////
+    // Constructor
+    ////////////////////////////////////////////////
+    private static final long serialVersionUID = -648427977601494972L;
+
+    public SubscriberList() {}
+
+    ////////////////////////////////////////////////
+    // Methods
+    ////////////////////////////////////////////////
+    public Subscriber getSubscriber(int n) {
+        Object obj = null;
+
+        try {
+            obj = get(n);
+        } catch (Exception e) {}
+
+        return (Subscriber) obj;
+    }
 }
-

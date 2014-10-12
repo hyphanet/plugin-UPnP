@@ -1,31 +1,33 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*   CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*   Copyright (C) Satoshi Konno 2002
 *
-*	File: MAN.java
+*   File: MAN.java
 *
-*	Revision;
+*   Revision;
 *
-*	12/30/02
-*		- first revision.
+*   12/30/02
+*       - first revision.
 *
 ******************************************************************/
 
+
 package plugins.UPnP.org.cybergarage.upnp.device;
 
-public class MAN 
-{
-	public final static String DISCOVER = "ssdp:discover";
-	
-	public final static boolean isDiscover(String value)
-	{
-		if (value == null)
-			return false;
-		if (value.equals(MAN.DISCOVER) == true)
-			return true;
-		return value.equals("\"" + MAN.DISCOVER + "\"");
-	}
-}
+public class MAN {
+    public final static String DISCOVER = "ssdp:discover";
 
+    public final static boolean isDiscover(String value) {
+        if (value == null) {
+            return false;
+        }
+
+        if (value.equals(MAN.DISCOVER) == true) {
+            return true;
+        }
+
+        return value.equals("\"" + MAN.DISCOVER + "\"");
+    }
+}

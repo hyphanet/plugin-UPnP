@@ -1,110 +1,102 @@
 /******************************************************************
 *
-*	CyberXML for Java
+*   CyberXML for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*   Copyright (C) Satoshi Konno 2002
 *
-*	File: Parser.java
+*   File: Parser.java
 *
-*	Revision;
+*   Revision;
 *
-*	11/26/03
-*		- first revision.
-*	03/30/05
-*		- Change parse(String) to use StringBufferInputStream instead of URL.
+*   11/26/03
+*       - first revision.
+*   03/30/05
+*       - Change parse(String) to use StringBufferInputStream instead of URL.
 *
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.xml;
 
 import java.net.*;
+
 import java.io.*;
 
-public abstract class Parser 
-{
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
+public abstract class Parser {
 
-	public Parser()
-	{
-	}
+    ////////////////////////////////////////////////
+    // Constructor
+    ////////////////////////////////////////////////
+    public Parser() {}
 
-	////////////////////////////////////////////////
-	//	parse
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // parse
+    ////////////////////////////////////////////////
+    public abstract Node parse(InputStream inStream) throws ParserException;
 
-	public abstract Node parse(InputStream inStream) throws ParserException;
+    ////////////////////////////////////////////////
+    // parse (URL)
+    ////////////////////////////////////////////////
+    public Node parse(URL locationURL) throws ParserException {
+        try {
+            HttpURLConnection urlCon = (HttpURLConnection) locationURL.openConnection();
 
-	////////////////////////////////////////////////
-	//	parse (URL)
-	////////////////////////////////////////////////
+            urlCon.setRequestMethod("GET");
 
-	public Node parse(URL locationURL) throws ParserException
-	{
-		try {
-	 		HttpURLConnection urlCon = (HttpURLConnection)locationURL.openConnection();
-			urlCon.setRequestMethod("GET");
-			InputStream urlIn = urlCon.getInputStream();
+            InputStream urlIn    = urlCon.getInputStream();
+            Node        rootElem = parse(urlIn);
 
-			Node rootElem = parse(urlIn);
-			
-			urlIn.close();
-			urlCon.disconnect();
+            urlIn.close();
+            urlCon.disconnect();
 
-			return rootElem;
-			
-		} catch (Exception e) {
-			throw new ParserException(e);
-		}
-		/*
-		String host = locationURL.getHost();
-		int port = locationURL.getPort();
-		String uri = locationURL.getPath();
-		HTTPRequest httpReq = new HTTPRequest();
-		httpReq.setMethod(HTTP.GET);
-		httpReq.setURI(uri);
-		HTTPResponse httpRes = httpReq.post(host, port);
-		if (httpRes.isSuccessful() == false)
-			throw new ParserException(locationURL.toString());
-		String content = new String(httpRes.getContent());
-		StringBufferInputStream strBuf = new StringBufferInputStream(content);
-		return parse(strBuf);
-		*/
-	}
+            return rootElem;
+        } catch (Exception e) {
+            throw new ParserException(e);
+        }
 
-	////////////////////////////////////////////////
-	//	parse (File)
-	////////////////////////////////////////////////
+        /*
+         * String host = locationURL.getHost();
+         * int port = locationURL.getPort();
+         * String uri = locationURL.getPath();
+         * HTTPRequest httpReq = new HTTPRequest();
+         * httpReq.setMethod(HTTP.GET);
+         * httpReq.setURI(uri);
+         * HTTPResponse httpRes = httpReq.post(host, port);
+         * if (httpRes.isSuccessful() == false)
+         *   throw new ParserException(locationURL.toString());
+         * String content = new String(httpRes.getContent());
+         * StringBufferInputStream strBuf = new StringBufferInputStream(content);
+         * return parse(strBuf);
+         */
+    }
 
-	public Node parse(File descriptionFile) throws ParserException
-	{
-		try {
-			InputStream fileIn = new FileInputStream(descriptionFile);
-			Node root = parse(fileIn);
-			fileIn.close();
-			return root;
-			
-		} catch (Exception e) {
-			throw new ParserException(e);
-		}
-	}
+    ////////////////////////////////////////////////
+    // parse (File)
+    ////////////////////////////////////////////////
+    public Node parse(File descriptionFile) throws ParserException {
+        try {
+            InputStream fileIn = new FileInputStream(descriptionFile);
+            Node        root   = parse(fileIn);
 
-	////////////////////////////////////////////////
-	//	parse (Memory)
-	////////////////////////////////////////////////
-	
-	public Node parse(String descr) throws ParserException
-	{
-		try {
-			StringBufferInputStream decrIn = new StringBufferInputStream(descr);
-			Node root = parse(decrIn);
-			return root;
-		} catch (Exception e) {
-			throw new ParserException(e);
-		}
-	}
+            fileIn.close();
 
+            return root;
+        } catch (Exception e) {
+            throw new ParserException(e);
+        }
+    }
+
+    ////////////////////////////////////////////////
+    // parse (Memory)
+    ////////////////////////////////////////////////
+    public Node parse(String descr) throws ParserException {
+        try {
+            StringBufferInputStream decrIn = new StringBufferInputStream(descr);
+            Node                    root   = parse(decrIn);
+
+            return root;
+        } catch (Exception e) {
+            throw new ParserException(e);
+        }
+    }
 }
-
-

@@ -1,191 +1,207 @@
 /******************************************************************
 *
-*	CyberSOAP for Java
+*   CyberSOAP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*   Copyright (C) Satoshi Konno 2002
 *
-*	File: SOAPResponse.java
+*   File: SOAPResponse.java
 *
-*	Revision;
+*   Revision;
 *
-*	12/17/02
-*		- first revision.
-*	02/13/04
-*		- Ralf G. R. Bergs <Ralf@Ber.gs>, Inma Marin Lopez <inma@dif.um.es>.
-*		- Added XML header, <?xml version="1.0"?> to setContent().
-*	05/11/04
-*		- Changed the XML header to <?xml version="1.0" encoding="utf-8"?> in setContent().
-*	
+*   12/17/02
+*       - first revision.
+*   02/13/04
+*       - Ralf G. R. Bergs <Ralf@Ber.gs>, Inma Marin Lopez <inma@dif.um.es>.
+*       - Added XML header, <?xml version="1.0"?> to setContent().
+*   05/11/04
+*       - Changed the XML header to <?xml version="1.0" encoding="utf-8"?> in setContent().
+*
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.soap;
 
 import plugins.UPnP.org.cybergarage.http.*;
 import plugins.UPnP.org.cybergarage.xml.*;
 
-public class SOAPResponse extends HTTPResponse
-{
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	public SOAPResponse()
-	{
-		setRootNode(SOAP.createEnvelopeBodyNode());
-		setContentType(XML.CONTENT_TYPE);
-	}
+public class SOAPResponse extends HTTPResponse {
 
-	public SOAPResponse(HTTPResponse httpRes)
-	{
-		super(httpRes);
-		setRootNode(SOAP.createEnvelopeBodyNode());
-		setContentType(XML.CONTENT_TYPE);
-	}
+    ////////////////////////////////////////////////
+    // Constructor
+    ////////////////////////////////////////////////
+    public SOAPResponse() {
+        setRootNode(SOAP.createEnvelopeBodyNode());
+        setContentType(XML.CONTENT_TYPE);
+    }
 
-	public SOAPResponse(SOAPResponse soapRes)
-	{
-		super(soapRes);
-		setEnvelopeNode(soapRes.getEnvelopeNode());
-		setContentType(XML.CONTENT_TYPE);
-	}
+    public SOAPResponse(HTTPResponse httpRes) {
+        super(httpRes);
+        setRootNode(SOAP.createEnvelopeBodyNode());
+        setContentType(XML.CONTENT_TYPE);
+    }
 
-	////////////////////////////////////////////////
-	//	Node
-	////////////////////////////////////////////////
+    public SOAPResponse(SOAPResponse soapRes) {
+        super(soapRes);
+        setEnvelopeNode(soapRes.getEnvelopeNode());
+        setContentType(XML.CONTENT_TYPE);
+    }
 
-	private Node rootNode;
-	
-	private void setRootNode(Node node)
-	{
-		rootNode = node;
-	}
-	
-	private Node getRootNode()
-	{
-		return rootNode;
-	}
-	
-	////////////////////////////////////////////////
-	//	SOAP Basic
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // Node
+    ////////////////////////////////////////////////
+    private Node rootNode;
 
-	public void setEnvelopeNode(Node node)
-	{
-		setRootNode(node);
-	}
+    private void setRootNode(Node node) {
+        rootNode = node;
+    }
 
-	public Node getEnvelopeNode()
-	{
-		return getRootNode();
-	}
-	
-	public Node getBodyNode()
-	{
-		Node envNode = getEnvelopeNode();
-		if (envNode == null)
-			return null;
-		return envNode.getNodeEndsWith(SOAP.BODY);
-	}
+    private Node getRootNode() {
+        return rootNode;
+    }
 
-	public Node getMethodResponseNode(String name)
-	{
-		Node bodyNode = getBodyNode();
-		if (bodyNode == null)
-			return null;
-		String methodResName = name + SOAP.RESPONSE;
-		return bodyNode.getNodeEndsWith(methodResName);
-	}
+    ////////////////////////////////////////////////
+    // SOAP Basic
+    ////////////////////////////////////////////////
+    public void setEnvelopeNode(Node node) {
+        setRootNode(node);
+    }
 
-	public Node getFaultNode()
-	{
-		Node bodyNode = getBodyNode();
-		if (bodyNode == null)
-			return null;
-		return bodyNode.getNodeEndsWith(SOAP.FAULT);
-	}
+    public Node getEnvelopeNode() {
+        return getRootNode();
+    }
 
-	public Node getFaultCodeNode()
-	{
-		Node faultNode = getFaultNode();
-		if (faultNode == null)
-			return null;
-		return faultNode.getNodeEndsWith(SOAP.FAULT_CODE);
-	}
+    public Node getBodyNode() {
+        Node envNode = getEnvelopeNode();
 
-	public Node getFaultStringNode()
-	{
-		Node faultNode = getFaultNode();
-		if (faultNode == null)
-			return null;
-		return faultNode.getNodeEndsWith(SOAP.FAULT_STRING);
-	}
+        if (envNode == null) {
+            return null;
+        }
 
-	public Node getFaultActorNode()
-	{
-		Node faultNode = getFaultNode();
-		if (faultNode == null)
-			return null;
-		return faultNode.getNodeEndsWith(SOAP.FAULTACTOR);
-	}
+        return envNode.getNodeEndsWith(SOAP.BODY);
+    }
 
-	public Node getFaultDetailNode()
-	{
-		Node faultNode = getFaultNode();
-		if (faultNode == null)
-			return null;
-		return faultNode.getNodeEndsWith(SOAP.DETAIL);
-	}
+    public Node getMethodResponseNode(String name) {
+        Node bodyNode = getBodyNode();
 
-	public String getFaultCode()
-	{
-		Node node = getFaultCodeNode();
-		if (node == null)
-			return "";
-		return node.getValue();
-	}
-	
-	public String getFaultString()
-	{
-		Node node = getFaultStringNode();
-		if (node == null)
-			return "";
-		return node.getValue();
-	}
-	
-	public String getFaultActor()
-	{
-		Node node = getFaultActorNode();
-		if (node == null)
-			return "";
-		return node.getValue();
-	}
+        if (bodyNode == null) {
+            return null;
+        }
 
-	////////////////////////////////////////////////
-	//	XML Contents
-	////////////////////////////////////////////////
-	
-	public void setContent(Node node)
-	{
-		// Thanks for Ralf G. R. Bergs <Ralf@Ber.gs>, Inma Marin Lopez <inma@dif.um.es>.
-		String conStr = "";
-		conStr += SOAP.VERSION_HEADER;
-		conStr += "\n";
-		conStr += node.toString(); 
-		setContent(conStr);
-	}
+        String methodResName = name + SOAP.RESPONSE;
 
-	////////////////////////////////////////////////
-	//	print
-	////////////////////////////////////////////////
-	
-	public void print()
-	{
-		System.out.println(toString());
-		if (hasContent() == true)
-			return;
-		Node rootElem = getRootNode();
-		if (rootElem == null)
-			return;
-		System.out.println(rootElem.toString());
-	}
+        return bodyNode.getNodeEndsWith(methodResName);
+    }
+
+    public Node getFaultNode() {
+        Node bodyNode = getBodyNode();
+
+        if (bodyNode == null) {
+            return null;
+        }
+
+        return bodyNode.getNodeEndsWith(SOAP.FAULT);
+    }
+
+    public Node getFaultCodeNode() {
+        Node faultNode = getFaultNode();
+
+        if (faultNode == null) {
+            return null;
+        }
+
+        return faultNode.getNodeEndsWith(SOAP.FAULT_CODE);
+    }
+
+    public Node getFaultStringNode() {
+        Node faultNode = getFaultNode();
+
+        if (faultNode == null) {
+            return null;
+        }
+
+        return faultNode.getNodeEndsWith(SOAP.FAULT_STRING);
+    }
+
+    public Node getFaultActorNode() {
+        Node faultNode = getFaultNode();
+
+        if (faultNode == null) {
+            return null;
+        }
+
+        return faultNode.getNodeEndsWith(SOAP.FAULTACTOR);
+    }
+
+    public Node getFaultDetailNode() {
+        Node faultNode = getFaultNode();
+
+        if (faultNode == null) {
+            return null;
+        }
+
+        return faultNode.getNodeEndsWith(SOAP.DETAIL);
+    }
+
+    public String getFaultCode() {
+        Node node = getFaultCodeNode();
+
+        if (node == null) {
+            return "";
+        }
+
+        return node.getValue();
+    }
+
+    public String getFaultString() {
+        Node node = getFaultStringNode();
+
+        if (node == null) {
+            return "";
+        }
+
+        return node.getValue();
+    }
+
+    public String getFaultActor() {
+        Node node = getFaultActorNode();
+
+        if (node == null) {
+            return "";
+        }
+
+        return node.getValue();
+    }
+
+    ////////////////////////////////////////////////
+    // XML Contents
+    ////////////////////////////////////////////////
+    public void setContent(Node node) {
+
+        // Thanks for Ralf G. R. Bergs <Ralf@Ber.gs>, Inma Marin Lopez <inma@dif.um.es>.
+        String conStr = "";
+
+        conStr += SOAP.VERSION_HEADER;
+        conStr += "\n";
+        conStr += node.toString();
+        setContent(conStr);
+    }
+
+    ////////////////////////////////////////////////
+    // print
+    ////////////////////////////////////////////////
+    public void print() {
+        System.out.println(toString());
+
+        if (hasContent() == true) {
+            return;
+        }
+
+        Node rootElem = getRootNode();
+
+        if (rootElem == null) {
+            return;
+        }
+
+        System.out.println(rootElem.toString());
+    }
 }
