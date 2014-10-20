@@ -1,231 +1,215 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*   CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*   Copyright (C) Satoshi Konno 2002
 *
-*	File: Argument.java
+*   File: Argument.java
 *
-*	Revision;
+*   Revision;
 *
-*	12/05/02
-*		- first revision.
-*	03/28/04
-*		- Added getRelatedStateVariable().
-*		- Changed setRelatedStateVariable() to setRelatedStateVariableName().
-*		- Changed getRelatedStateVariable() to getRelatedStateVariableName().
-*		- Added getActionNode() and getAction().
-*		- Added getServiceNode() and getService().
-*		- Added the parent service node to the constructor.
+*   12/05/02
+*       - first revision.
+*   03/28/04
+*       - Added getRelatedStateVariable().
+*       - Changed setRelatedStateVariable() to setRelatedStateVariableName().
+*       - Changed getRelatedStateVariable() to getRelatedStateVariableName().
+*       - Added getActionNode() and getAction().
+*       - Added getServiceNode() and getService().
+*       - Added the parent service node to the constructor.
 *
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.upnp;
 
 import plugins.UPnP.org.cybergarage.xml.*;
-
 import plugins.UPnP.org.cybergarage.upnp.xml.*;
 
-public class Argument
-{
-	////////////////////////////////////////////////
-	//	Constants
-	////////////////////////////////////////////////
-	
-	public final static String ELEM_NAME = "argument";
+public class Argument {
 
-	public final static String IN = "in";
-	public final static String OUT = "out";
+    ////////////////////////////////////////////////
+    // Constants
+    ////////////////////////////////////////////////
+    public final static String ELEM_NAME = "argument";
+    public final static String IN        = "in";
+    public final static String OUT       = "out";
 
-	////////////////////////////////////////////////
-	//	Member
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // Member
+    ////////////////////////////////////////////////
+    private Node argumentNode;
+    private Node serviceNode;
 
-	private Node argumentNode;
-	private Node serviceNode;
+    public Node getArgumentNode() {
+        return argumentNode;
+    }
 
-	public Node getArgumentNode()
-	{
-		return argumentNode;
-	}
+    private Node getServiceNode() {
+        return serviceNode;
+    }
 
-	private Node getServiceNode()
-	{
-		return serviceNode;
-	}
+    public Service getService() {
+        return new Service(getServiceNode());
+    }
 
-	public Service getService()
-	{
-		return new Service(getServiceNode());
-	}
-	
-	public Node getActionNode()
-	{
-		Node argumentLinstNode = getArgumentNode().getParentNode();
-		if (argumentLinstNode == null)
-			return null;
-		Node actionNode = argumentLinstNode.getParentNode();
-		if (actionNode == null)
-			return null;
-		if (Action.isActionNode(actionNode) == false)
-			return null;
-		return actionNode;
-	}
-	
-	public Action getAction()
-	{
-		return new Action(getServiceNode(), getActionNode());
-	}
-	
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
+    public Node getActionNode() {
+        Node argumentLinstNode = getArgumentNode().getParentNode();
 
-	public Argument()
-	{
-		argumentNode = new Node();
-		serviceNode = null;
-	}
-	
-	public Argument(Node servNode, Node argNode)
-	{
-		serviceNode = servNode;
-		argumentNode = argNode;
-	}
+        if (argumentLinstNode == null) {
+            return null;
+        }
 
-	public Argument(String name, String value)
-	{
-		this();
-		setName(name);
-		setValue(value);
-	}
+        Node actionNode = argumentLinstNode.getParentNode();
 
-	////////////////////////////////////////////////
-	//	isArgumentNode
-	////////////////////////////////////////////////
+        if (actionNode == null) {
+            return null;
+        }
 
-	public static boolean isArgumentNode(Node node)
-	{
-		return Argument.ELEM_NAME.equals(node.getName());
-	}
+        if (Action.isActionNode(actionNode) == false) {
+            return null;
+        }
 
-	////////////////////////////////////////////////
-	//	name
-	////////////////////////////////////////////////
+        return actionNode;
+    }
 
-	private final static String NAME = "name";
-	
-	public void setName(String value)
-	{
-		getArgumentNode().setNode(NAME, value);
-	}
+    public Action getAction() {
+        return new Action(getServiceNode(), getActionNode());
+    }
 
-	public String getName()
-	{
-		return getArgumentNode().getNodeValue(NAME);
-	}
+    ////////////////////////////////////////////////
+    // Constructor
+    ////////////////////////////////////////////////
+    public Argument() {
+        argumentNode = new Node();
+        serviceNode  = null;
+    }
 
-	////////////////////////////////////////////////
-	//	direction
-	////////////////////////////////////////////////
+    public Argument(Node servNode, Node argNode) {
+        serviceNode  = servNode;
+        argumentNode = argNode;
+    }
 
-	private final static String DIRECTION = "direction";
-	
-	public void setDirection(String value)
-	{
-		getArgumentNode().setNode(DIRECTION, value);
-	}
+    public Argument(String name, String value) {
+        this();
+        setName(name);
+        setValue(value);
+    }
 
-	public String getDirection()
-	{
-		return getArgumentNode().getNodeValue(DIRECTION);
-	}
+    ////////////////////////////////////////////////
+    // isArgumentNode
+    ////////////////////////////////////////////////
+    public static boolean isArgumentNode(Node node) {
+        return Argument.ELEM_NAME.equals(node.getName());
+    }
 
-	public boolean isInDirection()
-	{
-		String dir = getDirection();
-		if (dir == null)
-			return false;
-		return dir.equalsIgnoreCase(IN);
-	}
+    ////////////////////////////////////////////////
+    // name
+    ////////////////////////////////////////////////
+    private final static String NAME = "name";
 
-	public boolean isOutDirection()
-	{
-		return !isInDirection();
-	}
-	
-	////////////////////////////////////////////////
-	//	relatedStateVariable
-	////////////////////////////////////////////////
+    public void setName(String value) {
+        getArgumentNode().setNode(NAME, value);
+    }
 
-	private final static String RELATED_STATE_VARIABLE = "relatedStateVariable";
-	
-	public void setRelatedStateVariableName(String value)
-	{
-		getArgumentNode().setNode(RELATED_STATE_VARIABLE, value);
-	}
+    public String getName() {
+        return getArgumentNode().getNodeValue(NAME);
+    }
 
-	public String getRelatedStateVariableName()
-	{
-		return getArgumentNode().getNodeValue(RELATED_STATE_VARIABLE);
-	}
+    ////////////////////////////////////////////////
+    // direction
+    ////////////////////////////////////////////////
+    private final static String DIRECTION = "direction";
 
-	public StateVariable getRelatedStateVariable()
-	{
-		Service service = getService();
-		if (service == null)
-			return null;
-		String relatedStatVarName = getRelatedStateVariableName();
-		return service.getStateVariable(relatedStatVarName);
-	}
-	
-	////////////////////////////////////////////////
-	//	UserData
-	////////////////////////////////////////////////
+    public void setDirection(String value) {
+        getArgumentNode().setNode(DIRECTION, value);
+    }
 
-	private ArgumentData getArgumentData()
-	{
-		Node node = getArgumentNode();
-		ArgumentData userData = (ArgumentData)node.getUserData();
-		if (userData == null) {
-			userData = new ArgumentData();
-			node.setUserData(userData);
-			userData.setNode(node);
-		}
-		return userData;
-	}
+    public String getDirection() {
+        return getArgumentNode().getNodeValue(DIRECTION);
+    }
 
-	////////////////////////////////////////////////
-	//	value
-	////////////////////////////////////////////////
+    public boolean isInDirection() {
+        String dir = getDirection();
 
-	public void setValue(String value) 
-	{
-		getArgumentData().setValue(value);
-	}
-	
-	public void setValue(int value) 
-	{
-		setValue(Integer.toString(value));
-	}
-	
-	public String getValue() 
-	{
-		return getArgumentData().getValue();
-	}
+        if (dir == null) {
+            return false;
+        }
 
-	public int getIntegerValue() 
-	{
-		String value = getValue();
-		try {
-			return Integer.parseInt(value);
-		}
-		catch (Exception e) {
-		}
-		return 0;
-	}
+        return dir.equalsIgnoreCase(IN);
+    }
 
-	////////////////////////////////////////////////
-	//	Related
-	////////////////////////////////////////////////
+    public boolean isOutDirection() {
+        return !isInDirection();
+    }
+
+    ////////////////////////////////////////////////
+    // relatedStateVariable
+    ////////////////////////////////////////////////
+    private final static String RELATED_STATE_VARIABLE = "relatedStateVariable";
+
+    public void setRelatedStateVariableName(String value) {
+        getArgumentNode().setNode(RELATED_STATE_VARIABLE, value);
+    }
+
+    public String getRelatedStateVariableName() {
+        return getArgumentNode().getNodeValue(RELATED_STATE_VARIABLE);
+    }
+
+    public StateVariable getRelatedStateVariable() {
+        Service service = getService();
+
+        if (service == null) {
+            return null;
+        }
+
+        String relatedStatVarName = getRelatedStateVariableName();
+
+        return service.getStateVariable(relatedStatVarName);
+    }
+
+    ////////////////////////////////////////////////
+    // UserData
+    ////////////////////////////////////////////////
+    private ArgumentData getArgumentData() {
+        Node         node     = getArgumentNode();
+        ArgumentData userData = (ArgumentData) node.getUserData();
+
+        if (userData == null) {
+            userData = new ArgumentData();
+            node.setUserData(userData);
+            userData.setNode(node);
+        }
+
+        return userData;
+    }
+
+    ////////////////////////////////////////////////
+    // value
+    ////////////////////////////////////////////////
+    public void setValue(String value) {
+        getArgumentData().setValue(value);
+    }
+
+    public void setValue(int value) {
+        setValue(Integer.toString(value));
+    }
+
+    public String getValue() {
+        return getArgumentData().getValue();
+    }
+
+    public int getIntegerValue() {
+        String value = getValue();
+
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception e) {}
+
+        return 0;
+    }
+
+    ////////////////////////////////////////////////
+    // Related
+    ////////////////////////////////////////////////
 }

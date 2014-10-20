@@ -1,19 +1,20 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*   CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2003
+*   Copyright (C) Satoshi Konno 2002-2003
 *
-*	File: DeviceData.java
+*   File: DeviceData.java
 *
-*	Revision;
+*   Revision;
 *
-*	03/28/03
-*		- first revision.
-*	12/25/03
-*		- Added Advertiser functions.
+*   03/28/03
+*       - first revision.
+*   12/25/03
+*       - Added Advertiser functions.
 *
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.upnp.xml;
 
@@ -21,150 +22,130 @@ import java.io.*;
 
 import plugins.UPnP.org.cybergarage.util.*;
 import plugins.UPnP.org.cybergarage.http.*;
-
 import plugins.UPnP.org.cybergarage.upnp.*;
 import plugins.UPnP.org.cybergarage.upnp.ssdp.*;
 import plugins.UPnP.org.cybergarage.upnp.device.*;
 
-public class DeviceData extends NodeData
-{
-	public DeviceData() 
-	{
-	}
+public class DeviceData extends NodeData {
+    public DeviceData() {}
 
-	////////////////////////////////////////////////
-	// description
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // description
+    ////////////////////////////////////////////////
+    private String descriptionURI  = null;
+    private File   descriptionFile = null;
 
-	private String descriptionURI = null; 
-	private File descriptionFile = null;
-	
-	public File getDescriptionFile() {
-		return descriptionFile;
-	}
+    public File getDescriptionFile() {
+        return descriptionFile;
+    }
 
-	public String getDescriptionURI() {
-		return descriptionURI;
-	}
+    public String getDescriptionURI() {
+        return descriptionURI;
+    }
 
-	public void setDescriptionFile(File descriptionFile) {
-		this.descriptionFile = descriptionFile;
-	}
+    public void setDescriptionFile(File descriptionFile) {
+        this.descriptionFile = descriptionFile;
+    }
 
-	public void setDescriptionURI(String descriptionURI) {
-		this.descriptionURI = descriptionURI;
-	}
+    public void setDescriptionURI(String descriptionURI) {
+        this.descriptionURI = descriptionURI;
+    }
 
-	////////////////////////////////////////////////
-	// description
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // description
+    ////////////////////////////////////////////////
+    private String location = "";
 
-	private String location = "";
-	
-	public String getLocation() {
-		return location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	////////////////////////////////////////////////
-	//	LeaseTime 
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // LeaseTime
+    ////////////////////////////////////////////////
+    private int leaseTime = Device.DEFAULT_LEASE_TIME;
 
-	private int leaseTime = Device.DEFAULT_LEASE_TIME;
-	
-	public int getLeaseTime() 
-	{
-		return leaseTime;
-	}
+    public int getLeaseTime() {
+        return leaseTime;
+    }
 
-	public void setLeaseTime(int val) 
-	{
-		leaseTime = val;
-	}
+    public void setLeaseTime(int val) {
+        leaseTime = val;
+    }
 
-	////////////////////////////////////////////////
-	//	HTTPServer 
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // HTTPServer
+    ////////////////////////////////////////////////
+    private HTTPServerList httpServerList = new HTTPServerList();
 
-	private HTTPServerList httpServerList = new HTTPServerList();		
+    public HTTPServerList getHTTPServerList() {
+        return httpServerList;
+    }
 
-	public HTTPServerList getHTTPServerList() {
-		return httpServerList;
-	}
+    ////////////////////////////////////////////////
+    // httpPort
+    ////////////////////////////////////////////////
+    private int httpPort = Device.HTTP_DEFAULT_PORT;
 
-	////////////////////////////////////////////////
-	//	httpPort 
-	////////////////////////////////////////////////
+    public int getHTTPPort() {
+        return httpPort;
+    }
 
-	private int httpPort = Device.HTTP_DEFAULT_PORT;
+    public void setHTTPPort(int port) {
+        httpPort = port;
+    }
 
-	public int getHTTPPort() {
-		return httpPort;
-	}
+    ////////////////////////////////////////////////
+    // controlActionListenerList
+    ////////////////////////////////////////////////
+    private ListenerList controlActionListenerList = new ListenerList();
 
-	public void setHTTPPort(int port) {
-		httpPort = port;
-	}
-
-	////////////////////////////////////////////////
-	// controlActionListenerList
-	////////////////////////////////////////////////
-
-	private ListenerList controlActionListenerList = new ListenerList();
-
-	public ListenerList getControlActionListenerList() {
-		return controlActionListenerList;
-	}
+    public ListenerList getControlActionListenerList() {
+        return controlActionListenerList;
+    }
 
 /*
-	public void setControlActionListenerList(ListenerList controlActionListenerList) {
-		this.controlActionListenerList = controlActionListenerList;
-	}
+    public void setControlActionListenerList(ListenerList controlActionListenerList) {
+        this.controlActionListenerList = controlActionListenerList;
+    }
 */
 
-	////////////////////////////////////////////////
-	// SSDPSearchSocket
-	////////////////////////////////////////////////
-	
-	private SSDPSearchSocketList ssdpSearchSocketList = new SSDPSearchSocketList();
-	
-	public SSDPSearchSocketList getSSDPSearchSocketList() {
-		return ssdpSearchSocketList;
-	}
+    ////////////////////////////////////////////////
+    // SSDPSearchSocket
+    ////////////////////////////////////////////////
+    private SSDPSearchSocketList ssdpSearchSocketList = new SSDPSearchSocketList();
 
-	////////////////////////////////////////////////
-	// SSDPPacket
-	////////////////////////////////////////////////
-	
-	private SSDPPacket ssdpPacket = null;
-	
-	public SSDPPacket getSSDPPacket() {
-		return ssdpPacket;
-	}
+    public SSDPSearchSocketList getSSDPSearchSocketList() {
+        return ssdpSearchSocketList;
+    }
 
-	public void setSSDPPacket(SSDPPacket packet) {
-		ssdpPacket = packet;
-	}
+    ////////////////////////////////////////////////
+    // SSDPPacket
+    ////////////////////////////////////////////////
+    private SSDPPacket ssdpPacket = null;
 
-	////////////////////////////////////////////////
-	// Advertiser
-	////////////////////////////////////////////////
+    public SSDPPacket getSSDPPacket() {
+        return ssdpPacket;
+    }
 
-	private Advertiser advertiser = null;
-	
-	public void setAdvertiser(Advertiser adv) 
-	{
-		advertiser = adv;
-	}
-	
-	public Advertiser getAdvertiser() 
-	{
-		return advertiser;
-	}
+    public void setSSDPPacket(SSDPPacket packet) {
+        ssdpPacket = packet;
+    }
 
+    ////////////////////////////////////////////////
+    // Advertiser
+    ////////////////////////////////////////////////
+    private Advertiser advertiser = null;
 
+    public void setAdvertiser(Advertiser adv) {
+        advertiser = adv;
+    }
+
+    public Advertiser getAdvertiser() {
+        return advertiser;
+    }
 }
-
