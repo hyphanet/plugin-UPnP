@@ -31,9 +31,8 @@ import java.io.Writer;
  * to use an optional feature to signal that implementation is not
  * supporting this kind of output.
  */
-
 public interface XmlSerializer {
-    
+
     /**
      * Set feature identified by name (recommended to be URI for uniqueness).
      * Some well known optional features are defined in
@@ -45,11 +44,9 @@ public interface XmlSerializer {
      *
      * @exception IllegalStateException If the feature is not supported or can not be set
      */
-    void setFeature(String name,
-                           boolean state)
-        throws IllegalArgumentException, IllegalStateException;
-    
-    
+    void setFeature(String name, boolean state)
+            throws IllegalArgumentException, IllegalStateException;
+
     /**
      * Return the current value of the feature with given name.
      * <p><strong>NOTE:</strong> unknown properties are <strong>always</strong> returned as null
@@ -59,8 +56,7 @@ public interface XmlSerializer {
      * @exception IllegalArgumentException if feature string is null
      */
     boolean getFeature(String name);
-    
-    
+
     /**
      * Set the value of a property.
      * (the property name is recommened to be URI for uniqueness).
@@ -73,10 +69,9 @@ public interface XmlSerializer {
      *
      * @exception IllegalStateException if the property is not supported or can not be set
      */
-    void setProperty(String name,
-                            Object value)
-        throws IllegalArgumentException, IllegalStateException;
-    
+    void setProperty(String name, Object value)
+            throws IllegalArgumentException, IllegalStateException;
+
     /**
      * Look up the value of a property.
      *
@@ -87,36 +82,35 @@ public interface XmlSerializer {
      * @return The value of named property.
      */
     Object getProperty(String name);
-    
+
     /**
      * Set to use binary output stream with given encoding.
      */
-    void setOutput (OutputStream os, String encoding)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    void setOutput(OutputStream os, String encoding)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Set the output to the given writer.
      * <p><b>WARNING</b> no information about encoding is available!
      */
-    void setOutput (Writer writer)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    void setOutput(Writer writer)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Write &lt;&#63;xml declaration with encoding (if encoding not null)
      * and standalone flag (if standalone not null)
      * This method can only be called just after setOutput.
      */
-    void startDocument (String encoding, Boolean standalone)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    void startDocument(String encoding, Boolean standalone)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Finish writing. All unclosed start tags will be closed and output
      * will be flushed. After calling this method no more output can be
      * serialized until next call to setOutput()
      */
-    void endDocument ()
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    void endDocument() throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Binds the given prefix to the given namespace.
      * This call is valid for the next element including child elements.
@@ -136,9 +130,9 @@ public interface XmlSerializer {
      * @param prefix must be not null (or IllegalArgumentException is thrown)
      * @param namespace must be not null
      */
-    void setPrefix (String prefix, String namespace)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    void setPrefix(String prefix, String namespace)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Return namespace that corresponds to given prefix
      * If there is no prefix bound to this namespace return null
@@ -151,9 +145,8 @@ public interface XmlSerializer {
      *   will have values as defined
      * <a href="http://www.w3.org/TR/REC-xml-names/">Namespaces in XML specification</a>
      */
-    String getPrefix (String namespace, boolean generatePrefix)
-        throws IllegalArgumentException;
-    
+    String getPrefix(String namespace, boolean generatePrefix) throws IllegalArgumentException;
+
     /**
      * Returns the current depth of the element.
      * Outside the root element, the depth is 0. The
@@ -172,7 +165,7 @@ public interface XmlSerializer {
      * </pre>
      */
     int getDepth();
-    
+
     /**
      * Returns the namespace URI of the current element as set by startTag().
      *
@@ -183,8 +176,8 @@ public interface XmlSerializer {
      *
      * @return namespace set by startTag() that is currently in scope
      */
-    String getNamespace ();
-    
+    String getNamespace();
+
     /**
      * Returns the name of the current element as set by startTag().
      * It can only be null before first call to startTag()
@@ -193,7 +186,7 @@ public interface XmlSerializer {
      * @return namespace set by startTag() that is currently in scope
      */
     String getName();
-    
+
     /**
      * Writes a start tag with the given namespace and name.
      * If there is no prefix defined for the given namespace,
@@ -206,9 +199,9 @@ public interface XmlSerializer {
      * or throw IllegalStateException if default namespace is already bound
      * to non-empty string.
      */
-    XmlSerializer startTag (String namespace, String name)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    XmlSerializer startTag(String namespace, String name)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Write an attribute. Calls to attribute() MUST follow a call to
      * startTag() immediately. If there is no prefix defined for the
@@ -216,9 +209,9 @@ public interface XmlSerializer {
      * If namespace is null or empty string
      * no namespace prefix is printed but just name.
      */
-    XmlSerializer attribute (String namespace, String name, String value)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    XmlSerializer attribute(String namespace, String name, String value)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Write end tag. Repetition of namespace and name is just for avoiding errors.
      * <p><b>Background:</b> in kXML endTag had no arguments, and non matching tags were
@@ -227,88 +220,89 @@ public interface XmlSerializer {
      * If namespace is empty string then serialzier will make sure that
      * default empty namespace is declared (in XML 1.0 xmlns='').
      */
-    XmlSerializer endTag (String namespace, String name)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
-    
-    //    /**
-    //     * Writes a start tag with the given namespace and name.
-    //     * <br />If there is no prefix defined (prefix == null) for the given namespace,
-    //     * a prefix will be defined automatically.
-    //     * <br />If explicit prefixes is passed (prefix != null) then it will be used
-    //      *and namespace declared if not already declared or
-    //     * throw IllegalStateException the same prefix was already set on this
-    //     * element (setPrefix()) and was bound to different namespace.
-    //     * <br />If namespace is null then prefix must be null too or IllegalStateException is thrown.
-    //     * <br />If namespace is null then no namespace prefix is printed but just name.
-    //     * <br />If namespace is empty string then serializer will make sure that
-    //     * default empty namespace is declared (in XML 1.0 xmlns='')
-    //     * or throw IllegalStateException if default namespace is already bound
-    //     * to non-empty string.
-    //     */
-    //    XmlSerializer startTag (String prefix, String namespace, String name)
-    //        throws IOException, IllegalArgumentException, IllegalStateException;
+    XmlSerializer endTag(String namespace, String name)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
+    // /**
+    // * Writes a start tag with the given namespace and name.
+    // * <br />If there is no prefix defined (prefix == null) for the given namespace,
+    // * a prefix will be defined automatically.
+    // * <br />If explicit prefixes is passed (prefix != null) then it will be used
+    // *and namespace declared if not already declared or
+    // * throw IllegalStateException the same prefix was already set on this
+    // * element (setPrefix()) and was bound to different namespace.
+    // * <br />If namespace is null then prefix must be null too or IllegalStateException is thrown.
+    // * <br />If namespace is null then no namespace prefix is printed but just name.
+    // * <br />If namespace is empty string then serializer will make sure that
+    // * default empty namespace is declared (in XML 1.0 xmlns='')
+    // * or throw IllegalStateException if default namespace is already bound
+    // * to non-empty string.
+    // */
+    // XmlSerializer startTag (String prefix, String namespace, String name)
+    // throws IOException, IllegalArgumentException, IllegalStateException;
     //
-    //    /**
-    //     * Write an attribute. Calls to attribute() MUST follow a call to
-    //     * startTag() immediately.
-    //     * <br />If there is no prefix defined (prefix == null) for the given namespace,
-    //     * a prefix will be defined automatically.
-    //     * <br />If explicit prefixes is passed (prefix != null) then it will be used
-    //     * and namespace declared if not already declared or
-    //     * throw IllegalStateException the same prefix was already set on this
-    //     * element (setPrefix()) and was bound to different namespace.
-    //     * <br />If namespace is null then prefix must be null too or IllegalStateException is thrown.
-    //     * <br />If namespace is null then no namespace prefix is printed but just name.
-    //     * <br />If namespace is empty string then serializer will make sure that
-    //     * default empty namespace is declared (in XML 1.0 xmlns='')
-    //     * or throw IllegalStateException if default namespace is already bound
-    //     * to non-empty string.
-    //     */
-    //    XmlSerializer attribute (String prefix, String namespace, String name, String value)
-    //        throws IOException, IllegalArgumentException, IllegalStateException;
+    // /**
+    // * Write an attribute. Calls to attribute() MUST follow a call to
+    // * startTag() immediately.
+    // * <br />If there is no prefix defined (prefix == null) for the given namespace,
+    // * a prefix will be defined automatically.
+    // * <br />If explicit prefixes is passed (prefix != null) then it will be used
+    // * and namespace declared if not already declared or
+    // * throw IllegalStateException the same prefix was already set on this
+    // * element (setPrefix()) and was bound to different namespace.
+    // * <br />If namespace is null then prefix must be null too or IllegalStateException is thrown.
+    // * <br />If namespace is null then no namespace prefix is printed but just name.
+    // * <br />If namespace is empty string then serializer will make sure that
+    // * default empty namespace is declared (in XML 1.0 xmlns='')
+    // * or throw IllegalStateException if default namespace is already bound
+    // * to non-empty string.
+    // */
+    // XmlSerializer attribute (String prefix, String namespace, String name, String value)
+    // throws IOException, IllegalArgumentException, IllegalStateException;
     //
-    //    /**
-    //     * Write end tag. Repetition of namespace, prefix, and name is just for avoiding errors.
-    //     * <br />If namespace or name arguments are different from corresponding startTag call
-    //     * then IllegalArgumentException is thrown, if prefix argument is not null and is different
-    //     * from corresponding starTag then IllegalArgumentException is thrown.
-    //     * <br />If namespace is null then prefix must be null too or IllegalStateException is thrown.
-    //     * <br />If namespace is null then no namespace prefix is printed but just name.
-    //     * <br />If namespace is empty string then serializer will make sure that
-    //     * default empty namespace is declared (in XML 1.0 xmlns='').
-    //     * <p><b>Background:</b> in kXML endTag had no arguments, and non matching tags were
-    //     *  very difficult to find...</p>
-    //     */
-    // ALEK: This is really optional as prefix in end tag MUST correspond to start tag but good for error checking
-    //    XmlSerializer endTag (String prefix, String namespace, String name)
-    //        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    // /**
+    // * Write end tag. Repetition of namespace, prefix, and name is just for avoiding errors.
+    // * <br />If namespace or name arguments are different from corresponding startTag call
+    // * then IllegalArgumentException is thrown, if prefix argument is not null and is different
+    // * from corresponding starTag then IllegalArgumentException is thrown.
+    // * <br />If namespace is null then prefix must be null too or IllegalStateException is thrown.
+    // * <br />If namespace is null then no namespace prefix is printed but just name.
+    // * <br />If namespace is empty string then serializer will make sure that
+    // * default empty namespace is declared (in XML 1.0 xmlns='').
+    // * <p><b>Background:</b> in kXML endTag had no arguments, and non matching tags were
+    // *  very difficult to find...</p>
+    // */
+    // ALEK: This is really optional as prefix in end tag MUST correspond to start tag but
+    // good for error checking
+    // XmlSerializer endTag (String prefix, String namespace, String name)
+    // throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Writes text, where special XML chars are escaped automatically
      */
-    XmlSerializer text (String text)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    XmlSerializer text(String text)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Writes text, where special XML chars are escaped automatically
      */
-    XmlSerializer text (char [] buf, int start, int len)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
-    void cdsect (String text)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    void entityRef (String text)  throws IOException,
-        IllegalArgumentException, IllegalStateException;
-    void processingInstruction (String text)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    void comment (String text)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    void docdecl (String text)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    void ignorableWhitespace (String text)
-        throws IOException, IllegalArgumentException, IllegalStateException;
-    
+    XmlSerializer text(char[] buf, int start, int len)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
+    void cdsect(String text) throws IOException, IllegalArgumentException, IllegalStateException;
+
+    void entityRef(String text) throws IOException, IllegalArgumentException, IllegalStateException;
+
+    void processingInstruction(String text)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
+    void comment(String text) throws IOException, IllegalArgumentException, IllegalStateException;
+
+    void docdecl(String text) throws IOException, IllegalArgumentException, IllegalStateException;
+
+    void ignorableWhitespace(String text)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
     /**
      * Write all pending output to the stream.
      * If method startTag() or attribute() was called then start tag is closed (final &gt;)
@@ -319,8 +313,5 @@ public interface XmlSerializer {
      * call method text() with empty string (text("")).
      *
      */
-    void flush ()
-        throws IOException;
-    
+    void flush() throws IOException;
 }
-

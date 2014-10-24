@@ -1,25 +1,25 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*   CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2003
+*   Copyright (C) Satoshi Konno 2002-2003
 *
-*	File: QueryListener.java
+*   File: QueryListener.java
 *
-*	Revision;
+*   Revision;
 *
-*	01/30/03
-*		- first revision.
-*	01/04/04
-*		- Changed the interface.
-*	
+*   01/30/03
+*       - first revision.
+*   01/04/04
+*       - Changed the interface.
+*
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.upnp.control;
 
 import plugins.UPnP.org.cybergarage.upnp.*;
 
-public interface QueryListener
-{
-	public boolean queryControlReceived(StateVariable stateVar);
+public interface QueryListener {
+    public boolean queryControlReceived(StateVariable stateVar);
 }

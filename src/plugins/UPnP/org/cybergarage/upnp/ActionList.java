@@ -1,46 +1,40 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*   CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*   Copyright (C) Satoshi Konno 2002
 *
-*	File: ActionList.java
+*   File: ActionList.java
 *
-*	Revision:
+*   Revision:
 *
-*	12/05/02
-*		- first revision.
+*   12/05/02
+*       - first revision.
 *
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.upnp;
 
 import java.util.*;
 
-public class ActionList extends Vector 
-{
-	////////////////////////////////////////////////
-	//	Constants
-	////////////////////////////////////////////////
+public class ActionList extends Vector {
 
-	private static final long serialVersionUID = 1965922721316119846L;
-	public final static String ELEM_NAME = "actionList";
+    ////////////////////////////////////////////////
+    // Constants
+    ////////////////////////////////////////////////
+    private static final long  serialVersionUID = 1965922721316119846L;
+    public final static String ELEM_NAME        = "actionList";
 
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
-	
-	public ActionList() 
-	{
-	}
-	
-	////////////////////////////////////////////////
-	//	Methods
-	////////////////////////////////////////////////
-	
-	public Action getAction(int n)
-	{
-		return (Action)get(n);
-	}
+    ////////////////////////////////////////////////
+    // Constructor
+    ////////////////////////////////////////////////
+    public ActionList() {}
+
+    ////////////////////////////////////////////////
+    // Methods
+    ////////////////////////////////////////////////
+    public Action getAction(int n) {
+        return (Action) get(n);
+    }
 }
-

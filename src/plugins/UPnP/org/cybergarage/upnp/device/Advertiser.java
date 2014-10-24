@@ -1,68 +1,65 @@
 /******************************************************************
 *
-*	CyberUPnP for Java
+*   CyberUPnP for Java
 *
-*	Copyright (C) Satoshi Konno 2002
+*   Copyright (C) Satoshi Konno 2002
 *
-*	File: Advertiser.java
+*   File: Advertiser.java
 *
-*	Revision;
+*   Revision;
 *
-*	12/24/03
-*		- first revision.
-*	06/18/04
-*		- Changed to advertise every 25%-50% of the periodic notification cycle for NMPR;
-*	
+*   12/24/03
+*       - first revision.
+*   06/18/04
+*       - Changed to advertise every 25%-50% of the periodic notification cycle for NMPR;
+*
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.upnp.device;
 
 import plugins.UPnP.org.cybergarage.util.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
-public class Advertiser extends ThreadCore
-{
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
+public class Advertiser extends ThreadCore {
 
-	public Advertiser(Device dev)
-	{
-		setDevice(dev);
-	}
-	
-	////////////////////////////////////////////////
-	//	Member
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    // Constructor
+    ////////////////////////////////////////////////
+    public Advertiser(Device dev) {
+        setDevice(dev);
+    }
 
-	private Device device;
+    ////////////////////////////////////////////////
+    // Member
+    ////////////////////////////////////////////////
+    private Device device;
 
-	public void setDevice(Device dev)
-	{
-		device = dev;
-	}
-	
-	public Device getDevice()
-	{
-		return device;
-	}
+    public void setDevice(Device dev) {
+        device = dev;
+    }
 
-	////////////////////////////////////////////////
-	//	Thread
-	////////////////////////////////////////////////
-	
-	public void run() 
-	{
-		Device dev = getDevice();
-		long leaseTime = dev.getLeaseTime();
-		long notifyInterval;
-		while (isRunnable() == true) {
-			notifyInterval = (leaseTime/4) + (long)((float)leaseTime * (Math.random() * 0.25f));
-			notifyInterval *= 1000;
-			try {
-				Thread.sleep(notifyInterval);
-			} catch (InterruptedException e) {}
-			dev.announce();
-		}
-	}
+    public Device getDevice() {
+        return device;
+    }
+
+    ////////////////////////////////////////////////
+    // Thread
+    ////////////////////////////////////////////////
+    public void run() {
+        Device dev       = getDevice();
+        long   leaseTime = dev.getLeaseTime();
+        long   notifyInterval;
+
+        while (isRunnable() == true) {
+            notifyInterval = (leaseTime / 4) + (long) ((float) leaseTime * (Math.random() * 0.25f));
+            notifyInterval *= 1000;
+
+            try {
+                Thread.sleep(notifyInterval);
+            } catch (InterruptedException e) {}
+
+            dev.announce();
+        }
+    }
 }

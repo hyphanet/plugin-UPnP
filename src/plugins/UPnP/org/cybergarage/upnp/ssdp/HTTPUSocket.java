@@ -1,25 +1,26 @@
 /******************************************************************
 *
-*	CyberLink for Java
+*   CyberLink for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2003
+*   Copyright (C) Satoshi Konno 2002-2003
 *
-*	File: HTTPMU.java
+*   File: HTTPMU.java
 *
-*	Revision;
+*   Revision;
 *
-*	11/20/02
-*		- first revision.
-*	12/12/03
-*		- Inma Mar?n <inma@DIF.UM.ES>
-*		- Changed open(addr, port) to send IPv6 SSDP packets.
-*		- The socket binds only the port without the interface address.
-*		- The full binding socket can send SSDP IPv4 packets. Is it a bug of J2SE v.1.4.2-b28 ?.
-*	01/06/04
-*		- Oliver Newell <olivern@users.sourceforge.net>
-*		- Added to set a current timestamp when the packet are received.
-*	
+*   11/20/02
+*       - first revision.
+*   12/12/03
+*       - Inma Mar?n <inma@DIF.UM.ES>
+*       - Changed open(addr, port) to send IPv6 SSDP packets.
+*       - The socket binds only the port without the interface address.
+*       - The full binding socket can send SSDP IPv4 packets. Is it a bug of J2SE v.1.4.2-b28 ?.
+*   01/06/04
+*       - Oliver Newell <olivern@users.sourceforge.net>
+*       - Added to set a current timestamp when the packet are received.
+*
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.upnp.ssdp;
 
@@ -27,217 +28,214 @@ import java.net.*;
 
 import plugins.UPnP.org.cybergarage.util.*;
 
-public class HTTPUSocket
-{
-	////////////////////////////////////////////////
-	//	Member
-	////////////////////////////////////////////////
+public class HTTPUSocket {
 
-	private DatagramSocket ssdpUniSock = null;
-	//private MulticastSocket ssdpUniSock = null;
+    ////////////////////////////////////////////////
+    // Member
+    ////////////////////////////////////////////////
+    private DatagramSocket ssdpUniSock = null;
 
-	public DatagramSocket getDatagramSocket()
-	{
-		return ssdpUniSock;
-	}
-		
-	////////////////////////////////////////////////
-	//	Constructor
-	////////////////////////////////////////////////
+    // private MulticastSocket ssdpUniSock = null;
+    public DatagramSocket getDatagramSocket() {
+        return ssdpUniSock;
+    }
 
-	public HTTPUSocket()
-	{
-		open();
-	}
-	
-	public HTTPUSocket(String bindAddr, int bindPort)
-	{
-		open(bindAddr, bindPort);
-	}
+    ////////////////////////////////////////////////
+    // Constructor
+    ////////////////////////////////////////////////
+    public HTTPUSocket() {
+        open();
+    }
 
-	public HTTPUSocket(int bindPort)
-	{
-		open(bindPort);
-	}
+    public HTTPUSocket(String bindAddr, int bindPort) {
+        open(bindAddr, bindPort);
+    }
 
-	protected void finalize()
-	{
-		close();
-	}
+    public HTTPUSocket(int bindPort) {
+        open(bindPort);
+    }
 
-	////////////////////////////////////////////////
-	//	bindAddr
-	////////////////////////////////////////////////
+    protected void finalize() {
+        close();
+    }
 
-	private String localAddr = "";
+    ////////////////////////////////////////////////
+    // bindAddr
+    ////////////////////////////////////////////////
+    private String localAddr = "";
 
-	public void setLocalAddress(String addr)
-	{
-		localAddr = addr;
-	}
-	
-	public String getLocalAddress()
-	{
-		if (0 < localAddr.length())
-			return localAddr;
-		return ssdpUniSock.getLocalAddress().getHostAddress();
-	}
+    public void setLocalAddress(String addr) {
+        localAddr = addr;
+    }
 
-	////////////////////////////////////////////////
-	//	open
-	////////////////////////////////////////////////
-	
-	public boolean open()
-	{
-		close();
-		
-		try {
-			ssdpUniSock = new DatagramSocket();
-		}
-		catch (Exception e) {
-			Debug.warning(e);
-			return false;
-		}
-		
-		return true;
-	}
-	
-	public boolean open(String bindAddr, int bindPort)
-	{
-		close();
-		
-		try {
-			// Bind only using the port without the interface address. (2003/12/12)
-			InetSocketAddress bindSock = new InetSocketAddress(/*InetAddress.getByName(bindAddr), */ bindPort);
-			ssdpUniSock = new DatagramSocket(null);
-			ssdpUniSock.setReuseAddress(true);
-			ssdpUniSock.bind(bindSock);
-		}
-		catch (Exception e) {
-			Debug.warning(e);
-			return false;
-		}
-		
-		setLocalAddress(bindAddr);
-		
-		return true;
-	}
+    public String getLocalAddress() {
+        if (0 < localAddr.length()) {
+            return localAddr;
+        }
 
-	public boolean open(int bindPort)
-	{
-		close();
-		
-		try {
-			InetSocketAddress bindSock = new InetSocketAddress(bindPort);
-			ssdpUniSock = new DatagramSocket(null);
-			ssdpUniSock.setReuseAddress(true);
-			ssdpUniSock.bind(bindSock);
-		}
-		catch (Exception e) {
-			//Debug.warning(e);
-			return false;
-		}
-		
-		return true;
-	}
-		
-	////////////////////////////////////////////////
-	//	close
-	////////////////////////////////////////////////
+        return ssdpUniSock.getLocalAddress().getHostAddress();
+    }
 
-	public boolean close()
-	{
-		if (ssdpUniSock == null)
-			return true;
-			
-		try {
-			ssdpUniSock.close();
-			ssdpUniSock = null;
-		}
-		catch (Exception e) {
-			Debug.warning(e);
-			return false;
-		}
-		
-		return true;
-	}
+    ////////////////////////////////////////////////
+    // open
+    ////////////////////////////////////////////////
+    public boolean open() {
+        close();
 
-	////////////////////////////////////////////////
-	//	send
-	////////////////////////////////////////////////
+        try {
+            ssdpUniSock = new DatagramSocket();
+        } catch (Exception e) {
+            Debug.warning(e);
 
-	public boolean post(String addr, int port, String msg)
-	{
-		 try {
-			InetAddress inetAddr = InetAddress.getByName(addr);
-			DatagramPacket dgmPacket = new DatagramPacket(msg.getBytes(), msg.length(), inetAddr, port);
-			ssdpUniSock.send(dgmPacket);
-		}
-		catch (Exception e) {
-		    if (ssdpUniSock != null && ssdpUniSock.getLocalAddress() != null) {
-			    Debug.warning("addr = " + ssdpUniSock.getLocalAddress().getHostName());
-			    Debug.warning("port = " + ssdpUniSock.getLocalPort());
-		    } else {
-		        Debug.warning("SSDP socket not open");
-		    }
-			Debug.warning(e);
-			return false;
-		}
-		return true;
-	}
+            return false;
+        }
 
-	////////////////////////////////////////////////
-	//	reveive
-	////////////////////////////////////////////////
+        return true;
+    }
 
-	public SSDPPacket receive()
-	{
-		byte ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
- 		SSDPPacket recvPacket = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
-		recvPacket.setLocalAddress(getLocalAddress());
-		try {
-	 		ssdpUniSock.receive(recvPacket.getDatagramPacket());
-			recvPacket.setTimeStamp(System.currentTimeMillis());
-		}
-		catch (Exception e) {
-			//Debug.warning(e);
-			return null;
-		}
- 		return recvPacket;
-	}
+    public boolean open(String bindAddr, int bindPort) {
+        close();
 
-	////////////////////////////////////////////////
-	//	join/leave
-	////////////////////////////////////////////////
+        try {
+
+            // Bind only using the port without the interface address. (2003/12/12)
+            InetSocketAddress bindSock =
+                new InetSocketAddress( /* InetAddress.getByName(bindAddr), */bindPort);
+
+            ssdpUniSock = new DatagramSocket(null);
+            ssdpUniSock.setReuseAddress(true);
+            ssdpUniSock.bind(bindSock);
+        } catch (Exception e) {
+            Debug.warning(e);
+
+            return false;
+        }
+
+        setLocalAddress(bindAddr);
+
+        return true;
+    }
+
+    public boolean open(int bindPort) {
+        close();
+
+        try {
+            InetSocketAddress bindSock = new InetSocketAddress(bindPort);
+
+            ssdpUniSock = new DatagramSocket(null);
+            ssdpUniSock.setReuseAddress(true);
+            ssdpUniSock.bind(bindSock);
+        } catch (Exception e) {
+
+            // Debug.warning(e);
+            return false;
+        }
+
+        return true;
+    }
+
+    ////////////////////////////////////////////////
+    // close
+    ////////////////////////////////////////////////
+    public boolean close() {
+        if (ssdpUniSock == null) {
+            return true;
+        }
+
+        try {
+            ssdpUniSock.close();
+            ssdpUniSock = null;
+        } catch (Exception e) {
+            Debug.warning(e);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    ////////////////////////////////////////////////
+    // send
+    ////////////////////////////////////////////////
+    public boolean post(String addr, int port, String msg) {
+        try {
+            InetAddress    inetAddr  = InetAddress.getByName(addr);
+            DatagramPacket dgmPacket = new DatagramPacket(msg.getBytes(), msg.length(), inetAddr,
+                                           port);
+
+            ssdpUniSock.send(dgmPacket);
+        } catch (Exception e) {
+            if ((ssdpUniSock != null) && (ssdpUniSock.getLocalAddress() != null)) {
+                Debug.warning("addr = " + ssdpUniSock.getLocalAddress().getHostName());
+                Debug.warning("port = " + ssdpUniSock.getLocalPort());
+            } else {
+                Debug.warning("SSDP socket not open");
+            }
+
+            Debug.warning(e);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    ////////////////////////////////////////////////
+    // receive
+    ////////////////////////////////////////////////
+    public SSDPPacket receive() {
+        byte       ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
+        SSDPPacket recvPacket    = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
+
+        recvPacket.setLocalAddress(getLocalAddress());
+
+        try {
+            ssdpUniSock.receive(recvPacket.getDatagramPacket());
+            recvPacket.setTimeStamp(System.currentTimeMillis());
+        } catch (Exception e) {
+
+            // Debug.warning(e);
+            return null;
+        }
+
+        return recvPacket;
+    }
+
+    ////////////////////////////////////////////////
+    // join/leave
+    ////////////////////////////////////////////////
 
 /*
-	boolean joinGroup(String mcastAddr, int mcastPort, String bindAddr)
-	{
-		try {	 	
-			InetSocketAddress mcastGroup = new InetSocketAddress(InetAddress.getByName(mcastAddr), mcastPort);
-			NetworkInterface mcastIf = NetworkInterface.getByInetAddress(InetAddress.getByName(bindAddr));
-			ssdpUniSock.joinGroup(mcastGroup, mcastIf);
-		}
-		catch (Exception e) {
-			Debug.warning(e);
-			return false;
-		}
-		return true;
-	}
+    boolean joinGroup(String mcastAddr, int mcastPort, String bindAddr)
+    {
+        try {
+            InetSocketAddress mcastGroup = new InetSocketAddress(InetAddress.getByName(mcastAddr),
+                                               mcastPort);
+            NetworkInterface mcastIf = NetworkInterface.getByInetAddress(InetAddress
+                                       .getByName(bindAddr));
+            ssdpUniSock.joinGroup(mcastGroup, mcastIf);
+        }
+        catch (Exception e) {
+            Debug.warning(e);
+            return false;
+        }
+        return true;
+    }
 
-	boolean leaveGroup(String mcastAddr, int mcastPort, String bindAddr)
-	 {
-		try {	 	
-			InetSocketAddress mcastGroup = new InetSocketAddress(InetAddress.getByName(mcastAddr), mcastPort);
-			NetworkInterface mcastIf = NetworkInterface.getByInetAddress(InetAddress.getByName(bindAddr));
-			ssdpUniSock.leaveGroup(mcastGroup, mcastIf);
-		 }
-		 catch (Exception e) {
-			 Debug.warning(e);
-			 return false;
-		 }
-		 return true;
-	 }
+    boolean leaveGroup(String mcastAddr, int mcastPort, String bindAddr)
+     {
+        try {
+            InetSocketAddress mcastGroup = new InetSocketAddress(InetAddress.getByName(mcastAddr),
+                                               mcastPort);
+            NetworkInterface mcastIf = NetworkInterface.getByInetAddress(InetAddress
+                                       .getByName(bindAddr));
+            ssdpUniSock.leaveGroup(mcastGroup, mcastIf);
+         }
+         catch (Exception e) {
+             Debug.warning(e);
+             return false;
+         }
+         return true;
+     }
 */
 }
-

@@ -1,60 +1,61 @@
 /******************************************************************
 *
-*	CyberHTTP for Java
+*   CyberHTTP for Java
 *
-*	Copyright (C) Satoshi Konno 2002-2004
+*   Copyright (C) Satoshi Konno 2002-2004
 *
-*	File: ParameterList.java
+*   File: ParameterList.java
 *
-*	Revision;
+*   Revision;
 *
-*	02/01/04
-*		- first revision.
+*   02/01/04
+*       - first revision.
 *
 ******************************************************************/
+
 
 package plugins.UPnP.org.cybergarage.http;
 
 import java.util.*;
 
-public class ParameterList extends Vector 
-{
-	private static final long serialVersionUID = -6026765325018137641L;
+public class ParameterList extends Vector {
+    private static final long serialVersionUID = -6026765325018137641L;
 
-	public ParameterList() 
-	{
-	}
-	
-	public Parameter at(int n)
-	{
-		return (Parameter)get(n);
-	}
+    public ParameterList() {}
 
-	public Parameter getParameter(int n)
-	{
-		return (Parameter)get(n);
-	}
-	
-	public Parameter getParameter(String name) 
-	{
-		if (name == null)
-			return null;
-		
-		int nLists = size(); 
-		for (int n=0; n<nLists; n++) {
-			Parameter param = at(n);
-			if (name.compareTo(param.getName()) == 0)
-				return param;
-		}
-		return null;
-	}
+    public Parameter at(int n) {
+        return (Parameter) get(n);
+    }
 
-	public String getValue(String name) 
-	{
-		Parameter param = getParameter(name);
-		if (param == null)
-			return "";
-		return param.getValue();
-	}
+    public Parameter getParameter(int n) {
+        return (Parameter) get(n);
+    }
+
+    public Parameter getParameter(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        int nLists = size();
+
+        for (int n = 0; n < nLists; n++) {
+            Parameter param = at(n);
+
+            if (name.compareTo(param.getName()) == 0) {
+                return param;
+            }
+        }
+
+        return null;
+    }
+
+    public String getValue(String name) {
+        Parameter param = getParameter(name);
+
+        if (param == null) {
+            return "";
+        }
+
+        return param.getValue();
+    }
 }
-
