@@ -43,7 +43,6 @@ import plugins.UPnP.org.cybergarage.upnp.*;
 import plugins.UPnP.org.cybergarage.upnp.device.*;
 
 public class SubscriptionRequest extends HTTPRequest {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -63,7 +62,7 @@ public class SubscriptionRequest extends HTTPRequest {
         setURI(eventSubURL, true);
 
         String urlBaseStr = "";
-        Device dev        = service.getDevice();
+        Device dev = service.getDevice();
 
         if (dev != null) {
             urlBaseStr = dev.getURLBase();
@@ -94,7 +93,7 @@ public class SubscriptionRequest extends HTTPRequest {
         }
 
         String reqHost = HTTP.getHost(urlBaseStr);
-        int    reqPort = HTTP.getPort(urlBaseStr);
+        int reqPort = HTTP.getPort(urlBaseStr);
 
         setHost(reqHost, reqPort);
         setRequestHost(reqHost);
@@ -143,7 +142,7 @@ public class SubscriptionRequest extends HTTPRequest {
     // CALLBACK
     ////////////////////////////////////////////////
     private final static String CALLBACK_START_WITH = "<";
-    private final static String CALLBACK_END_WITH   = ">";
+    private final static String CALLBACK_END_WITH = ">";
 
     public void setCallback(String value) {
         setStringHeader(HTTP.CALLBACK, value, CALLBACK_START_WITH, CALLBACK_END_WITH);

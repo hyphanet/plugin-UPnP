@@ -20,7 +20,6 @@ import plugins.UPnP.org.cybergarage.upnp.*;
 import plugins.UPnP.org.cybergarage.http.*;
 
 public class SubscriptionResponse extends HTTPResponse {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

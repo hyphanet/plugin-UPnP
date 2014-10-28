@@ -24,7 +24,6 @@ import plugins.UPnP.org.cybergarage.net.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class SSDPSearchResponseSocketList extends Vector {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -60,8 +59,8 @@ public class SSDPSearchResponseSocketList extends Vector {
             int nHostAddrs = HostInterface.getNHostAddresses();
 
             for (int n = 0; n < nHostAddrs; n++) {
-                String                   bindAddr = HostInterface.getHostAddress(n);
-                SSDPSearchResponseSocket socket   = new SSDPSearchResponseSocket(bindAddr, port);
+                String bindAddr = HostInterface.getHostAddress(n);
+                SSDPSearchResponseSocket socket = new SSDPSearchResponseSocket(bindAddr, port);
 
                 add(socket);
             }
@@ -119,12 +118,12 @@ public class SSDPSearchResponseSocketList extends Vector {
     // Methods
     ////////////////////////////////////////////////
     public boolean post(SSDPSearchRequest req) {
-        boolean ret      = true;
-        int     nSockets = size();
+        boolean ret = true;
+        int nSockets = size();
 
         for (int n = 0; n < nSockets; n++) {
-            SSDPSearchResponseSocket sock     = getSSDPSearchResponseSocket(n);
-            String                   bindAddr = sock.getLocalAddress();
+            SSDPSearchResponseSocket sock = getSSDPSearchResponseSocket(n);
+            String bindAddr = sock.getLocalAddress();
 
             req.setLocalAddress(bindAddr);
 

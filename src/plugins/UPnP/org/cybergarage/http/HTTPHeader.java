@@ -46,7 +46,7 @@ public class HTTPHeader {
             return;
         }
 
-        String name  = new String(lineStr.getBytes(), 0, colonIdx);
+        String name = new String(lineStr.getBytes(), 0, colonIdx);
         String value = new String(lineStr.getBytes(), colonIdx + 1,
                                   lineStr.length() - colonIdx - 1);
 
@@ -120,7 +120,7 @@ public class HTTPHeader {
     }
 
     public final static String getValue(String data, String name) {
-        StringReader     strReader  = new StringReader(data);
+        StringReader strReader = new StringReader(data);
         LineNumberReader lineReader = new LineNumberReader(strReader);
 
         return getValue(lineReader, name);

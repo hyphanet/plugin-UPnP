@@ -9,14 +9,13 @@ package plugins.UPnP.org.xmlpull.v1;
  * @author <a href="http://www.extreme.indiana.edu/~aslom/">Aleksander Slominski</a>
  */
 public class XmlPullParserException extends Exception {
-
     /**
      *
      */
     private static final long serialVersionUID = 1L;
-    protected Throwable       detail;
-    protected int             row    = -1;
-    protected int             column = -1;
+    protected Throwable detail;
+    protected int row = -1;
+    protected int column = -1;
 
     /*
      *     public XmlPullParserException() {
@@ -44,7 +43,7 @@ public class XmlPullParserException extends Exception {
               ((chain == null) ? "" : "caused by: " + chain));
 
         if (parser != null) {
-            this.row    = parser.getLineNumber();
+            this.row = parser.getLineNumber();
             this.column = parser.getColumnNumber();
         }
 

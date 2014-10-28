@@ -53,7 +53,6 @@ import plugins.UPnP.org.cybergarage.upnp.control.*;
 import plugins.UPnP.org.cybergarage.upnp.xml.*;
 
 public class StateVariable extends NodeData {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
@@ -87,12 +86,12 @@ public class StateVariable extends NodeData {
     // Constructor
     ////////////////////////////////////////////////
     public StateVariable() {
-        this.serviceNode       = null;
+        this.serviceNode = null;
         this.stateVariableNode = new Node();
     }
 
     public StateVariable(Node serviceNode, Node stateVarNode) {
-        this.serviceNode       = serviceNode;
+        this.serviceNode = serviceNode;
         this.stateVariableNode = stateVarNode;
     }
 
@@ -132,9 +131,9 @@ public class StateVariable extends NodeData {
     ////////////////////////////////////////////////
     // dataType
     ////////////////////////////////////////////////
-    private final static String SENDEVENTS     = "sendEvents";
+    private final static String SENDEVENTS = "sendEvents";
     private final static String SENDEVENTS_YES = "yes";
-    private final static String SENDEVENTS_NO  = "no";
+    private final static String SENDEVENTS_NO = "no";
 
     public void setSendEvents(boolean state) {
         getStateVariableNode().setAttribute(SENDEVENTS,
@@ -169,7 +168,7 @@ public class StateVariable extends NodeData {
     // UserData
     ////////////////////////////////////////////////
     public StateVariableData getStateVariableData() {
-        Node              node     = getStateVariableNode();
+        Node node = getStateVariableNode();
         StateVariableData userData = (StateVariableData) node.getUserData();
 
         if (userData == null) {
@@ -226,8 +225,8 @@ public class StateVariable extends NodeData {
     // AllowedValueList
     ////////////////////////////////////////////////
     public AllowedValueList getAllowedValueList() {
-        AllowedValueList valueList     = new AllowedValueList();
-        Node             valueListNode = getStateVariableNode().getNode(AllowedValueList.ELEM_NAME);
+        AllowedValueList valueList = new AllowedValueList();
+        Node valueListNode = getStateVariableNode().getNode(AllowedValueList.ELEM_NAME);
 
         if (valueListNode == null) {
             return valueList;
@@ -292,7 +291,7 @@ public class StateVariable extends NodeData {
         }
 
         QueryResponse queryRes = new QueryResponse();
-        StateVariable retVar   = new StateVariable();
+        StateVariable retVar = new StateVariable();
 
         retVar.set(this);
         retVar.setValue("");

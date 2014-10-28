@@ -58,7 +58,6 @@ import java.net.*;
 import java.util.*;
 
 public class HTTPRequest extends HTTPPacket {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -157,7 +156,7 @@ public class HTTPRequest extends HTTPPacket {
     ////////////////////////////////////////////////
     public ParameterList getParameterList() {
         ParameterList paramList = new ParameterList();
-        String        uri       = getURI();
+        String uri = getURI();
 
         if (uri == null) {
             return paramList;
@@ -170,11 +169,11 @@ public class HTTPRequest extends HTTPPacket {
         }
 
         while (0 < paramIdx) {
-            int    eqIdx        = uri.indexOf('=', (paramIdx + 1));
-            String name         = uri.substring(paramIdx + 1, eqIdx);
-            int    nextParamIdx = uri.indexOf('&', (eqIdx + 1));
-            String value        = uri.substring(eqIdx + 1,
-                                      (0 < nextParamIdx) ? nextParamIdx : uri.length());
+            int eqIdx = uri.indexOf('=', (paramIdx + 1));
+            String name = uri.substring(paramIdx + 1, eqIdx);
+            int nextParamIdx = uri.indexOf('&', (eqIdx + 1));
+            String value = uri.substring(eqIdx + 1,
+                                         (0 < nextParamIdx) ? nextParamIdx : uri.length());
             Parameter param = new Parameter(name, value);
 
             paramList.add(param);
@@ -313,7 +312,7 @@ public class HTTPRequest extends HTTPPacket {
             return true;
         }
 
-        String  httpVer  = getHTTPVersion();
+        String httpVer = getHTTPVersion();
         boolean isHTTP10 = (0 < httpVer.indexOf("1.0")) ? true : false;
 
         if (isHTTP10 == true) {
@@ -335,12 +334,12 @@ public class HTTPRequest extends HTTPPacket {
     ////////////////////////////////////////////////
     public boolean post(HTTPResponse httpRes) {
         HTTPSocket httpSock = getSocket();
-        long       offset   = 0;
-        long       length   = httpRes.getContentLength();
+        long offset = 0;
+        long length = httpRes.getContentLength();
 
         if (hasContentRange() == true) {
             long firstPos = getContentRangeFirstPosition();
-            long lastPos  = getContentRangeLastPosition();
+            long lastPos = getContentRangeLastPosition();
 
             // Thanks for Brent Hills (10/26/04)
             if (lastPos <= 0) {
@@ -372,9 +371,9 @@ public class HTTPRequest extends HTTPPacket {
 
         setConnection((isKeepAlive == true) ? HTTP.KEEP_ALIVE : HTTP.CLOSE);
 
-        boolean      isHeaderRequest = isHeadRequest();
-        OutputStream out             = null;
-        InputStream  in              = null;
+        boolean isHeaderRequest = isHeadRequest();
+        OutputStream out = null;
+        InputStream in = null;
 
         try {
             if (postSocket == null) {
@@ -389,8 +388,8 @@ public class HTTPRequest extends HTTPPacket {
             pout.print(HTTP.CRLF);
 
             boolean isChunkedRequest = isChunked();
-            String  content          = getContentString();
-            int     contentLength    = 0;
+            String content = getContentString();
+            int contentLength = 0;
 
             if (content != null) {
                 contentLength = content.length();

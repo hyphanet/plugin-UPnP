@@ -26,7 +26,6 @@ import plugins.UPnP.org.cybergarage.soap.*;
 import plugins.UPnP.org.cybergarage.xml.*;
 
 public class ActionResponse extends ControlResponse {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -46,7 +45,7 @@ public class ActionResponse extends ControlResponse {
         setStatusCode(HTTPStatus.OK);
 
         Node bodyNode = getBodyNode();
-        Node resNode  = createResponseNode(action);
+        Node resNode = createResponseNode(action);
 
         bodyNode.addNode(resNode);
 
@@ -56,17 +55,16 @@ public class ActionResponse extends ControlResponse {
     }
 
     private Node createResponseNode(Action action) {
-        String  actionName        = action.getName();
-        Node    actionNameResNode = new Node(SOAP.METHODNS + SOAP.DELIM + actionName +
-                                        SOAP.RESPONSE);
-        Service service           = action.getService();
+        String actionName = action.getName();
+        Node actionNameResNode = new Node(SOAP.METHODNS + SOAP.DELIM + actionName + SOAP.RESPONSE);
+        Service service = action.getService();
 
         if (service != null) {
             actionNameResNode.setAttribute("xmlns:" + SOAP.METHODNS, service.getServiceType());
         }
 
         ArgumentList argList = action.getArgumentList();
-        int          nArgs   = argList.size();
+        int nArgs = argList.size();
 
         for (int n = 0; n < nArgs; n++) {
             Argument arg = argList.getArgument(n);
@@ -100,7 +98,7 @@ public class ActionResponse extends ControlResponse {
 
     public ArgumentList getResponse() {
         ArgumentList argList = new ArgumentList();
-        Node         resNode = getActionResponseNode();
+        Node resNode = getActionResponseNode();
 
         if (resNode == null) {
             return argList;
@@ -109,10 +107,10 @@ public class ActionResponse extends ControlResponse {
         int nArgs = resNode.getNNodes();
 
         for (int n = 0; n < nArgs; n++) {
-            Node     node  = resNode.getNode(n);
-            String   name  = node.getName();
-            String   value = node.getValue();
-            Argument arg   = new Argument(name, value);
+            Node node = resNode.getNode(n);
+            String name = node.getName();
+            String value = node.getValue();
+            Argument arg = new Argument(name, value);
 
             argList.add(arg);
         }

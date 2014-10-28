@@ -76,19 +76,18 @@ public class UPnP extends ControlPoint
     /** some schemas */
     private static final String ROUTER_DEVICE =
         "urn:schemas-upnp-org:device:InternetGatewayDevice:1";
-    private static final String WAN_DEVICE        = "urn:schemas-upnp-org:device:WANDevice:1";
-    private static final String WANCON_DEVICE     =
-        "urn:schemas-upnp-org:device:WANConnectionDevice:1";
+    private static final String WAN_DEVICE = "urn:schemas-upnp-org:device:WANDevice:1";
+    private static final String WANCON_DEVICE = "urn:schemas-upnp-org:device:WANConnectionDevice:1";
     private static final String WAN_IP_CONNECTION =
         "urn:schemas-upnp-org:service:WANIPConnection:1";
     private static final String WAN_PPP_CONNECTION =
         "urn:schemas-upnp-org:service:WANPPPConnection:1";
-    private Device  _router;
+    private Device _router;
     private Service _service;
 
     // We disable the plugin if more than one IGD is found
-    private boolean      isDisabled = false;
-    private final Object lock       = new Object();
+    private boolean isDisabled = false;
+    private final Object lock = new Object();
 
     // FIXME: detect it for real and deal with it! @see #2524
     private volatile boolean thinksWeAreDoubleNatted = false;
@@ -133,12 +132,12 @@ public class UPnP extends ControlPoint
             return null;
         }
 
-        DetectedIP   result     = null;
+        DetectedIP result = null;
         final String natAddress = getNATAddress();
 
         try {
             InetAddress detectedIP = InetAddress.getByName(natAddress);
-            short       status     = DetectedIP.NOT_SUPPORTED;
+            short status = DetectedIP.NOT_SUPPORTED;
 
             thinksWeAreDoubleNatted = !IPUtil.isValidAddress(detectedIP, false);
 
@@ -170,7 +169,7 @@ public class UPnP extends ControlPoint
         }
 
         if ( !ROUTER_DEVICE.equals(dev.getDeviceType()) || !dev.isRootDevice()) {
-            return;    // Silently ignore non-IGD devices
+            return;  // Silently ignore non-IGD devices
         } else if (isNATPresent()) {
             Logger.error(this,
                          "We got a second IGD on the network! the plugin doesn't handle" +
@@ -180,7 +179,7 @@ public class UPnP extends ControlPoint
             isDisabled = true;
 
             synchronized (lock) {
-                _router  = null;
+                _router = null;
                 _service = null;
             }
 
@@ -209,7 +208,7 @@ public class UPnP extends ControlPoint
                 System.err.println(
                     "The IGD device we got isn't suiting our needs, let's disable the plugin");
                 isDisabled = true;
-                _router    = null;
+                _router = null;
 
                 return;
             }
@@ -281,7 +280,7 @@ public class UPnP extends ControlPoint
         Logger.normal(this, "Registering a port mapping for " + port + "/" + protocol);
         System.err.println("UPnP: Registering a port mapping for " + port + "/" + protocol);
 
-        int     nbOfTries       = 0;
+        int nbOfTries = 0;
         boolean isPortForwarded = false;
 
         while (nbOfTries++ < 5) {
@@ -323,7 +322,7 @@ public class UPnP extends ControlPoint
             }
 
             if (_router.equals(dev)) {
-                _router  = null;
+                _router = null;
                 _service = null;
             }
         }
@@ -722,7 +721,7 @@ public class UPnP extends ControlPoint
 
         PageNode page = pr.getPageMaker().getPageNode("UP&P plugin configuration page", false,
                             null);
-        HTMLNode pageNode    = page.outer;
+        HTMLNode pageNode = page.outer;
         HTMLNode contentNode = page.content;
 
         if (isDisabled) {
@@ -754,9 +753,8 @@ public class UPnP extends ControlPoint
             return pageNode.generate();
         }
 
-        HTMLNode foundInfobox        = contentNode.addChild("div", "class",
-                                           "infobox infobox-normal");
-        HTMLNode foundInfoboxHeader  = foundInfobox.addChild("div", "class", "infobox-header");
+        HTMLNode foundInfobox = contentNode.addChild("div", "class", "infobox infobox-normal");
+        HTMLNode foundInfoboxHeader = foundInfobox.addChild("div", "class", "infobox-header");
         HTMLNode foundInfoboxContent = foundInfobox.addChild("div", "class", "infobox-content");
 
         // FIXME L10n!
@@ -767,7 +765,7 @@ public class UPnP extends ControlPoint
         foundInfoboxContent.addChild("p", "Our current external ip address is: " + getNATAddress());
 
         int downstreamMaxBitRate = getDownstreamMaxBitRate();
-        int upstreamMaxBitRate   = getUpstramMaxBitRate();
+        int upstreamMaxBitRate = getUpstramMaxBitRate();
 
         if (downstreamMaxBitRate > 0) {
             foundInfoboxContent.addChild("p",
@@ -874,7 +872,7 @@ public class UPnP extends ControlPoint
     }
 
     public void onChangePublicPorts(Set<ForwardPort> ports, ForwardPortCallback cb) {
-        Set<ForwardPort> portsToDumpNow    = null;
+        Set<ForwardPort> portsToDumpNow = null;
         Set<ForwardPort> portsToForwardNow = null;
 
         System.err.println("UP&P Forwarding " + ports.size() + " ports...");
@@ -889,12 +887,12 @@ public class UPnP extends ControlPoint
             forwardCallback = cb;
 
             if ((portsToForward == null) || portsToForward.isEmpty()) {
-                portsToForward    = ports;
+                portsToForward = ports;
                 portsToForwardNow = ports;
-                portsToDumpNow    = null;
+                portsToDumpNow = null;
             } else if ((ports == null) || ports.isEmpty()) {
-                portsToDumpNow    = portsToForward;
-                portsToForward    = ports;
+                portsToDumpNow = portsToForward;
+                portsToForward = ports;
                 portsToForwardNow = null;
             } else {
 
@@ -935,7 +933,7 @@ public class UPnP extends ControlPoint
             }
 
             if (_router == null) {
-                return;    // When one is found, we will do the forwards
+                return;  // When one is found, we will do the forwards
             }
         }
 
@@ -1021,8 +1019,8 @@ public class UPnP extends ControlPoint
     }
 
     public static void main(String[] args) throws Exception {
-        UPnP         upnp = new UPnP();
-        ControlPoint cp   = new ControlPoint();
+        UPnP upnp = new UPnP();
+        ControlPoint cp = new ControlPoint();
 
         System.out.println("Searching for up&p devices:");
         cp.start();
@@ -1033,7 +1031,7 @@ public class UPnP extends ControlPoint
 
             System.out.println("Found " + list.size() + " devices!");
 
-            StringBuilder    sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             Iterator<Device> it = list.iterator();
 
             while (it.hasNext()) {

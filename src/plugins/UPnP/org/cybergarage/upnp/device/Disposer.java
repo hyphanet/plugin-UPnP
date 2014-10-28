@@ -20,7 +20,6 @@ import plugins.UPnP.org.cybergarage.upnp.*;
 import plugins.UPnP.org.cybergarage.util.*;
 
 public class Disposer extends ThreadCore {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -45,8 +44,8 @@ public class Disposer extends ThreadCore {
     // Thread
     ////////////////////////////////////////////////
     public void run() {
-        ControlPoint ctrlp           = getControlPoint();
-        long         monitorInterval = ctrlp.getExpiredDeviceMonitoringInterval() * 1000;
+        ControlPoint ctrlp = getControlPoint();
+        long monitorInterval = ctrlp.getExpiredDeviceMonitoringInterval() * 1000;
 
         while (isRunnable() == true) {
             try {

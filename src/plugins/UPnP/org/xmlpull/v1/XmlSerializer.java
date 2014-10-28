@@ -32,7 +32,6 @@ import java.io.Writer;
  * supporting this kind of output.
  */
 public interface XmlSerializer {
-
     /**
      * Set feature identified by name (recommended to be URI for uniqueness).
      * Some well known optional features are defined in

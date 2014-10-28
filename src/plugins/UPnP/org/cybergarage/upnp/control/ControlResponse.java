@@ -22,7 +22,7 @@ import plugins.UPnP.org.cybergarage.soap.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class ControlResponse extends SOAPResponse {
-    public static final String FAULT_CODE   = "Client";
+    public static final String FAULT_CODE = "Client";
     public static final String FAULT_STRING = "UPnPError";
 
     ////////////////////////////////////////////////
@@ -42,7 +42,7 @@ public class ControlResponse extends SOAPResponse {
     public void setFaultResponse(int errCode, String errDescr) {
         setStatusCode(HTTPStatus.INTERNAL_SERVER_ERROR);
 
-        Node bodyNode  = getBodyNode();
+        Node bodyNode = getBodyNode();
         Node faultNode = createFaultResponseNode(errCode, errDescr);
 
         bodyNode.addNode(faultNode);
@@ -164,7 +164,7 @@ public class ControlResponse extends SOAPResponse {
     }
 
     public UPnPStatus getUPnPError() {
-        int    code = 0;
+        int code = 0;
         String desc = "";
 
         code = getUPnPErrorCode();

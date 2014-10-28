@@ -31,39 +31,38 @@ import plugins.UPnP.org.cybergarage.soap.*;
 import plugins.UPnP.org.cybergarage.net.*;
 
 public class UPnP {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    public final static String NAME                              = "CyberLink";
-    public final static String VERSION                           = "1.7";
-    public final static int    SERVER_RETRY_COUNT                = 100;
-    public final static int    DEFAULT_EXPIRED_DEVICE_EXTRA_TIME = 60;
+    public final static String NAME = "CyberLink";
+    public final static String VERSION = "1.7";
+    public final static int SERVER_RETRY_COUNT = 100;
+    public final static int DEFAULT_EXPIRED_DEVICE_EXTRA_TIME = 60;
 
     public final static String getServerName() {
         String osName = System.getProperty("os.name");
-        String osVer  = System.getProperty("os.version");
+        String osVer = System.getProperty("os.version");
 
         return osName + "/" + osVer + " UPnP/1.0 " + NAME + "/" + VERSION;
     }
 
-    public final static String INMPR03                               = "INMPR03";
-    public final static String INMPR03_VERSION                       = "1.0";
-    public final static int    INMPR03_DISCOVERY_OVER_WIRELESS_COUNT = 4;
-    public final static String XML_DECLARATION                       = "<?xml version=\"1.0\"?>";
+    public final static String INMPR03 = "INMPR03";
+    public final static String INMPR03_VERSION = "1.0";
+    public final static int INMPR03_DISCOVERY_OVER_WIRELESS_COUNT = 4;
+    public final static String XML_DECLARATION = "<?xml version=\"1.0\"?>";
 
     ////////////////////////////////////////////////
     // Enable / Disable
     ////////////////////////////////////////////////
-    public final static int USE_ONLY_IPV6_ADDR                          = 1;
-    public final static int USE_LOOPBACK_ADDR                           = 2;
-    public final static int USE_IPV6_LINK_LOCAL_SCOPE                   = 3;
-    public final static int USE_IPV6_SUBNET_SCOPE                       = 4;
-    public final static int USE_IPV6_ADMINISTRATIVE_SCOPE               = 5;
-    public final static int USE_IPV6_SITE_LOCAL_SCOPE                   = 6;
-    public final static int USE_IPV6_GLOBAL_SCOPE                       = 7;
+    public final static int USE_ONLY_IPV6_ADDR = 1;
+    public final static int USE_LOOPBACK_ADDR = 2;
+    public final static int USE_IPV6_LINK_LOCAL_SCOPE = 3;
+    public final static int USE_IPV6_SUBNET_SCOPE = 4;
+    public final static int USE_IPV6_ADMINISTRATIVE_SCOPE = 5;
+    public final static int USE_IPV6_SITE_LOCAL_SCOPE = 6;
+    public final static int USE_IPV6_GLOBAL_SCOPE = 7;
     public final static int USE_SSDP_SEARCHRESPONSE_MULTIPLE_INTERFACES = 8;
-    public final static int USE_ONLY_IPV4_ADDR                          = 9;
+    public final static int USE_ONLY_IPV4_ADDR = 9;
 
     public final static void setEnable(int value) {
         switch (value) {
@@ -150,9 +149,9 @@ public class UPnP {
     // UUID
     ////////////////////////////////////////////////
     private static final String toUUID(int seed) {
-        String id    = Integer.toString((int) (seed & 0xFFFF), 16);
-        int    idLen = id.length();
-        String uuid  = "";
+        String id = Integer.toString((int) (seed & 0xFFFF), 16);
+        int idLen = id.length();
+        String uuid = "";
 
         for (int n = 0; n < (4 - idLen); n++) {
             uuid += "0";

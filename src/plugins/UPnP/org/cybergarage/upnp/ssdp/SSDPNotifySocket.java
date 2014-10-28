@@ -44,7 +44,7 @@ public class SSDPNotifySocket extends HTTPMUSocket implements Runnable {
         useIPv6Address = false;
 
         if (HostInterface.isIPv6Address(bindAddr) == true) {
-            addr           = SSDP.getIPv6Address();
+            addr = SSDP.getIPv6Address();
             useIPv6Address = true;
         }
 
@@ -86,8 +86,8 @@ public class SSDPNotifySocket extends HTTPMUSocket implements Runnable {
     private Thread deviceNotifyThread = null;
 
     public void run() {
-        Thread       thisThread = Thread.currentThread();
-        ControlPoint ctrlPoint  = getControlPoint();
+        Thread thisThread = Thread.currentThread();
+        ControlPoint ctrlPoint = getControlPoint();
 
         while (deviceNotifyThread == thisThread) {
             Thread.yield();
@@ -100,7 +100,7 @@ public class SSDPNotifySocket extends HTTPMUSocket implements Runnable {
             }
 
             // Thanks for Inma (02/20/04)
-            InetAddress maddr  = getMulticastInetAddress();
+            InetAddress maddr = getMulticastInetAddress();
             InetAddress pmaddr = packet.getHostInetAddress();
 
             if (maddr.equals(pmaddr) == false) {

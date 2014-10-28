@@ -30,7 +30,6 @@ import java.net.*;
 import java.util.*;
 
 public class HTTPSocket {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -76,7 +75,7 @@ public class HTTPSocket {
     ////////////////////////////////////////////////
     // in/out
     ////////////////////////////////////////////////
-    private InputStream  sockIn  = null;
+    private InputStream sockIn = null;
     private OutputStream sockOut = null;
 
     private void setInputStream(InputStream in) {
@@ -102,7 +101,7 @@ public class HTTPSocket {
         Socket sock = getSocket();
 
         try {
-            sockIn  = sock.getInputStream();
+            sockIn = sock.getInputStream();
             sockOut = sock.getOutputStream();
         } catch (Exception e) {
             return false;
@@ -201,11 +200,11 @@ public class HTTPSocket {
                 in.skip(contentOffset);
             }
 
-            int  chunkSize = HTTP.getChunkSize();
+            int chunkSize = HTTP.getChunkSize();
             byte readBuf[] = new byte[chunkSize];
-            long readCnt   = 0;
-            long readSize  = (chunkSize < contentLength) ? chunkSize : contentLength;
-            int  readLen   = in.read(readBuf, 0, (int) readSize);
+            long readCnt = 0;
+            long readSize = (chunkSize < contentLength) ? chunkSize : contentLength;
+            int readLen = in.read(readBuf, 0, (int) readSize);
 
             while ((0 < readLen) && (readCnt < contentLength)) {
                 if (isChunkedResponse == true) {
@@ -221,7 +220,7 @@ public class HTTPSocket {
                     out.write(HTTP.CRLF.getBytes());
                 }
 
-                readCnt  += readLen;
+                readCnt += readLen;
                 readSize = (chunkSize < (contentLength - readCnt))
                            ? chunkSize : (contentLength - readCnt);
                 readLen = in.read(readBuf, 0, (int) readSize);

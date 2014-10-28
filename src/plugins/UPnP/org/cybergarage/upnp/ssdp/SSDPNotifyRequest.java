@@ -19,7 +19,6 @@ package plugins.UPnP.org.cybergarage.upnp.ssdp;
 import plugins.UPnP.org.cybergarage.http.*;
 
 public class SSDPNotifyRequest extends SSDPRequest {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

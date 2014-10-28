@@ -21,12 +21,11 @@ package plugins.UPnP.org.cybergarage.upnp;
 import java.util.*;
 
 public class ServiceList extends Vector {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    private static final long  serialVersionUID = 6372904993975135597L;
-    public final static String ELEM_NAME        = "serviceList";
+    private static final long serialVersionUID = 6372904993975135597L;
+    public final static String ELEM_NAME = "serviceList";
 
     ////////////////////////////////////////////////
     // Constructor

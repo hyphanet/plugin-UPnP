@@ -24,7 +24,6 @@ package plugins.UPnP.org.cybergarage.upnp.event;
 import java.net.*;
 
 public class Subscriber {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -81,7 +80,7 @@ public class Subscriber {
 
     private String deliveryHost = "";
     private String deliveryPath = "";
-    private int    deliveryPort = 0;
+    private int deliveryPort = 0;
 
     public String getDeliveryHost() {
         return deliveryHost;

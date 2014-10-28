@@ -110,17 +110,16 @@ import plugins.UPnP.org.cybergarage.upnp.xml.*;
 
 public class Device
         implements plugins.UPnP.org.cybergarage.http.HTTPRequestListener, SearchListener {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    public final static String ELEM_NAME                   = "device";
-    public final static String UPNP_ROOTDEVICE             = "upnp:rootdevice";
-    public final static int    DEFAULT_STARTUP_WAIT_TIME   = 1000;
-    public final static int    DEFAULT_DISCOVERY_WAIT_TIME = 300;
-    public final static int    DEFAULT_LEASE_TIME          = 30 * 60;
-    public final static int    HTTP_DEFAULT_PORT           = 4004;
-    public final static String DEFAULT_DESCRIPTION_URI     = "/description.xml";
+    public final static String ELEM_NAME = "device";
+    public final static String UPNP_ROOTDEVICE = "upnp:rootdevice";
+    public final static int DEFAULT_STARTUP_WAIT_TIME = 1000;
+    public final static int DEFAULT_DISCOVERY_WAIT_TIME = 300;
+    public final static int DEFAULT_LEASE_TIME = 30 * 60;
+    public final static int HTTP_DEFAULT_PORT = 4004;
+    public final static String DEFAULT_DESCRIPTION_URI = "/description.xml";
 
     ////////////////////////////////////////////////
     // Member
@@ -163,7 +162,7 @@ public class Device
     // Constructor
     ////////////////////////////////////////////////
     public Device(Node root, Node device) {
-        rootNode   = root;
+        rootNode = root;
         deviceNode = device;
         setUUID(UPnP.createUUID());
         setWirelessMode(false);
@@ -305,7 +304,7 @@ public class Device
     // UserData
     ////////////////////////////////////////////////
     private DeviceData getDeviceData() {
-        Node       node     = getDeviceNode();
+        Node node = getDeviceNode();
         DeviceData userData = (DeviceData) node.getUserData();
 
         if (userData == null) {
@@ -514,7 +513,7 @@ public class Device
 
     public boolean isExpired() {
         long elipsedTime = getElapsedTime();
-        long leaseTime   = getLeaseTime() + UPnP.DEFAULT_EXPIRED_DEVICE_EXTRA_TIME;
+        long leaseTime = getLeaseTime() + UPnP.DEFAULT_EXPIRED_DEVICE_EXTRA_TIME;
 
         if (leaseTime < elipsedTime) {
             return true;
@@ -743,8 +742,8 @@ public class Device
     // deviceList
     ////////////////////////////////////////////////
     public DeviceList getDeviceList() {
-        DeviceList devList     = new DeviceList();
-        Node       devListNode = getDeviceNode().getNode(DeviceList.ELEM_NAME);
+        DeviceList devList = new DeviceList();
+        Node devListNode = getDeviceNode().getNode(DeviceList.ELEM_NAME);
 
         if (devListNode == null) {
             return devList;
@@ -789,7 +788,7 @@ public class Device
 
     public Device getDevice(String name) {
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
             Device dev = devList.getDevice(n);
@@ -810,7 +809,7 @@ public class Device
 
     public Device getDeviceByDescriptionURI(String uri) {
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
             Device dev = devList.getDevice(n);
@@ -833,8 +832,8 @@ public class Device
     // serviceList
     ////////////////////////////////////////////////
     public ServiceList getServiceList() {
-        ServiceList serviceList     = new ServiceList();
-        Node        serviceListNode = getDeviceNode().getNode(ServiceList.ELEM_NAME);
+        ServiceList serviceList = new ServiceList();
+        Node serviceListNode = getDeviceNode().getNode(ServiceList.ELEM_NAME);
 
         if (serviceListNode == null) {
             return serviceList;
@@ -859,7 +858,7 @@ public class Device
 
     public Service getService(String name) {
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -870,10 +869,10 @@ public class Device
         }
 
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device  dev     = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             Service service = dev.getService(name);
 
             if (service != null) {
@@ -886,7 +885,7 @@ public class Device
 
     public Service getServiceBySCPDURL(String searchUrl) {
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -897,10 +896,10 @@ public class Device
         }
 
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device  dev     = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             Service service = dev.getServiceBySCPDURL(searchUrl);
 
             if (service != null) {
@@ -913,7 +912,7 @@ public class Device
 
     public Service getServiceByControlURL(String searchUrl) {
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -924,10 +923,10 @@ public class Device
         }
 
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device  dev     = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             Service service = dev.getServiceByControlURL(searchUrl);
 
             if (service != null) {
@@ -940,7 +939,7 @@ public class Device
 
     public Service getServiceByEventSubURL(String searchUrl) {
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -951,10 +950,10 @@ public class Device
         }
 
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device  dev     = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             Service service = dev.getServiceByEventSubURL(searchUrl);
 
             if (service != null) {
@@ -967,11 +966,11 @@ public class Device
 
     public Service getSubscriberService(String uuid) {
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
-            String  sid     = service.getSID();
+            String sid = service.getSID();
 
             if (uuid.equals(sid) == true) {
                 return service;
@@ -979,10 +978,10 @@ public class Device
         }
 
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device  dev     = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             Service service = dev.getSubscriberService(uuid);
 
             if (service != null) {
@@ -1002,7 +1001,7 @@ public class Device
         }
 
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -1022,10 +1021,10 @@ public class Device
         }
 
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device        dev      = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             StateVariable stateVar = dev.getStateVariable(serviceType, name);
 
             if (stateVar != null) {
@@ -1045,15 +1044,15 @@ public class Device
     ////////////////////////////////////////////////
     public Action getAction(String name) {
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
-            Service    service    = serviceList.getService(n);
+            Service service = serviceList.getService(n);
             ActionList actionList = service.getActionList();
-            int        actionCnt  = actionList.size();
+            int actionCnt = actionList.size();
 
             for (int i = 0; i < actionCnt; i++) {
-                Action action     = (Action) actionList.getAction(i);
+                Action action = (Action) actionList.getAction(i);
                 String actionName = action.getName();
 
                 if (actionName == null) {
@@ -1067,10 +1066,10 @@ public class Device
         }
 
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device dev    = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             Action action = dev.getAction(name);
 
             if (action != null) {
@@ -1085,8 +1084,8 @@ public class Device
     // iconList
     ////////////////////////////////////////////////
     public IconList getIconList() {
-        IconList iconList     = new IconList();
-        Node     iconListNode = getDeviceNode().getNode(IconList.ELEM_NAME);
+        IconList iconList = new IconList();
+        Node iconListNode = getDeviceNode().getNode(IconList.ELEM_NAME);
 
         if (iconListNode == null) {
             return iconList;
@@ -1155,9 +1154,9 @@ public class Device
     }
 
     public void announce(String bindAddr) {
-        String            devLocation = getLocationURL(bindAddr);
-        SSDPNotifySocket  ssdpSock    = new SSDPNotifySocket(bindAddr);
-        SSDPNotifyRequest ssdpReq     = new SSDPNotifyRequest();
+        String devLocation = getLocationURL(bindAddr);
+        SSDPNotifySocket ssdpSock = new SSDPNotifySocket(bindAddr);
+        SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
 
         ssdpReq.setServer(UPnP.getServerName());
         ssdpReq.setLeaseTime(getLeaseTime());
@@ -1166,7 +1165,7 @@ public class Device
 
         // uuid:device-UUID(::upnp:rootdevice)*
         if (isRootDevice() == true) {
-            String devNT  = getNotifyDeviceNT();
+            String devNT = getNotifyDeviceNT();
             String devUSN = getNotifyDeviceUSN();
 
             ssdpReq.setNT(devNT);
@@ -1175,7 +1174,7 @@ public class Device
         }
 
         // uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:v
-        String devNT  = getNotifyDeviceTypeNT();
+        String devNT = getNotifyDeviceTypeNT();
         String devUSN = getNotifyDeviceTypeUSN();
 
         ssdpReq.setNT(devNT);
@@ -1186,7 +1185,7 @@ public class Device
         ssdpSock.close();
 
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -1195,7 +1194,7 @@ public class Device
         }
 
         DeviceList childDeviceList = getDeviceList();
-        int        childDeviceCnt  = childDeviceList.size();
+        int childDeviceCnt = childDeviceList.size();
 
         for (int n = 0; n < childDeviceCnt; n++) {
             Device childDevice = childDeviceList.getDevice(n);
@@ -1225,14 +1224,14 @@ public class Device
     }
 
     public void byebye(String bindAddr) {
-        SSDPNotifySocket  ssdpSock = new SSDPNotifySocket(bindAddr);
-        SSDPNotifyRequest ssdpReq  = new SSDPNotifyRequest();
+        SSDPNotifySocket ssdpSock = new SSDPNotifySocket(bindAddr);
+        SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
 
         ssdpReq.setNTS(NTS.BYEBYE);
 
         // uuid:device-UUID(::upnp:rootdevice)*
         if (isRootDevice() == true) {
-            String devNT  = getNotifyDeviceNT();
+            String devNT = getNotifyDeviceNT();
             String devUSN = getNotifyDeviceUSN();
 
             ssdpReq.setNT(devNT);
@@ -1241,7 +1240,7 @@ public class Device
         }
 
         // uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:v
-        String devNT  = getNotifyDeviceTypeNT();
+        String devNT = getNotifyDeviceTypeNT();
         String devUSN = getNotifyDeviceTypeUSN();
 
         ssdpReq.setNT(devNT);
@@ -1252,7 +1251,7 @@ public class Device
         ssdpSock.close();
 
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -1261,7 +1260,7 @@ public class Device
         }
 
         DeviceList childDeviceList = getDeviceList();
-        int        childDeviceCnt  = childDeviceList.size();
+        int childDeviceCnt = childDeviceList.size();
 
         for (int n = 0; n < childDeviceCnt; n++) {
             Device childDevice = childDeviceList.getDevice(n);
@@ -1292,10 +1291,10 @@ public class Device
     // Search
     ////////////////////////////////////////////////
     public boolean postSearchResponse(SSDPPacket ssdpPacket, String st, String usn) {
-        String             localAddr       = ssdpPacket.getLocalAddress();
-        Device             rootDev         = getRootDevice();
-        String             rootDevLocation = rootDev.getLocationURL(localAddr);
-        SSDPSearchResponse ssdpRes         = new SSDPSearchResponse();
+        String localAddr = ssdpPacket.getLocalAddress();
+        Device rootDev = getRootDevice();
+        String rootDevLocation = rootDev.getLocationURL(localAddr);
+        SSDPSearchResponse ssdpRes = new SSDPSearchResponse();
 
         ssdpRes.setLeaseTime(getLeaseTime());
         ssdpRes.setDate(Calendar.getInstance());
@@ -1310,8 +1309,8 @@ public class Device
 
         TimerUtil.waitRandom(mx * 1000);
 
-        String                   remoteAddr  = ssdpPacket.getRemoteAddress();
-        int                      remotePort  = ssdpPacket.getRemotePort();
+        String remoteAddr = ssdpPacket.getRemoteAddress();
+        int remotePort = ssdpPacket.getRemotePort();
         SSDPSearchResponseSocket ssdpResSock = new SSDPSearchResponseSocket();
 
         if (Debug.isOn() == true) {
@@ -1335,15 +1334,15 @@ public class Device
         }
 
         boolean isRootDevice = isRootDevice();
-        String  devUSN       = getUDN();
+        String devUSN = getUDN();
 
         if (isRootDevice == true) {
             devUSN += "::" + USN.ROOTDEVICE;
         }
 
         if (ST.isAllDevice(ssdpST) == true) {
-            String devNT     = getNotifyDeviceNT();
-            int    repeatCnt = (isRootDevice == true) ? 3 : 2;
+            String devNT = getNotifyDeviceNT();
+            int repeatCnt = (isRootDevice == true) ? 3 : 2;
 
             for (int n = 0; n < repeatCnt; n++) {
                 postSearchResponse(ssdpPacket, devNT, devUSN);
@@ -1370,7 +1369,7 @@ public class Device
         }
 
         ServiceList serviceList = getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -1379,7 +1378,7 @@ public class Device
         }
 
         DeviceList childDeviceList = getDeviceList();
-        int        childDeviceCnt  = childDeviceList.size();
+        int childDeviceCnt = childDeviceList.size();
 
         for (int n = 0; n < childDeviceCnt; n++) {
             Device childDevice = childDeviceList.getDevice(n);
@@ -1463,9 +1462,9 @@ public class Device
             return;
         }
 
-        Device  embDev;
+        Device embDev;
         Service embService;
-        byte    fileByte[] = new byte[0];
+        byte fileByte[] = new byte[0];
 
         if (isDescriptionURI(uri) == true) {
             String localAddr = httpReq.getLocalAddress();
@@ -1517,7 +1516,7 @@ public class Device
     }
 
     private void soapActionRecieved(HTTPRequest soapReq) {
-        String  uri        = soapReq.getURI();
+        String uri = soapReq.getURI();
         Service ctlService = getServiceByControlURL(uri);
 
         if (ctlService != null) {
@@ -1555,7 +1554,7 @@ public class Device
         }
 
         String actionName = ctlReq.getActionName();
-        Action action     = service.getAction(actionName);
+        Action action = service.getAction(actionName);
 
         if (action == null) {
             invalidActionControlRecieved(ctlReq);
@@ -1564,7 +1563,7 @@ public class Device
         }
 
         ArgumentList actionArgList = action.getArgumentList();
-        ArgumentList reqArgList    = ctlReq.getArgumentList();
+        ArgumentList reqArgList = ctlReq.getArgumentList();
 
         actionArgList.set(reqArgList);
 
@@ -1604,7 +1603,7 @@ public class Device
     }
 
     private void deviceEventSubscriptionRecieved(SubscriptionRequest subReq) {
-        String  uri     = subReq.getURI();
+        String uri = subReq.getURI();
         Service service = getServiceByEventSubURL(uri);
 
         if (service == null) {
@@ -1654,9 +1653,9 @@ public class Device
             return;
         }
 
-        long       timeOut = subReq.getTimeout();
-        String     sid     = Subscription.createSID();
-        Subscriber sub     = new Subscriber();
+        long timeOut = subReq.getTimeout();
+        String sid = Subscription.createSID();
+        Subscriber sub = new Subscriber();
 
         sub.setDeliveryURL(callback);
         sub.setTimeOut(timeOut);
@@ -1683,7 +1682,7 @@ public class Device
     }
 
     private void deviceEventRenewSubscriptionRecieved(Service service, SubscriptionRequest subReq) {
-        String     sid = subReq.getSID();
+        String sid = subReq.getSID();
         Subscriber sub = service.getSubscriber(sid);
 
         if (sub == null) {
@@ -1710,7 +1709,7 @@ public class Device
     }
 
     private void deviceEventUnsubscriptionRecieved(Service service, SubscriptionRequest subReq) {
-        String     sid = subReq.getSID();
+        String sid = subReq.getSID();
         Subscriber sub = service.getSubscriber(sid);
 
         if (sub == null) {
@@ -1756,8 +1755,8 @@ public class Device
         ////////////////////////////////////////
         // HTTP Server
         ////////////////////////////////////////
-        int            retryCnt       = 0;
-        int            bindPort       = getHTTPPort();
+        int retryCnt = 0;
+        int bindPort = getHTTPPort();
         HTTPServerList httpServerList = getHTTPServerList();
 
         while (httpServerList.open(bindPort) == false) {
@@ -1851,7 +1850,7 @@ public class Device
     ////////////////////////////////////////////////
     public void setActionListener(ActionListener listener) {
         ServiceList serviceList = getServiceList();
-        int         nServices   = serviceList.size();
+        int nServices = serviceList.size();
 
         for (int n = 0; n < nServices; n++) {
             Service service = serviceList.getService(n);
@@ -1862,7 +1861,7 @@ public class Device
 
     public void setQueryListener(QueryListener listener) {
         ServiceList serviceList = getServiceList();
-        int         nServices   = serviceList.size();
+        int nServices = serviceList.size();
 
         for (int n = 0; n < nServices; n++) {
             Service service = serviceList.getService(n);
@@ -1880,7 +1879,7 @@ public class Device
 
         if (includeSubDevices == true) {
             DeviceList devList = getDeviceList();
-            int        devCnt  = devList.size();
+            int devCnt = devList.size();
 
             for (int n = 0; n < devCnt; n++) {
                 Device dev = devList.getDevice(n);
@@ -1896,7 +1895,7 @@ public class Device
 
         if (includeSubDevices == true) {
             DeviceList devList = getDeviceList();
-            int        devCnt  = devList.size();
+            int devCnt = devList.size();
 
             for (int n = 0; n < devCnt; n++) {
                 Device dev = devList.getDevice(n);

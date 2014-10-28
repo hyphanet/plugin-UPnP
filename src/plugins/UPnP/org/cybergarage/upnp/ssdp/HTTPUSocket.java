@@ -29,7 +29,6 @@ import java.net.*;
 import plugins.UPnP.org.cybergarage.util.*;
 
 public class HTTPUSocket {
-
     ////////////////////////////////////////////////
     // Member
     ////////////////////////////////////////////////
@@ -159,7 +158,7 @@ public class HTTPUSocket {
     ////////////////////////////////////////////////
     public boolean post(String addr, int port, String msg) {
         try {
-            InetAddress    inetAddr  = InetAddress.getByName(addr);
+            InetAddress inetAddr = InetAddress.getByName(addr);
             DatagramPacket dgmPacket = new DatagramPacket(msg.getBytes(), msg.length(), inetAddr,
                                            port);
 
@@ -184,8 +183,8 @@ public class HTTPUSocket {
     // receive
     ////////////////////////////////////////////////
     public SSDPPacket receive() {
-        byte       ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
-        SSDPPacket recvPacket    = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
+        byte ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
+        SSDPPacket recvPacket = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
 
         recvPacket.setLocalAddress(getLocalAddress());
 

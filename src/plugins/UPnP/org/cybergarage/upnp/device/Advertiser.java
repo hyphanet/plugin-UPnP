@@ -22,7 +22,6 @@ import plugins.UPnP.org.cybergarage.util.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class Advertiser extends ThreadCore {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -47,9 +46,9 @@ public class Advertiser extends ThreadCore {
     // Thread
     ////////////////////////////////////////////////
     public void run() {
-        Device dev       = getDevice();
-        long   leaseTime = dev.getLeaseTime();
-        long   notifyInterval;
+        Device dev = getDevice();
+        long leaseTime = dev.getLeaseTime();
+        long notifyInterval;
 
         while (isRunnable() == true) {
             notifyInterval = (leaseTime / 4) + (long) ((float) leaseTime * (Math.random() * 0.25f));

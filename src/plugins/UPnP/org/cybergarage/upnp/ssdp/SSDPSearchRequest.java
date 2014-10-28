@@ -21,7 +21,6 @@ import plugins.UPnP.org.cybergarage.http.*;
 import plugins.UPnP.org.cybergarage.upnp.device.*;
 
 public class SSDPSearchRequest extends SSDPRequest {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

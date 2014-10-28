@@ -21,12 +21,11 @@ package plugins.UPnP.org.cybergarage.upnp;
 import java.util.*;
 
 public class AllowedValueList extends Vector {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    private static final long  serialVersionUID = 5740394642751180992L;
-    public final static String ELEM_NAME        = "allowedValueList";
+    private static final long serialVersionUID = 5740394642751180992L;
+    public final static String ELEM_NAME = "allowedValueList";
 
     ////////////////////////////////////////////////
     // Constructor

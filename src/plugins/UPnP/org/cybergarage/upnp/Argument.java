@@ -27,13 +27,12 @@ import plugins.UPnP.org.cybergarage.xml.*;
 import plugins.UPnP.org.cybergarage.upnp.xml.*;
 
 public class Argument {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
     public final static String ELEM_NAME = "argument";
-    public final static String IN        = "in";
-    public final static String OUT       = "out";
+    public final static String IN = "in";
+    public final static String OUT = "out";
 
     ////////////////////////////////////////////////
     // Member
@@ -82,11 +81,11 @@ public class Argument {
     ////////////////////////////////////////////////
     public Argument() {
         argumentNode = new Node();
-        serviceNode  = null;
+        serviceNode = null;
     }
 
     public Argument(Node servNode, Node argNode) {
-        serviceNode  = servNode;
+        serviceNode = servNode;
         argumentNode = argNode;
     }
 
@@ -172,7 +171,7 @@ public class Argument {
     // UserData
     ////////////////////////////////////////////////
     private ArgumentData getArgumentData() {
-        Node         node     = getArgumentNode();
+        Node node = getArgumentNode();
         ArgumentData userData = (ArgumentData) node.getUserData();
 
         if (userData == null) {

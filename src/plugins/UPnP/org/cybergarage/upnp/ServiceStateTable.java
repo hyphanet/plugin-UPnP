@@ -19,12 +19,11 @@ package plugins.UPnP.org.cybergarage.upnp;
 import java.util.*;
 
 public class ServiceStateTable extends Vector {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    private static final long  serialVersionUID = 7626909231678469365L;
-    public final static String ELEM_NAME        = "serviceStateTable";
+    private static final long serialVersionUID = 7626909231678469365L;
+    public final static String ELEM_NAME = "serviceStateTable";
 
     ////////////////////////////////////////////////
     // Constructor

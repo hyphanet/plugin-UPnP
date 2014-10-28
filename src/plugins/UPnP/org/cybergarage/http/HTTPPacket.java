@@ -76,7 +76,6 @@ import plugins.UPnP.org.cybergarage.util.*;
 import java.util.Calendar;
 
 public class HTTPPacket {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -125,8 +124,8 @@ public class HTTPPacket {
     ////////////////////////////////////////////////
     protected boolean set(InputStream in, boolean onlyHeaders) {
         try {
-            BufferedReader reader    = new BufferedReader(new InputStreamReader(in));
-            String         firstLine = reader.readLine();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String firstLine = reader.readLine();
 
             if ((firstLine == null) || (firstLine.length() <= 0)) {
                 return false;
@@ -136,7 +135,7 @@ public class HTTPPacket {
 
             // Thanks for Giordano Sassaroli <sassarol@cefriel.it> (09/03/03)
             HTTPStatus httpStatus = new HTTPStatus(firstLine);
-            int        statCode   = httpStatus.getStatusCode();
+            int statCode = httpStatus.getStatusCode();
 
             if (statCode == HTTPStatus.CONTINUE) {
 
@@ -188,7 +187,7 @@ public class HTTPPacket {
             }
 
             boolean isChunkedRequest = isChunked();
-            long    contentLen       = 0;
+            long contentLen = 0;
 
             if (isChunkedRequest == true) {
                 try {
@@ -205,9 +204,9 @@ public class HTTPPacket {
             StringBuilder contentBuf = new StringBuilder();
 
             while (0 < contentLen) {
-                int  chunkSize = HTTP.getChunkSize();
+                int chunkSize = HTTP.getChunkSize();
                 char readBuf[] = new char[chunkSize];
-                long readCnt   = 0;
+                long readCnt = 0;
 
                 while (readCnt < contentLen) {
                     try {
@@ -323,8 +322,8 @@ public class HTTPPacket {
     }
 
     protected String getFirstLineToken(int num) {
-        StringTokenizer st        = new StringTokenizer(firstLine, HTTP.REQEST_LINE_DELIM);
-        String          lastToken = "";
+        StringTokenizer st = new StringTokenizer(firstLine, HTTP.REQEST_LINE_DELIM);
+        String lastToken = "";
 
         for (int n = 0; n <= num; n++) {
             if (st.hasMoreTokens() == false) {
@@ -368,8 +367,8 @@ public class HTTPPacket {
         int nHeaders = getNHeaders();
 
         for (int n = 0; n < nHeaders; n++) {
-            HTTPHeader header     = getHeader(n);
-            String     headerName = header.getName();
+            HTTPHeader header = getHeader(n);
+            String headerName = header.getName();
 
             if (headerName.equalsIgnoreCase(name) == true) {
                 return header;
@@ -493,8 +492,8 @@ public class HTTPPacket {
     // getHeader
     ////////////////////////////////////////////////
     public String getHeaderString() {
-        StringBuilder str      = new StringBuilder();
-        int           nHeaders = getNHeaders();
+        StringBuilder str = new StringBuilder();
+        int nHeaders = getNHeaders();
 
         for (int n = 0; n < nHeaders; n++) {
             HTTPHeader header = getHeader(n);

@@ -87,7 +87,6 @@ import plugins.UPnP.org.cybergarage.upnp.control.*;
 import plugins.UPnP.org.cybergarage.upnp.event.*;
 
 public class Service {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
@@ -265,8 +264,8 @@ public class Service {
     ////////////////////////////////////////////////
     public boolean loadSCPD(String scpdStr) throws InvalidDescriptionException {
         try {
-            Parser parser   = UPnP.getXMLParser();
-            Node   scpdNode = parser.parse(scpdStr);
+            Parser parser = UPnP.getXMLParser();
+            Node scpdNode = parser.parse(scpdStr);
 
             if (scpdNode == null) {
                 return false;
@@ -283,8 +282,8 @@ public class Service {
     }
 
     public boolean loadSCPD(File file) throws ParserException {
-        Parser parser   = UPnP.getXMLParser();
-        Node   scpdNode = parser.parse(file);
+        Parser parser = UPnP.getXMLParser();
+        Node scpdNode = parser.parse(file);
 
         if (scpdNode == null) {
             return false;
@@ -310,8 +309,8 @@ public class Service {
     }
 
     private Node getSCPDNode() {
-        ServiceData data     = getServiceData();
-        Node        scpdNode = data.getSCPDNode();
+        ServiceData data = getServiceData();
+        Node scpdNode = data.getSCPDNode();
 
         if (scpdNode != null) {
             return scpdNode;
@@ -324,14 +323,14 @@ public class Service {
 
             scpdNode = getSCPDNode(scpdUrl);
         } catch (Exception e1) {
-            Device rootDev    = getRootDevice();
+            Device rootDev = getRootDevice();
             String urlBaseStr = rootDev.getURLBase();
 
             // Thanks for Steven Yen (2003/09/03)
             if ((urlBaseStr == null) || (urlBaseStr.length() <= 0)) {
-                String location     = rootDev.getLocation();
+                String location = rootDev.getLocation();
                 String locationHost = HTTP.getHost(location);
-                int    locationPort = HTTP.getPort(location);
+                int locationPort = HTTP.getPort(location);
 
                 urlBaseStr = HTTP.getRequestHostURL(locationHost, locationPort);
             }
@@ -390,7 +389,7 @@ public class Service {
     ////////////////////////////////////////////////
     public ActionList getActionList() {
         ActionList actionList = new ActionList();
-        Node       scdpNode   = getSCPDNode();
+        Node scdpNode = getSCPDNode();
 
         if (scdpNode == null) {
             return actionList;
@@ -403,7 +402,7 @@ public class Service {
         }
 
         Node serviceNode = getServiceNode();
-        int  nNode       = actionListNode.getNNodes();
+        int nNode = actionListNode.getNNodes();
 
         for (int n = 0; n < nNode; n++) {
             Node node = actionListNode.getNode(n);
@@ -422,11 +421,11 @@ public class Service {
 
     public Action getAction(String actionName) {
         ActionList actionList = getActionList();
-        int        nActions   = actionList.size();
+        int nActions = actionList.size();
 
         for (int n = 0; n < nActions; n++) {
             Action action = actionList.getAction(n);
-            String name   = action.getName();
+            String name = action.getName();
 
             if (name == null) {
                 continue;
@@ -445,7 +444,7 @@ public class Service {
     ////////////////////////////////////////////////
     public ServiceStateTable getServiceStateTable() {
         ServiceStateTable stateTable = new ServiceStateTable();
-        Node              scpdNode   = getSCPDNode();
+        Node scpdNode = getSCPDNode();
 
         if (scpdNode == null) {
             return stateTable;
@@ -458,7 +457,7 @@ public class Service {
         }
 
         Node serviceNode = getServiceNode();
-        int  nNode       = stateTableNode.getNNodes();
+        int nNode = stateTableNode.getNNodes();
 
         for (int n = 0; n < nNode; n++) {
             Node node = stateTableNode.getNode(n);
@@ -477,11 +476,11 @@ public class Service {
 
     public StateVariable getStateVariable(String name) {
         ServiceStateTable stateTable = getServiceStateTable();
-        int               tableSize  = stateTable.size();
+        int tableSize = stateTable.size();
 
         for (int n = 0; n < tableSize; n++) {
-            StateVariable var     = stateTable.getStateVariable(n);
-            String        varName = var.getName();
+            StateVariable var = stateTable.getStateVariable(n);
+            String varName = var.getName();
 
             if (varName == null) {
                 continue;
@@ -522,7 +521,7 @@ public class Service {
     // UserData
     ////////////////////////////////////////////////
     private ServiceData getServiceData() {
-        Node        node     = getServiceNode();
+        Node node = getServiceNode();
         ServiceData userData = (ServiceData) node.getUserData();
 
         if (userData == null) {
@@ -548,12 +547,12 @@ public class Service {
     public void announce(String bindAddr) {
 
         // uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:v
-        Device            rootDev     = getRootDevice();
-        String            devLocation = rootDev.getLocationURL(bindAddr);
-        String            serviceNT   = getNotifyServiceTypeNT();
-        String            serviceUSN  = getNotifyServiceTypeUSN();
-        Device            dev         = getDevice();
-        SSDPNotifyRequest ssdpReq     = new SSDPNotifyRequest();
+        Device rootDev = getRootDevice();
+        String devLocation = rootDev.getLocationURL(bindAddr);
+        String serviceNT = getNotifyServiceTypeNT();
+        String serviceUSN = getNotifyServiceTypeUSN();
+        Device dev = getDevice();
+        SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
 
         ssdpReq.setServer(UPnP.getServerName());
         ssdpReq.setLeaseTime(dev.getLeaseTime());
@@ -571,8 +570,8 @@ public class Service {
     public void byebye(String bindAddr) {
 
         // uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:v
-        String            devNT   = getNotifyServiceTypeNT();
-        String            devUSN  = getNotifyServiceTypeUSN();
+        String devNT = getNotifyServiceTypeNT();
+        String devUSN = getNotifyServiceTypeUSN();
         SSDPNotifyRequest ssdpReq = new SSDPNotifyRequest();
 
         ssdpReq.setNTS(NTS.BYEBYE);
@@ -592,8 +591,8 @@ public class Service {
             return false;
         }
 
-        Device dev        = getDevice();
-        String serviceNT  = getNotifyServiceTypeNT();
+        Device dev = getDevice();
+        String serviceNT = getNotifyServiceTypeNT();
         String serviceUSN = getNotifyServiceTypeUSN();
 
         if (ST.isAllDevice(ssdpST) == true) {
@@ -614,7 +613,7 @@ public class Service {
     ////////////////////////////////////////////////
     public void setQueryListener(QueryListener queryListener) {
         ServiceStateTable stateTable = getServiceStateTable();
-        int               tableSize  = stateTable.size();
+        int tableSize = stateTable.size();
 
         for (int n = 0; n < tableSize; n++) {
             StateVariable var = stateTable.getStateVariable(n);
@@ -639,8 +638,8 @@ public class Service {
     }
 
     public Subscriber getSubscriber(String name) {
-        SubscriberList subList    = getSubscriberList();
-        int            subListCnt = subList.size();
+        SubscriberList subList = getSubscriberList();
+        int subListCnt = subList.size();
 
         for (int n = 0; n < subListCnt; n++) {
             Subscriber sub = subList.getSubscriber(n);
@@ -664,10 +663,10 @@ public class Service {
     }
 
     private boolean notify(Subscriber sub, StateVariable stateVar) {
-        String        varName   = stateVar.getName();
-        String        value     = stateVar.getValue();
-        String        host      = sub.getDeliveryHost();
-        int           port      = sub.getDeliveryPort();
+        String varName = stateVar.getName();
+        String value = stateVar.getValue();
+        String host = sub.getDeliveryHost();
+        int port = sub.getDeliveryPort();
         NotifyRequest notifyReq = new NotifyRequest();
 
         notifyReq.setRequest(sub, varName, value);
@@ -685,12 +684,12 @@ public class Service {
 
     public void notify(StateVariable stateVar) {
         SubscriberList subList = getSubscriberList();
-        int            subListCnt;
-        Subscriber     subs[];
+        int subListCnt;
+        Subscriber subs[];
 
         // Remove expired subscribers.
         subListCnt = subList.size();
-        subs       = new Subscriber[subListCnt];
+        subs = new Subscriber[subListCnt];
 
         for (int n = 0; n < subListCnt; n++) {
             subs[n] = subList.getSubscriber(n);
@@ -706,7 +705,7 @@ public class Service {
 
         // Notify to subscribers.
         subListCnt = subList.size();
-        subs       = new Subscriber[subListCnt];
+        subs = new Subscriber[subListCnt];
 
         for (int n = 0; n < subListCnt; n++) {
             subs[n] = subList.getSubscriber(n);
@@ -727,7 +726,7 @@ public class Service {
 
     public void notifyAllStateVariables() {
         ServiceStateTable stateTable = getServiceStateTable();
-        int               tableSize  = stateTable.size();
+        int tableSize = stateTable.size();
 
         for (int n = 0; n < tableSize; n++) {
             StateVariable var = stateTable.getStateVariable(n);
@@ -778,7 +777,7 @@ public class Service {
     ////////////////////////////////////////////////
     public void setActionListener(ActionListener listener) {
         ActionList actionList = getActionList();
-        int        nActions   = actionList.size();
+        int nActions = actionList.size();
 
         for (int n = 0; n < nActions; n++) {
             Action action = actionList.getAction(n);

@@ -38,7 +38,6 @@ import plugins.UPnP.org.cybergarage.upnp.xml.*;
 import plugins.UPnP.org.cybergarage.upnp.control.*;
 
 public class Action {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
@@ -67,12 +66,12 @@ public class Action {
     ////////////////////////////////////////////////
     public Action(Node serviceNode, Node actionNode) {
         this.serviceNode = serviceNode;
-        this.actionNode  = actionNode;
+        this.actionNode = actionNode;
     }
 
     public Action(Action action) {
         this.serviceNode = action.getServiceNode();
-        this.actionNode  = action.getActionNode();
+        this.actionNode = action.getActionNode();
     }
 
     ////////////////////////////////////////////////
@@ -112,8 +111,8 @@ public class Action {
     // argumentList
     ////////////////////////////////////////////////
     public ArgumentList getArgumentList() {
-        ArgumentList argumentList     = new ArgumentList();
-        Node         argumentListNode = getActionNode().getNode(ArgumentList.ELEM_NAME);
+        ArgumentList argumentList = new ArgumentList();
+        Node argumentListNode = getActionNode().getNode(ArgumentList.ELEM_NAME);
 
         if (argumentListNode == null) {
             return argumentList;
@@ -138,8 +137,8 @@ public class Action {
 
     public ArgumentList getInputArgumentList() {
         ArgumentList allArgList = getArgumentList();
-        int          allArgCnt  = allArgList.size();
-        ArgumentList argList    = new ArgumentList();
+        int allArgCnt = allArgList.size();
+        ArgumentList argList = new ArgumentList();
 
         for (int n = 0; n < allArgCnt; n++) {
             Argument arg = allArgList.getArgument(n);
@@ -156,8 +155,8 @@ public class Action {
 
     public ArgumentList getOutputArgumentList() {
         ArgumentList allArgList = getArgumentList();
-        int          allArgCnt  = allArgList.size();
-        ArgumentList argList    = new ArgumentList();
+        int allArgCnt = allArgList.size();
+        ArgumentList argList = new ArgumentList();
 
         for (int n = 0; n < allArgCnt; n++) {
             Argument arg = allArgList.getArgument(n);
@@ -174,11 +173,11 @@ public class Action {
 
     public Argument getArgument(String name) {
         ArgumentList argList = getArgumentList();
-        int          nArgs   = argList.size();
+        int nArgs = argList.size();
 
         for (int n = 0; n < nArgs; n++) {
-            Argument arg     = argList.getArgument(n);
-            String   argName = arg.getName();
+            Argument arg = argList.getArgument(n);
+            String argName = arg.getName();
 
             if (argName == null) {
                 continue;
@@ -212,7 +211,7 @@ public class Action {
 
     private void clearOutputAgumentValues() {
         ArgumentList allArgList = getArgumentList();
-        int          allArgCnt  = allArgList.size();
+        int allArgCnt = allArgList.size();
 
         for (int n = 0; n < allArgCnt; n++) {
             Argument arg = allArgList.getArgument(n);
@@ -249,7 +248,7 @@ public class Action {
     // UserData
     ////////////////////////////////////////////////
     private ActionData getActionData() {
-        Node       node     = getActionNode();
+        Node node = getActionNode();
         ActionData userData = (ActionData) node.getUserData();
 
         if (userData == null) {
@@ -322,9 +321,9 @@ public class Action {
     public boolean postControlAction() {
 
         // Thanks for Giordano Sassaroli <sassarol@cefriel.it> (08/30/03)
-        ArgumentList  actionArgList      = getArgumentList();
-        ArgumentList  actionInputArgList = getInputArgumentList();
-        ActionRequest ctrlReq            = new ActionRequest();
+        ArgumentList actionArgList = getArgumentList();
+        ArgumentList actionInputArgList = getInputArgumentList();
+        ActionRequest ctrlReq = new ActionRequest();
 
         ctrlReq.setRequest(this, actionInputArgList);
 
@@ -364,13 +363,13 @@ public class Action {
         System.out.println("Action : " + getName());
 
         ArgumentList argList = getArgumentList();
-        int          nArgs   = argList.size();
+        int nArgs = argList.size();
 
         for (int n = 0; n < nArgs; n++) {
-            Argument arg   = argList.getArgument(n);
-            String   name  = arg.getName();
-            String   value = arg.getValue();
-            String   dir   = arg.getDirection();
+            Argument arg = argList.getArgument(n);
+            String name = arg.getName();
+            String value = arg.getValue();
+            String dir = arg.getDirection();
 
             System.out.println(" [" + n + "] = " + dir + ", " + name + ", " + value);
         }

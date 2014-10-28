@@ -21,7 +21,6 @@ package plugins.UPnP.org.cybergarage.upnp.event;
 import java.util.*;
 
 public class SubscriberList extends Vector {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

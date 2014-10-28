@@ -35,7 +35,7 @@ public class NodeList extends Vector {
         int nLists = size();
 
         for (int n = 0; n < nLists; n++) {
-            Node   node     = getNode(n);
+            Node node = getNode(n);
             String nodeName = node.getName();
 
             if (name.compareTo(nodeName) == 0) {
@@ -54,7 +54,7 @@ public class NodeList extends Vector {
         int nLists = size();
 
         for (int n = 0; n < nLists; n++) {
-            Node   node     = getNode(n);
+            Node node = getNode(n);
             String nodeName = node.getName();
 
             if (nodeName == null) {

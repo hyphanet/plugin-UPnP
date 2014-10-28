@@ -22,7 +22,6 @@ import plugins.UPnP.org.cybergarage.net.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class SSDPNotifySocketList extends Vector {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -57,7 +56,7 @@ public class SSDPNotifySocketList extends Vector {
         int nHostAddrs = HostInterface.getNHostAddresses();
 
         for (int n = 0; n < nHostAddrs; n++) {
-            String           bindAddr         = HostInterface.getHostAddress(n);
+            String bindAddr = HostInterface.getHostAddress(n);
             SSDPNotifySocket ssdpNotifySocket = new SSDPNotifySocket(bindAddr);
 
             add(ssdpNotifySocket);

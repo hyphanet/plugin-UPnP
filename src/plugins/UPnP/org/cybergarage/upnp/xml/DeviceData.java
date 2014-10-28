@@ -32,8 +32,8 @@ public class DeviceData extends NodeData {
     ////////////////////////////////////////////////
     // description
     ////////////////////////////////////////////////
-    private String descriptionURI  = null;
-    private File   descriptionFile = null;
+    private String descriptionURI = null;
+    private File descriptionFile = null;
 
     public File getDescriptionFile() {
         return descriptionFile;

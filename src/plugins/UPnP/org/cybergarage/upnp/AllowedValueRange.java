@@ -19,7 +19,6 @@ package plugins.UPnP.org.cybergarage.upnp;
 import plugins.UPnP.org.cybergarage.xml.*;
 
 public class AllowedValueRange {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////

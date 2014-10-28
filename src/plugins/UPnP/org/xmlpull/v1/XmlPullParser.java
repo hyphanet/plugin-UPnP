@@ -142,7 +142,6 @@ import java.io.Reader;
  * @author <a href="http://www.extreme.indiana.edu/~aslom/">Aleksander Slominski</a>
  */
 public interface XmlPullParser {
-
     /** This constant represents the default namespace (empty string "") */
     String NO_NAMESPACE = "";
 

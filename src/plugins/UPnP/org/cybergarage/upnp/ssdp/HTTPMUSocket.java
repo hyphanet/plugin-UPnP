@@ -33,13 +33,12 @@ import plugins.UPnP.org.cybergarage.http.*;
 import plugins.UPnP.org.cybergarage.util.*;
 
 public class HTTPMUSocket {
-
     ////////////////////////////////////////////////
     // Member
     ////////////////////////////////////////////////
     private InetSocketAddress ssdpMultiGroup = null;
-    private MulticastSocket   ssdpMultiSock  = null;
-    private NetworkInterface  ssdpMultiIf    = null;
+    private MulticastSocket ssdpMultiSock = null;
+    private NetworkInterface ssdpMultiIf = null;
 
     ////////////////////////////////////////////////
     // Constructor
@@ -59,7 +58,7 @@ public class HTTPMUSocket {
     ////////////////////////////////////////////////
     public String getLocalAddress() {
         InetAddress mcastAddr = ssdpMultiGroup.getAddress();
-        Enumeration addrs     = ssdpMultiIf.getInetAddresses();
+        Enumeration addrs = ssdpMultiIf.getInetAddresses();
 
         while (addrs.hasMoreElements()) {
             InetAddress addr = (InetAddress) addrs.nextElement();
@@ -99,7 +98,7 @@ public class HTTPMUSocket {
 
             ssdpMultiSock.bind(bindSockAddr);
             ssdpMultiGroup = new InetSocketAddress(InetAddress.getByName(addr), port);
-            ssdpMultiIf    = NetworkInterface.getByInetAddress(InetAddress.getByName(bindAddr));
+            ssdpMultiIf = NetworkInterface.getByInetAddress(InetAddress.getByName(bindAddr));
             ssdpMultiSock.joinGroup(ssdpMultiGroup, ssdpMultiIf);
         } catch (Exception e) {
             Debug.warning(e);
@@ -176,8 +175,8 @@ public class HTTPMUSocket {
     // reveive
     ////////////////////////////////////////////////
     public SSDPPacket receive() {
-        byte       ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
-        SSDPPacket recvPacket    = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
+        byte ssdvRecvBuf[] = new byte[SSDP.RECV_MESSAGE_BUFSIZE];
+        SSDPPacket recvPacket = new SSDPPacket(ssdvRecvBuf, ssdvRecvBuf.length);
 
         recvPacket.setLocalAddress(getLocalAddress());
 

@@ -21,7 +21,6 @@ import java.util.*;
 import plugins.UPnP.org.cybergarage.net.*;
 
 public class HTTPServerList extends Vector {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -63,7 +62,7 @@ public class HTTPServerList extends Vector {
         int nHostAddrs = HostInterface.getNHostAddresses();
 
         for (int n = 0; n < nHostAddrs; n++) {
-            String     bindAddr   = HostInterface.getHostAddress(n);
+            String bindAddr = HostInterface.getHostAddress(n);
             HTTPServer httpServer = new HTTPServer();
 
             if (httpServer.open(bindAddr, port) == false) {
