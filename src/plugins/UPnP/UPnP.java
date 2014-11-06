@@ -53,7 +53,7 @@ import freenet.support.api.HTTPRequest;
 import freenet.support.transport.ip.IPUtil;
 
 /**
- * This plugin implements UP&P support on a Freenet node.
+ * This plugin implements UPnP support on a Freenet node.
  *
  * @author Florent Daigni&egrave;re &lt;nextgens@freenetproject.org&gt;
  *
@@ -119,7 +119,7 @@ public class UPnP extends ControlPoint
     }
 
     public DetectedIP[] getAddress() {
-        Logger.minor(this, "UP&P.getAddress() is called \\o/");
+        Logger.minor(this, "UPnP.getAddress() is called \\o/");
 
         if (isDisabled) {
             Logger.normal(this, "Plugin has been disabled previously, ignoring request.");
@@ -127,7 +127,7 @@ public class UPnP extends ControlPoint
             return null;
         } else if ( !isNATPresent()) {
             Logger.normal(this,
-                          "No UP&P device found, detection of the external ip address" +
+                          "No UPnP device found, detection of the external ip address" +
                           " using the plugin has failed");
 
             return null;
@@ -148,13 +148,13 @@ public class UPnP extends ControlPoint
             }
 
             result = new DetectedIP(detectedIP, status);
-            Logger.normal(this, "Successful UP&P discovery:" + result);
-            System.out.println("Successful UP&P discovery:" + result);
+            Logger.normal(this, "Successful UPnP discovery:" + result);
+            System.out.println("Successful UPnP discovery:" + result);
 
             return new DetectedIP[] { result };
         } catch (UnknownHostException e) {
             Logger.error(this, "Caught an UnknownHostException resolving " + natAddress, e);
-            System.err.println("UP&P discovery has failed: unable to resolve " + result);
+            System.err.println("UPnP discovery has failed: unable to resolve " + result);
 
             return null;
         }
@@ -175,7 +175,7 @@ public class UPnP extends ControlPoint
             Logger.error(this,
                          "We got a second IGD on the network! the plugin doesn't handle" +
                          " that: let's disable it.");
-            System.err.println("The UP&P plugin has found more than one IGD on the network," +
+            System.err.println("The UPnP plugin has found more than one IGD on the network," +
                                " as a result it will be disabled");
             isDisabled = true;
 
@@ -189,8 +189,8 @@ public class UPnP extends ControlPoint
             return;
         }
 
-        Logger.normal(this, "UP&P IGD found: " + dev.getFriendlyName());
-        System.out.println("UP&P IGD found: " + dev.getFriendlyName());
+        Logger.normal(this, "UPnP IGD found: " + dev.getFriendlyName());
+        System.out.println("UPnP IGD found: " + dev.getFriendlyName());
 
         synchronized (lock) {
             _router = dev;
@@ -720,7 +720,7 @@ public class UPnP extends ControlPoint
             return sb.toString();
         }
 
-        PageNode page = pr.getPageMaker().getPageNode("UP&P plugin configuration page", false,
+        PageNode page = pr.getPageMaker().getPageNode("UPnP plugin configuration page", false,
                             null);
         HTMLNode pageNode    = page.outer;
         HTMLNode contentNode = page.content;
@@ -733,10 +733,10 @@ public class UPnP extends ControlPoint
             HTMLNode disabledInfoboxContent = disabledInfobox.addChild("div", "class",
                                                   "infobox-content");
 
-            disabledInfoboxHeader.addChild("#", "UP&P plugin report");
+            disabledInfoboxHeader.addChild("#", "UPnP plugin report");
             disabledInfoboxContent.addChild(
                 "#",
-                "The plugin has been disabled; Do you have more than one UP&P IGD on your LAN ?");
+                "The plugin has been disabled; Do you have more than one UPnP IGD on your LAN ?");
 
             return pageNode.generate();
         } else if ( !isNATPresent()) {
@@ -747,9 +747,9 @@ public class UPnP extends ControlPoint
             HTMLNode notFoundInfoboxContent = notFoundInfobox.addChild("div", "class",
                                                   "infobox-content");
 
-            notFoundInfoboxHeader.addChild("#", "UP&P plugin report");
+            notFoundInfoboxHeader.addChild("#", "UPnP plugin report");
             notFoundInfoboxContent.addChild("#",
-                    "The plugin hasn't found any UP&P aware, compatible device on your LAN.");
+                    "The plugin hasn't found any UPnP aware, compatible device on your LAN.");
 
             return pageNode.generate();
         }
@@ -760,7 +760,7 @@ public class UPnP extends ControlPoint
         HTMLNode foundInfoboxContent = foundInfobox.addChild("div", "class", "infobox-content");
 
         // FIXME L10n!
-        foundInfoboxHeader.addChild("#", "UP&P plugin report");
+        foundInfoboxHeader.addChild("#", "UPnP plugin report");
         foundInfoboxContent.addChild("p", "The following device has been found: ").addChild("a",
                                      "href", "?getDeviceCapabilities").addChild("#",
                                          _router.getFriendlyName());
@@ -877,7 +877,7 @@ public class UPnP extends ControlPoint
         Set<ForwardPort> portsToDumpNow    = null;
         Set<ForwardPort> portsToForwardNow = null;
 
-        System.err.println("UP&P Forwarding " + ports.size() + " ports...");
+        System.err.println("UPnP Forwarding " + ports.size() + " ports...");
 
         synchronized (lock) {
             if ((forwardCallback != null) && (forwardCallback != cb) && (cb != null)) {
@@ -1024,7 +1024,7 @@ public class UPnP extends ControlPoint
         UPnP         upnp = new UPnP();
         ControlPoint cp   = new ControlPoint();
 
-        System.out.println("Searching for up&p devices:");
+        System.out.println("Searching for UPnP devices:");
         cp.start();
         cp.search();
 
