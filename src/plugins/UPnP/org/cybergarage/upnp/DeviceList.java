@@ -19,12 +19,11 @@ package plugins.UPnP.org.cybergarage.upnp;
 import java.util.*;
 
 public class DeviceList extends Vector {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    private static final long  serialVersionUID = 3773784061607435126L;
-    public final static String ELEM_NAME        = "deviceList";
+    private static final long serialVersionUID = 3773784061607435126L;
+    public final static String ELEM_NAME = "deviceList";
 
     ////////////////////////////////////////////////
     // Constructor

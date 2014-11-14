@@ -17,10 +17,10 @@
 package plugins.UPnP.org.cybergarage.upnp.device;
 
 public class ST {
-    public final static String ALL_DEVICE  = "ssdp:all";
+    public final static String ALL_DEVICE = "ssdp:all";
     public final static String ROOT_DEVICE = "upnp:rootdevice";
     public final static String UUID_DEVICE = "uuid";
-    public final static String URN_DEVICE  = "urn:schemas-upnp-org:device:";
+    public final static String URN_DEVICE = "urn:schemas-upnp-org:device:";
     public final static String URN_SERVICE = "urn:schemas-upnp-org:service:";
 
     public final static boolean isAllDevice(String value) {

@@ -27,17 +27,16 @@ import java.net.*;
 import plugins.UPnP.org.cybergarage.util.*;
 
 public class HTTPServer implements Runnable {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    public final static String NAME         = "CyberHTTP";
-    public final static String VERSION      = "1.0";
-    public final static int    DEFAULT_PORT = 80;
+    public final static String NAME = "CyberHTTP";
+    public final static String VERSION = "1.0";
+    public final static int DEFAULT_PORT = 80;
 
     public static String getName() {
         String osName = System.getProperty("os.name");
-        String osVer  = System.getProperty("os.version");
+        String osVer = System.getProperty("os.version");
 
         return osName + "/" + osVer + " " + NAME + "/" + VERSION;
     }
@@ -53,8 +52,8 @@ public class HTTPServer implements Runnable {
     // ServerSocket
     ////////////////////////////////////////////////
     private ServerSocket serverSock = null;
-    private InetAddress  bindAddr   = null;
-    private int          bindPort   = 0;
+    private InetAddress bindAddr = null;
+    private int bindPort = 0;
 
     public ServerSocket getServerSock() {
         return serverSock;
@@ -81,8 +80,8 @@ public class HTTPServer implements Runnable {
         }
 
         try {
-            bindAddr   = InetAddress.getByName(addr);
-            bindPort   = port;
+            bindAddr = InetAddress.getByName(addr);
+            bindPort = port;
             serverSock = new ServerSocket(bindPort, 0, bindAddr);
             serverSock.setSoTimeout(10 * 1000);
         } catch (IOException e) {
@@ -100,8 +99,8 @@ public class HTTPServer implements Runnable {
         try {
             serverSock.close();
             serverSock = null;
-            bindAddr   = null;
-            bindPort   = 0;
+            bindAddr = null;
+            bindPort = 0;
         } catch (Exception e) {
             Debug.warning(e);
 

@@ -46,7 +46,7 @@ public class JaxpParser extends Parser {
 
 //      if (domNodeType != Node.ELEMENT_NODE)
 //          return;
-        String domNodeName  = domNode.getNodeName();
+        String domNodeName = domNode.getNodeName();
         String domNodeValue = domNode.getNodeValue();
 
 //      Debug.message("[" + rank + "] ELEM : " + domNodeName + ", " + domNodeValue +
@@ -71,13 +71,13 @@ public class JaxpParser extends Parser {
         }
 
         NamedNodeMap attrMap = domNode.getAttributes();
-        int          attrLen = attrMap.getLength();
+        int attrLen = attrMap.getLength();
 
         // Debug.message("attrLen = " + attrLen);
         for (int n = 0; n < attrLen; n++) {
-            org.w3c.dom.Node attr      = attrMap.item(n);
-            String           attrName  = attr.getNodeName();
-            String           attrValue = attr.getNodeValue();
+            org.w3c.dom.Node attr = attrMap.item(n);
+            String attrName = attr.getNodeName();
+            String attrValue = attr.getNodeValue();
 
             node.setAttribute(attrName, attrValue);
         }
@@ -106,10 +106,10 @@ public class JaxpParser extends Parser {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder        builder = factory.newDocumentBuilder();
-            InputSource            inSrc   = new InputSource(inStream);
-            Document               doc     = builder.parse(inSrc);
-            org.w3c.dom.Element    docElem = doc.getDocumentElement();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            InputSource inSrc = new InputSource(inStream);
+            Document doc = builder.parse(inSrc);
+            org.w3c.dom.Element docElem = doc.getDocumentElement();
 
             if (docElem != null) {
                 root = parse(root, docElem);

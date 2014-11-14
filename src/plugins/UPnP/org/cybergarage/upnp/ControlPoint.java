@@ -72,15 +72,15 @@ import plugins.UPnP.org.cybergarage.upnp.event.*;
 import java.net.*;
 
 public class ControlPoint implements HTTPRequestListener {
-    private final static int    DEFAULT_EVENTSUB_PORT                      = 8058;
-    private final static int    DEFAULT_SSDP_PORT                          = 8008;
-    private final static int    DEFAULT_EXPIRED_DEVICE_MONITORING_INTERVAL = 60;
-    private final static String DEFAULT_EVENTSUB_URI                       = "/evetSub";
+    private final static int DEFAULT_EVENTSUB_PORT = 8058;
+    private final static int DEFAULT_SSDP_PORT = 8008;
+    private final static int DEFAULT_EXPIRED_DEVICE_MONITORING_INTERVAL = 60;
+    private final static String DEFAULT_EVENTSUB_URI = "/evetSub";
 
     ////////////////////////////////////////////////
     // Member
     ////////////////////////////////////////////////
-    private SSDPNotifySocketList         ssdpNotifySocketList;
+    private SSDPNotifySocketList ssdpNotifySocketList;
     private SSDPSearchResponseSocketList ssdpSearchResponseSocketList;
 
     private SSDPNotifySocketList getSSDPNotifySocketList() {
@@ -102,7 +102,7 @@ public class ControlPoint implements HTTPRequestListener {
     // Constructor
     ////////////////////////////////////////////////
     public ControlPoint(int ssdpPort, int httpPort) {
-        ssdpNotifySocketList         = new SSDPNotifySocketList();
+        ssdpNotifySocketList = new SSDPNotifySocketList();
         ssdpSearchResponseSocketList = new SSDPSearchResponseSocketList();
         setSSDPPort(ssdpPort);
         setHTTPPort(httpPort);
@@ -200,10 +200,10 @@ public class ControlPoint implements HTTPRequestListener {
         String location = ssdpPacket.getLocation();
 
         try {
-            URL    locationUrl = new URL(location);
-            Parser parser      = UPnP.getXMLParser();
-            Node   rootNode    = parser.parse(locationUrl);
-            Device rootDev     = getDevice(rootNode);
+            URL locationUrl = new URL(location);
+            Parser parser = UPnP.getXMLParser();
+            Node rootNode = parser.parse(locationUrl);
+            Device rootDev = getDevice(rootNode);
 
             if (rootDev == null) {
                 return;
@@ -243,11 +243,11 @@ public class ControlPoint implements HTTPRequestListener {
 
     public DeviceList getDeviceList() {
         DeviceList devList = new DeviceList();
-        int        nRoots  = devNodeList.size();
+        int nRoots = devNodeList.size();
 
         for (int n = 0; n < nRoots; n++) {
-            Node   rootNode = devNodeList.getNode(n);
-            Device dev      = getDevice(rootNode);
+            Node rootNode = devNodeList.getNode(n);
+            Device dev = getDevice(rootNode);
 
             if (dev == null) {
                 continue;
@@ -263,8 +263,8 @@ public class ControlPoint implements HTTPRequestListener {
         int nRoots = devNodeList.size();
 
         for (int n = 0; n < nRoots; n++) {
-            Node   rootNode = devNodeList.getNode(n);
-            Device dev      = getDevice(rootNode);
+            Node rootNode = devNodeList.getNode(n);
+            Device dev = getDevice(rootNode);
 
             if (dev == null) {
                 continue;
@@ -332,12 +332,12 @@ public class ControlPoint implements HTTPRequestListener {
     // Expired Device
     ////////////////////////////////////////////////
     private Disposer deviceDisposer;
-    private long     expiredDeviceMonitoringInterval;
+    private long expiredDeviceMonitoringInterval;
 
     public void removeExpiredDevices() {
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
-        Device     dev[]   = new Device[devCnt];
+        int devCnt = devList.size();
+        Device dev[] = new Device[devCnt];
 
         for (int n = 0; n < devCnt; n++) {
             dev[n] = devList.getDevice(n);
@@ -489,8 +489,7 @@ public class ControlPoint implements HTTPRequestListener {
     }
 
     public void search(String target, int mx) {
-        SSDPSearchRequest            msReq                        = new SSDPSearchRequest(target,
-                                                                        mx);
+        SSDPSearchRequest msReq = new SSDPSearchRequest(target, mx);
         SSDPSearchResponseSocketList ssdpSearchResponseSocketList =
             getSSDPSearchResponseSocketList();
 
@@ -522,15 +521,15 @@ public class ControlPoint implements HTTPRequestListener {
         // Thanks for Giordano Sassaroli <sassarol@cefriel.it> (09/08/03)
         if (httpReq.isNotifyRequest() == true) {
             NotifyRequest notifyReq = new NotifyRequest(httpReq);
-            String        uuid      = notifyReq.getSID();
-            long          seq       = notifyReq.getSEQ();
-            PropertyList  props     = notifyReq.getPropertyList();
-            int           propCnt   = props.size();
+            String uuid = notifyReq.getSID();
+            long seq = notifyReq.getSEQ();
+            PropertyList props = notifyReq.getPropertyList();
+            int propCnt = props.size();
 
             for (int n = 0; n < propCnt; n++) {
-                Property prop     = props.getProperty(n);
-                String   varName  = prop.getName();
-                String   varValue = prop.getValue();
+                Property prop = props.getProperty(n);
+                String varName = prop.getName();
+                String varValue = prop.getValue();
 
                 performEventListener(uuid, seq, varName, varValue);
             }
@@ -596,8 +595,8 @@ public class ControlPoint implements HTTPRequestListener {
             return false;
         }
 
-        String              ifAddress = rootDev.getInterfaceAddress();
-        SubscriptionRequest subReq    = new SubscriptionRequest();
+        String ifAddress = rootDev.getInterfaceAddress();
+        SubscriptionRequest subReq = new SubscriptionRequest();
 
         subReq.setSubscribeRequest(service, getEventSubCallbackURL(ifAddress), timeout);
 
@@ -676,7 +675,7 @@ public class ControlPoint implements HTTPRequestListener {
 
     public void unsubscribe(Device device) {
         ServiceList serviceList = device.getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -687,7 +686,7 @@ public class ControlPoint implements HTTPRequestListener {
         }
 
         DeviceList childDevList = device.getDeviceList();
-        int        childDevCnt  = childDevList.size();
+        int childDevCnt = childDevList.size();
 
         for (int n = 0; n < childDevCnt; n++) {
             Device cdev = childDevList.getDevice(n);
@@ -698,7 +697,7 @@ public class ControlPoint implements HTTPRequestListener {
 
     public void unsubscribe() {
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
             Device dev = devList.getDevice(n);
@@ -712,10 +711,10 @@ public class ControlPoint implements HTTPRequestListener {
     ////////////////////////////////////////////////
     public Service getSubscriberService(String uuid) {
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
-            Device  dev     = devList.getDevice(n);
+            Device dev = devList.getDevice(n);
             Service service = dev.getSubscriberService(uuid);
 
             if (service != null) {
@@ -731,7 +730,7 @@ public class ControlPoint implements HTTPRequestListener {
     ////////////////////////////////////////////////
     public void renewSubscriberService(Device dev, long timeout) {
         ServiceList serviceList = dev.getServiceList();
-        int         serviceCnt  = serviceList.size();
+        int serviceCnt = serviceList.size();
 
         for (int n = 0; n < serviceCnt; n++) {
             Service service = serviceList.getService(n);
@@ -740,7 +739,7 @@ public class ControlPoint implements HTTPRequestListener {
                 continue;
             }
 
-            String  sid       = service.getSID();
+            String sid = service.getSID();
             boolean isRenewed = subscribe(service, sid, timeout);
 
             if (isRenewed == false) {
@@ -749,7 +748,7 @@ public class ControlPoint implements HTTPRequestListener {
         }
 
         DeviceList cdevList = dev.getDeviceList();
-        int        cdevCnt  = cdevList.size();
+        int cdevCnt = cdevList.size();
 
         for (int n = 0; n < cdevCnt; n++) {
             Device cdev = cdevList.getDevice(n);
@@ -760,7 +759,7 @@ public class ControlPoint implements HTTPRequestListener {
 
     public void renewSubscriberService(long timeout) {
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         for (int n = 0; n < devCnt; n++) {
             Device dev = devList.getDevice(n);
@@ -795,8 +794,8 @@ public class ControlPoint implements HTTPRequestListener {
         ////////////////////////////////////////
         // HTTP Server
         ////////////////////////////////////////
-        int            retryCnt       = 0;
-        int            bindPort       = getHTTPPort();
+        int retryCnt = 0;
+        int bindPort = getHTTPPort();
         HTTPServerList httpServerList = getHTTPServerList();
 
         while (httpServerList.open(bindPort) == false) {
@@ -933,7 +932,7 @@ public class ControlPoint implements HTTPRequestListener {
     ////////////////////////////////////////////////
     public void print() {
         DeviceList devList = getDeviceList();
-        int        devCnt  = devList.size();
+        int devCnt = devList.size();
 
         Debug.message("Device Num = " + devCnt);
 

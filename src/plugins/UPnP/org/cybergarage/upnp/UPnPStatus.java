@@ -19,16 +19,15 @@
 package plugins.UPnP.org.cybergarage.upnp;
 
 public class UPnPStatus {
-
     ////////////////////////////////////////////////
     // Code
     ////////////////////////////////////////////////
-    public static final int INVALID_ACTION      = 401;
-    public static final int INVALID_ARGS        = 402;
-    public static final int OUT_OF_SYNC         = 403;
-    public static final int INVALID_VAR         = 404;
+    public static final int INVALID_ACTION = 401;
+    public static final int INVALID_ARGS = 402;
+    public static final int OUT_OF_SYNC = 403;
+    public static final int INVALID_VAR = 404;
     public static final int PRECONDITION_FAILED = 412;
-    public static final int ACTION_FAILED       = 501;
+    public static final int ACTION_FAILED = 501;
 
     public static final String code2String(int code) {
         switch (code) {
@@ -52,7 +51,7 @@ public class UPnPStatus {
     ////////////////////////////////////////////////
     // Member
     ////////////////////////////////////////////////
-    private int    code;
+    private int code;
     private String description;
 
     public UPnPStatus() {

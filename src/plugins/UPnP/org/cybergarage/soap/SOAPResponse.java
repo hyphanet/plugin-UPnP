@@ -25,7 +25,6 @@ import plugins.UPnP.org.cybergarage.http.*;
 import plugins.UPnP.org.cybergarage.xml.*;
 
 public class SOAPResponse extends HTTPResponse {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

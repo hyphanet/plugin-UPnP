@@ -28,7 +28,6 @@ package plugins.UPnP.org.cybergarage.upnp.ssdp;
 import plugins.UPnP.org.cybergarage.http.*;
 
 public class SSDPResponse extends HTTPResponse {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -101,7 +100,7 @@ public class SSDPResponse extends HTTPResponse {
 
         str.append(getStatusLineString());
         str.append(getHeaderString());
-        str.append(HTTP.CRLF);    // for Intel UPnP control points.
+        str.append(HTTP.CRLF);  // for Intel UPnP control points.
 
         return str.toString();
     }

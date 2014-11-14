@@ -54,7 +54,6 @@ import plugins.UPnP.org.cybergarage.soap.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class ControlRequest extends SOAPRequest {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -86,9 +85,9 @@ public class ControlRequest extends SOAPRequest {
 
         if ((urlBase != null) && (0 < urlBase.length())) {
             try {
-                URL    url      = new URL(urlBase);
+                URL url = new URL(urlBase);
                 String basePath = url.getPath();
-                int    baseLen  = basePath.length();
+                int baseLen = basePath.length();
 
                 if (0 < baseLen) {
                     if ((1 < baseLen) || (basePath.charAt(0) != '/')) {
@@ -120,7 +119,7 @@ public class ControlRequest extends SOAPRequest {
         }
 
         String reqHost = HTTP.getHost(postURL);
-        int    reqPort = HTTP.getPort(postURL);
+        int reqPort = HTTP.getPort(postURL);
 
         setHost(reqHost, reqPort);
         setRequestHost(reqHost);

@@ -47,8 +47,8 @@ public final class FileUtil {
         byte readBuf[] = new byte[512 * 1024];
 
         try {
-            ByteArrayOutputStream bout    = new ByteArrayOutputStream();
-            int                   readCnt = fin.read(readBuf);
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            int readCnt = fin.read(readBuf);
 
             while (0 < readCnt) {
                 bout.write(readBuf, 0, readCnt);

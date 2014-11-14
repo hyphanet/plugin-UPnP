@@ -19,12 +19,12 @@ package plugins.UPnP.org.cybergarage.upnp.event;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class Subscription {
-    public final static String XMLNS              = "urn:schemas-upnp-org:event-1-0";
-    public final static String TIMEOUT_HEADER     = "Second-";
-    public final static String INFINITE_STRING    = "infinite";
-    public final static int    INFINITE_VALUE     = -1;
-    public final static String UUID               = "uuid:";
-    public final static String SUBSCRIBE_METHOD   = "SUBSCRIBE";
+    public final static String XMLNS = "urn:schemas-upnp-org:event-1-0";
+    public final static String TIMEOUT_HEADER = "Second-";
+    public final static String INFINITE_STRING = "infinite";
+    public final static int INFINITE_VALUE = -1;
+    public final static String UUID = "uuid:";
+    public final static String SUBSCRIBE_METHOD = "SUBSCRIBE";
     public final static String UNSUBSCRIBE_METHOD = "UNSUBSCRIBE";
 
     ////////////////////////////////////////////////
@@ -39,8 +39,8 @@ public class Subscription {
     }
 
     public final static long getTimeout(String headerValue) {
-        int  minusIdx = headerValue.indexOf('-');
-        long timeout  = Subscription.INFINITE_VALUE;
+        int minusIdx = headerValue.indexOf('-');
+        long timeout = Subscription.INFINITE_VALUE;
 
         try {
             String timeoutStr = headerValue.substring(minusIdx + 1, headerValue.length());

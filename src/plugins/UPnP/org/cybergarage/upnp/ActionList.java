@@ -19,12 +19,11 @@ package plugins.UPnP.org.cybergarage.upnp;
 import java.util.*;
 
 public class ActionList extends Vector {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    private static final long  serialVersionUID = 1965922721316119846L;
-    public final static String ELEM_NAME        = "actionList";
+    private static final long serialVersionUID = 1965922721316119846L;
+    public final static String ELEM_NAME = "actionList";
 
     ////////////////////////////////////////////////
     // Constructor

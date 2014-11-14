@@ -20,14 +20,14 @@ import java.net.*;
 
 public class HTTPServerThread extends Thread {
     private HTTPServer httpServer;
-    private Socket     sock;
+    private Socket sock;
 
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
     public HTTPServerThread(HTTPServer httpServer, Socket sock) {
         this.httpServer = httpServer;
-        this.sock       = sock;
+        this.sock = sock;
         this.setDaemon(true);
     }
 

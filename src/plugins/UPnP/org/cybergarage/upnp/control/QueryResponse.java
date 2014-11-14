@@ -22,7 +22,6 @@ import plugins.UPnP.org.cybergarage.soap.*;
 import plugins.UPnP.org.cybergarage.xml.*;
 
 public class QueryResponse extends ControlResponse {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -78,7 +77,7 @@ public class QueryResponse extends ControlResponse {
         setStatusCode(HTTPStatus.OK);
 
         Node bodyNode = getBodyNode();
-        Node resNode  = createResponseNode(var);
+        Node resNode = createResponseNode(var);
 
         bodyNode.addNode(resNode);
 

@@ -31,21 +31,20 @@ import java.util.*;
 import plugins.UPnP.org.cybergarage.util.*;
 
 public class HTTPStatus {
-
     ////////////////////////////////////////////////
     // Code
     ////////////////////////////////////////////////
     public static final int CONTINUE = 100;
-    public static final int OK       = 200;
+    public static final int OK = 200;
 
     // Thanks for Brent Hills (10/20/04)
-    public static final int PARTIAL_CONTENT     = 206;
-    public static final int BAD_REQUEST         = 400;
-    public static final int NOT_FOUND           = 404;
+    public static final int PARTIAL_CONTENT = 206;
+    public static final int BAD_REQUEST = 400;
+    public static final int NOT_FOUND = 404;
     public static final int PRECONDITION_FAILED = 412;
 
     // Thanks for Brent Hills (10/20/04)
-    public static final int INVALID_RANGE         = 416;
+    public static final int INVALID_RANGE = 416;
     public static final int INTERNAL_SERVER_ERROR = 500;
 
     public static final String code2String(int code) {
@@ -93,8 +92,8 @@ public class HTTPStatus {
     ////////////////////////////////////////////////
     // Member
     ////////////////////////////////////////////////
-    private String version      = "";
-    private int    statusCode   = 0;
+    private String version = "";
+    private int statusCode = 0;
     private String reasonPhrase = "";
 
     public void setVersion(String value) {
@@ -164,7 +163,7 @@ public class HTTPStatus {
             }
 
             String codeStr = st.nextToken();
-            int    code    = 0;
+            int code = 0;
 
             try {
                 code = Integer.parseInt(codeStr);

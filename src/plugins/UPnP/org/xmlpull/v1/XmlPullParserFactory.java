@@ -33,7 +33,6 @@ import java.util.Vector;
  * @author Stefan Haustein
  */
 public class XmlPullParserFactory {
-
     /** used as default class to server as context class in newInstance() */
     final static Class referenceContextClass;
 
@@ -170,7 +169,7 @@ public class XmlPullParserFactory {
                 // Enumeration keys = features.keys();
                 // while(keys.hasMoreElements()) {
                 for (Enumeration e = features.keys(); e.hasMoreElements(); ) {
-                    final String  key   = (String) e.nextElement();
+                    final String key = (String) e.nextElement();
                     final Boolean value = (Boolean) features.get(key);
 
                     if ((value != null) && value.booleanValue()) {
@@ -288,10 +287,10 @@ public class XmlPullParserFactory {
                                  classNames + "'";
         }
 
-        XmlPullParserFactory factory           = null;
-        final Vector         parserClasses     = new Vector();
-        final Vector         serializerClasses = new Vector();
-        int                  pos               = 0;
+        XmlPullParserFactory factory = null;
+        final Vector parserClasses = new Vector();
+        final Vector serializerClasses = new Vector();
+        int pos = 0;
 
         while (pos < classNames.length()) {
             int cut = classNames.indexOf(',', pos);
@@ -300,9 +299,9 @@ public class XmlPullParserFactory {
                 cut = classNames.length();
             }
 
-            final String name      = classNames.substring(pos, cut);
-            Class        candidate = null;
-            Object       instance  = null;
+            final String name = classNames.substring(pos, cut);
+            Class candidate = null;
+            Object instance = null;
 
             try {
                 candidate = Class.forName(name);
@@ -344,8 +343,8 @@ public class XmlPullParserFactory {
             factory = new XmlPullParserFactory();
         }
 
-        factory.parserClasses      = parserClasses;
-        factory.serializerClasses  = serializerClasses;
+        factory.parserClasses = parserClasses;
+        factory.serializerClasses = serializerClasses;
         factory.classNamesLocation = classNamesLocation;
 
         return factory;

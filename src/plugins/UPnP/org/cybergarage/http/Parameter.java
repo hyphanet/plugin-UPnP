@@ -17,7 +17,7 @@
 package plugins.UPnP.org.cybergarage.http;
 
 public class Parameter {
-    private String name  = new String();
+    private String name = new String();
     private String value = new String();
 
     public Parameter() {}

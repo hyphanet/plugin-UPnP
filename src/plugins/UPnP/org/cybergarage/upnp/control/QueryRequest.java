@@ -26,7 +26,6 @@ import plugins.UPnP.org.cybergarage.soap.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class QueryRequest extends ControlRequest {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -82,8 +81,8 @@ public class QueryRequest extends ControlRequest {
         setRequestHost(service);
         setEnvelopeNode(SOAP.createEnvelopeBodyNode());
 
-        Node envNode   = getEnvelopeNode();
-        Node bodyNode  = getBodyNode();
+        Node envNode = getEnvelopeNode();
+        Node bodyNode = getBodyNode();
         Node qeuryNode = createContentNode(stateVar);
 
         bodyNode.addNode(qeuryNode);

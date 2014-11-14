@@ -32,11 +32,10 @@ import java.net.*;
 import java.util.*;
 
 public class HostInterface {
-
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    public static boolean USE_LOOPBACK_ADDR  = false;
+    public static boolean USE_LOOPBACK_ADDR = false;
     public static boolean USE_ONLY_IPV4_ADDR = false;
     public static boolean USE_ONLY_IPV6_ADDR = false;
 
@@ -94,8 +93,8 @@ public class HostInterface {
             Enumeration nis = NetworkInterface.getNetworkInterfaces();
 
             while (nis.hasMoreElements()) {
-                NetworkInterface ni    = (NetworkInterface) nis.nextElement();
-                Enumeration      addrs = ni.getInetAddresses();
+                NetworkInterface ni = (NetworkInterface) nis.nextElement();
+                Enumeration addrs = ni.getInetAddresses();
 
                 while (addrs.hasMoreElements()) {
                     InetAddress addr = (InetAddress) addrs.nextElement();
@@ -124,8 +123,8 @@ public class HostInterface {
             Enumeration nis = NetworkInterface.getNetworkInterfaces();
 
             while (nis.hasMoreElements()) {
-                NetworkInterface ni    = (NetworkInterface) nis.nextElement();
-                Enumeration      addrs = ni.getInetAddresses();
+                NetworkInterface ni = (NetworkInterface) nis.nextElement();
+                Enumeration addrs = ni.getInetAddresses();
 
                 while (addrs.hasMoreElements()) {
                     InetAddress addr = (InetAddress) addrs.nextElement();

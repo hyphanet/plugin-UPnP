@@ -46,8 +46,8 @@ public class RenewSubscriber extends ThreadCore {
     // Thread
     ////////////////////////////////////////////////
     public void run() {
-        ControlPoint ctrlp         = getControlPoint();
-        long         renewInterval = INTERVAL * 1000;
+        ControlPoint ctrlp = getControlPoint();
+        long renewInterval = INTERVAL * 1000;
 
         while (isRunnable() == true) {
             try {

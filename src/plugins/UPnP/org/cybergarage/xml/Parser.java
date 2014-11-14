@@ -23,7 +23,6 @@ import java.net.*;
 import java.io.*;
 
 public abstract class Parser {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -43,8 +42,8 @@ public abstract class Parser {
 
             urlCon.setRequestMethod("GET");
 
-            InputStream urlIn    = urlCon.getInputStream();
-            Node        rootElem = parse(urlIn);
+            InputStream urlIn = urlCon.getInputStream();
+            Node rootElem = parse(urlIn);
 
             urlIn.close();
             urlCon.disconnect();
@@ -76,7 +75,7 @@ public abstract class Parser {
     public Node parse(File descriptionFile) throws ParserException {
         try {
             InputStream fileIn = new FileInputStream(descriptionFile);
-            Node        root   = parse(fileIn);
+            Node root = parse(fileIn);
 
             fileIn.close();
 
@@ -92,7 +91,7 @@ public abstract class Parser {
     public Node parse(String descr) throws ParserException {
         try {
             StringBufferInputStream decrIn = new StringBufferInputStream(descr);
-            Node                    root   = parse(decrIn);
+            Node root = parse(decrIn);
 
             return root;
         } catch (Exception e) {

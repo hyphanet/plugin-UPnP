@@ -17,7 +17,7 @@
 package plugins.UPnP.org.cybergarage.xml;
 
 public class Attribute {
-    private String name  = new String();
+    private String name = new String();
     private String value = new String();
 
     public Attribute() {}

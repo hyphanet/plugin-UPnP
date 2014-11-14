@@ -21,7 +21,6 @@ package plugins.UPnP.org.cybergarage.upnp.ssdp;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class SSDPSearchResponseSocket extends HTTPUSocket implements Runnable {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -53,8 +52,8 @@ public class SSDPSearchResponseSocket extends HTTPUSocket implements Runnable {
     private Thread deviceSearchResponseThread = null;
 
     public void run() {
-        Thread       thisThread = Thread.currentThread();
-        ControlPoint ctrlPoint  = getControlPoint();
+        Thread thisThread = Thread.currentThread();
+        ControlPoint ctrlPoint = getControlPoint();
 
         while (deviceSearchResponseThread == thisThread) {
             Thread.yield();

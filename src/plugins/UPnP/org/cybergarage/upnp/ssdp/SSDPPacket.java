@@ -30,7 +30,6 @@ import plugins.UPnP.org.cybergarage.http.*;
 import plugins.UPnP.org.cybergarage.upnp.device.*;
 
 public class SSDPPacket {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////
@@ -100,9 +99,9 @@ public class SSDPPacket {
             return packetBytes;
         }
 
-        DatagramPacket packet     = getDatagramPacket();
-        int            packetLen  = packet.getLength();
-        String         packetData = new String(packet.getData(), 0, packetLen);
+        DatagramPacket packet = getDatagramPacket();
+        int packetLen = packet.getLength();
+        String packetData = new String(packet.getData(), 0, packetLen);
 
         packetBytes = packetData.getBytes();
 
@@ -156,9 +155,9 @@ public class SSDPPacket {
     // Access Methods
     ////////////////////////////////////////////////
     public InetAddress getHostInetAddress() {
-        String addrStr  = "127.0.0.1";
-        String host     = getHost();
-        int    canmaIdx = host.lastIndexOf(":");
+        String addrStr = "127.0.0.1";
+        String host = getHost();
+        int canmaIdx = host.lastIndexOf(":");
 
         if (0 <= canmaIdx) {
             addrStr = host.substring(0, canmaIdx);

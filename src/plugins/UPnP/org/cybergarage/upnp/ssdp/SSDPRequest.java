@@ -22,7 +22,6 @@ package plugins.UPnP.org.cybergarage.upnp.ssdp;
 import plugins.UPnP.org.cybergarage.http.*;
 
 public class SSDPRequest extends HTTPRequest {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

@@ -32,13 +32,13 @@ public class XML {
             return null;
         }
 
-        int    oldsize = input.length();
-        char[] old     = new char[oldsize];
+        int oldsize = input.length();
+        char[] old = new char[oldsize];
 
         input.getChars(0, oldsize, old, 0);
 
-        int    selstart = 0;
-        String entity   = null;
+        int selstart = 0;
+        String entity = null;
 
         for (int i = 0; i < oldsize; i++) {
             switch (old[i]) {
@@ -72,7 +72,7 @@ public class XML {
                 out.append(old, selstart, i - selstart);
                 out.append(entity);
                 selstart = i + 1;
-                entity   = null;
+                entity = null;
             }
         }
 

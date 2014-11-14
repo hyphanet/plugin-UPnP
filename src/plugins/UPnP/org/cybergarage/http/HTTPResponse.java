@@ -23,7 +23,6 @@ package plugins.UPnP.org.cybergarage.http;
 import java.io.*;
 
 public class HTTPResponse extends HTTPPacket {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

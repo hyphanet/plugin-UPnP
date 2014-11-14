@@ -64,11 +64,11 @@ public class Node {
     // root node
     ////////////////////////////////////////////////
     public Node getRootNode() {
-        Node rootNode   = null;
+        Node rootNode = null;
         Node parentNode = getParentNode();
 
         while (parentNode != null) {
-            rootNode   = parentNode;
+            rootNode = parentNode;
             parentNode = rootNode.getParentNode();
         }
 
@@ -325,8 +325,8 @@ public class Node {
 
     public void output(PrintWriter ps, int indentLevel, boolean hasChildNode) {
         String indentString = getIndentLevelString(indentLevel);
-        String name         = getName();
-        String value        = getValue();
+        String name = getName();
+        String value = getValue();
 
         if ((hasNodes() == false) || (hasChildNode == false)) {
             ps.print(indentString + "<" + name);
@@ -361,7 +361,7 @@ public class Node {
 
     public String toString(boolean hasChildNode) {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        PrintWriter           pr      = new PrintWriter(byteOut);
+        PrintWriter pr = new PrintWriter(byteOut);
 
         output(pr, 0, hasChildNode);
         pr.flush();

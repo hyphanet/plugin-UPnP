@@ -56,7 +56,7 @@ public final class StringUtil {
         }
 
         int charCnt = chars.length();
-        int idx     = startIdx;
+        int idx = startIdx;
 
         while (true) {
             if (0 < offset) {
@@ -69,8 +69,8 @@ public final class StringUtil {
                 }
             }
 
-            char strc       = str.charAt(idx);
-            int  noEqualCnt = 0;
+            char strc = str.charAt(idx);
+            int noEqualCnt = 0;
 
             for (int n = 0; n < charCnt; n++) {
                 char charc = chars.charAt(n);

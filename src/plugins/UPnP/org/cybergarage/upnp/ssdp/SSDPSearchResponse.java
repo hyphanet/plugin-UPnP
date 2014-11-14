@@ -20,7 +20,6 @@ import plugins.UPnP.org.cybergarage.http.*;
 import plugins.UPnP.org.cybergarage.upnp.*;
 
 public class SSDPSearchResponse extends SSDPResponse {
-
     ////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////

@@ -77,18 +77,18 @@ public class SOAPRequest extends HTTPRequest {
     // post
     ////////////////////////////////////////////////
     public SOAPResponse postMessage(String host, int port) {
-        HTTPResponse httpRes   = post(host, port);
-        SOAPResponse soapRes   = new SOAPResponse(httpRes);
-        byte         content[] = soapRes.getContent();
+        HTTPResponse httpRes = post(host, port);
+        SOAPResponse soapRes = new SOAPResponse(httpRes);
+        byte content[] = soapRes.getContent();
 
         if (content.length <= 0) {
             return soapRes;
         }
 
         try {
-            ByteArrayInputStream byteIn    = new ByteArrayInputStream(content);
-            Parser               xmlParser = SOAP.getXMLParser();
-            Node                 rootNode  = xmlParser.parse(byteIn);
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(content);
+            Parser xmlParser = SOAP.getXMLParser();
+            Node rootNode = xmlParser.parse(byteIn);
 
             soapRes.setEnvelopeNode(rootNode);
         } catch (Exception e) {
@@ -113,9 +113,9 @@ public class SOAPRequest extends HTTPRequest {
         }
 
         try {
-            byte                 content[] = getContent();
+            byte content[] = getContent();
             ByteArrayInputStream contentIn = new ByteArrayInputStream(content);
-            Parser               parser    = SOAP.getXMLParser();
+            Parser parser = SOAP.getXMLParser();
 
             rootNode = parser.parse(contentIn);
         } catch (ParserException e) {

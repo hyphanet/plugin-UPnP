@@ -45,8 +45,8 @@ import plugins.UPnP.org.cybergarage.soap.*;
 import plugins.UPnP.org.cybergarage.upnp.device.*;
 
 public class NotifyRequest extends SOAPRequest {
-    private final static String XMLNS       = "e";
-    private final static String PROPERTY    = "property";
+    private final static String XMLNS = "e";
+    private final static String PROPERTY = "property";
     private final static String PROPERTYSET = "propertyset";
 
     ////////////////////////////////////////////////
@@ -98,11 +98,11 @@ public class NotifyRequest extends SOAPRequest {
     // Constructor
     ////////////////////////////////////////////////
     public boolean setRequest(Subscriber sub, String varName, String value) {
-        String sid       = sub.getSID();
-        long   notifyCnt = sub.getNotifyCount();
-        String host      = sub.getDeliveryHost();
-        String path      = sub.getDeliveryPath();
-        int    port      = sub.getDeliveryPort();
+        String sid = sub.getSID();
+        long notifyCnt = sub.getNotifyCount();
+        String host = sub.getDeliveryHost();
+        String path = sub.getDeliveryPath();
+        int port = sub.getDeliveryPort();
 
         setMethod(HTTP.NOTIFY);
         setURI(path);
@@ -149,7 +149,7 @@ public class NotifyRequest extends SOAPRequest {
 
         // remove the event namespace
         String variableName = varNode.getName();
-        int    index        = variableName.lastIndexOf(':');
+        int index = variableName.lastIndexOf(':');
 
         if (index != -1) {
             variableName = variableName.substring(index + 1);
@@ -164,7 +164,7 @@ public class NotifyRequest extends SOAPRequest {
     // Thanks for Giordano Sassaroli <sassarol@cefriel.it> (09/08/03)
     public PropertyList getPropertyList() {
         PropertyList properties = new PropertyList();
-        Node         varSetNode = getEnvelopeNode();
+        Node varSetNode = getEnvelopeNode();
 
         for (int i = 0; i < varSetNode.getNNodes(); i++) {
             Node propNode = varSetNode.getNode(i);
