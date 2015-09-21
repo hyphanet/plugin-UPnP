@@ -221,7 +221,9 @@ public class UPnP extends ControlPoint
         Set ports = new HashSet<ForwardPort>();
 
         synchronized (lock) {
-            ports.addAll(portsToForward);
+            if (portsToForward != null) {
+                ports.addAll(portsToForward);
+            }
         }
 
         if (ports.isEmpty()) {
