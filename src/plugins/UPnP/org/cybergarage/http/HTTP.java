@@ -40,7 +40,7 @@ public class HTTP {
     ////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////
-    public static final String HOST = "HOST";
+    public static final String HOST = "Host";
     public static final String VERSION = "1.1";
     public static final String VERSION_10 = "1.0";
     public static final String VERSION_11 = "1.1";
